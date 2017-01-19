@@ -53,9 +53,14 @@ void MutaGroupManager::logic()
 {
   switch (this->overalLPhase)
   {
-  case OverallPhase::Stacking:
-    this->stackFast();
-    if (this->getStackError() < 7)
+  case OverallPhase::StackingPhase1:
+    this->stack(false);
+    if (this->getStackError() < 5)
+      this->overalLPhase = OverallPhase::StackingPhase2;
+    break;
+  case OverallPhase::StackingPhase2:
+    this->stack(true);
+    if (this->getAverageVelocity() > 6.5)
       this->overalLPhase = OverallPhase::Attacking;
     break;
   case OverallPhase::Attacking:
@@ -64,7 +69,7 @@ void MutaGroupManager::logic()
     case AttackPhase::Nothing:
       if (this->getStackError() > 15)
       {
-        this->overalLPhase = OverallPhase::Stacking;
+        this->overalLPhase = OverallPhase::StackingPhase1;
         return;
       }
       if (this->unitTarget == nullptr || !this->unitTarget->exists())
@@ -86,20 +91,23 @@ void MutaGroupManager::logic()
         }
         BWAPI::Position center = this->getCenter();
         BWAPI::Position unitPosition = this->unitTarget->getPosition();
-        Vector vector(center, unitPosition);
-        if (vector.getLength() < 170)
+        Vector originalVector(center, unitPosition);
+        Vector targetVector(originalVector);
+        targetVector.extendToLength(250);
+        BWAPI::Position behindUnit = center;
+        targetVector.addTo(&behindUnit);
+
+        if (originalVector.getLength() < 170 && this->maxCooldownValue() == 0)
         {
-          this->attackStackedMutasWithOverlord(this->unitTarget);
+          this->attackStackedMutasWithOverlord(nullptr, behindUnit);
+          BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Red);
           this->attackPhase = AttackPhase::MovingAway;
           this->ticksSinceAttack = 0;
           return;
         }
         
-        vector.extendToLength(200);
-        BWAPI::Position behindUnit = center;
-        vector.addTo(&behindUnit);
         this->moveStackedMutasWithOverlord(behindUnit);
-        BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Red);
+        BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Blue);
       }
       break;
     case AttackPhase::MovingAway:
@@ -108,11 +116,15 @@ void MutaGroupManager::logic()
       if (this->ticksSinceAttack < 2)
         break;
       BWAPI::Position center = this->getCenter();
+      BWAPI::Position target;
       if (ticksSinceAttack < 10)
-        this->moveStackedMutasWithOverlord(BWAPI::Position(center.x - 150, center.y));
+        target = BWAPI::Position(center.x - 100, center.y);
       else
-        this->moveStackedMutasWithOverlord(BWAPI::Position(center.x - 150, center.y - 150));
-      if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2)
+        target = BWAPI::Position(center.x - 100, center.y - 100);
+      this->moveStackedMutasWithOverlord(target);
+      BWAPI::Broodwar->drawCircleMap(target, 10, BWAPI::Colors::Blue);
+      if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2 &&
+          (this->unitTarget == nullptr || this->unitTarget->getDistance(center) > 150))
         this->attackPhase = AttackPhase::Nothing;
     }
       break;
@@ -147,7 +159,7 @@ void MutaGroupManager::moveStackedMutasWithOverlord(BWAPI::Position position)
   overlord->stop();
 }
 
-void MutaGroupManager::attackStackedMutasWithOverlord(BWAPI::Unit unit)
+void MutaGroupManager::attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::Position position)
 {
     BWAPI::Unitset mutaSet;
   for (Unit* muta: this->stackMutas)
@@ -167,7 +179,7 @@ void MutaGroupManager::attackStackedMutasWithOverlord(BWAPI::Unit unit)
     return;
   mutaSet.insert(overlord);
 
-  BWAPI::Broodwar->issueCommand(mutaSet, BWAPI::UnitCommand::attack(unit, BWAPI::Positions::None));
+  BWAPI::Broodwar->issueCommand(mutaSet, BWAPI::UnitCommand::attack(unit, position));
   overlord->stop();
 }
 
@@ -204,7 +216,8 @@ std::string MutaGroupManager::overallPhaseToString(OverallPhase overallPhase)
 {
   switch (overallPhase)
   {
-  case OverallPhase::Stacking: return "Stacking";
+  case OverallPhase::StackingPhase1: return "StackingPhase1";
+  case OverallPhase::StackingPhase2: return "StackingPhase2";
   case OverallPhase::Attacking: return "Attacking";
   }
   return "<Unknown>";
@@ -221,12 +234,13 @@ std::string MutaGroupManager::attackPhaseToString(AttackPhase attackPhase)
   return "<Unknown>";
 }
 
-void MutaGroupManager::stack()
+void MutaGroupManager::stack(bool secondPhase)
 {
   BWAPI::Position position = this->getCenter();
-  position.x += int(cos(angle) * 150);
-  position.y += int(sin(angle) * 150);
-  BWAPI::Broodwar->drawCircleMap(position, 10, BWAPI::Colors::Red);
+  double distance = secondPhase ? 150 : 40;
+  position.x += int(cos(angle) * distance);
+  position.y += int(sin(angle) * distance);
+  BWAPI::Broodwar->drawCircleMap(position, 10, BWAPI::Colors::Blue);
   if (BWAPI::Broodwar->getFrameCount() % 2 == 0)
   {
     angle += 0.5;
@@ -236,7 +250,7 @@ void MutaGroupManager::stack()
 
 void MutaGroupManager::stackFast()
 {
-  this->stack();
+  this->stack(true);
   return;
   /*/
   BWAPI::Unit overlord = this->getOverlordFarAway((*this->stackMutas.begin())->getPosition());

@@ -10,7 +10,7 @@ public:
   bool isFull() const { return stackMutas.size() + joiningMutas.size() >= 11; }
   void add(Unit* muta);
   void onFrame();
-  void stack();
+  void stack(bool secondPhase);
   void stackFast();
   double getAverageVelocity();
   double getVelocity(Unit* unit);
@@ -22,7 +22,7 @@ public:
   void chooseClosestTarget();
   void logic();
   void moveStackedMutasWithOverlord(BWAPI::Position position);
-  void attackStackedMutasWithOverlord(BWAPI::Unit unit);
+  void attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::Position position);
   double averageCooldownValue();
   int maxCooldownValue();
   int countOfMutasWith0Cooldown();
@@ -30,7 +30,8 @@ public:
 
   enum class OverallPhase
   {
-    Stacking,
+    StackingPhase1,
+    StackingPhase2,
     Attacking
   };
   static std::string overallPhaseToString(OverallPhase overallPhase);
@@ -48,7 +49,7 @@ public:
   BWAPI::Unit unitTarget = nullptr;
   BWAPI::Position target;
   double angle = 0;
-  OverallPhase overalLPhase = OverallPhase::Stacking;
+  OverallPhase overalLPhase = OverallPhase::StackingPhase1;
   AttackPhase attackPhase = AttackPhase::Nothing;
   uint32_t ticksSinceAttack = 0;
 };
