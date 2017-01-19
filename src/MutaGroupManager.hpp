@@ -51,5 +51,4 @@ public:
   OverallPhase overalLPhase = OverallPhase::Stacking;
   AttackPhase attackPhase = AttackPhase::Nothing;
   uint32_t ticksSinceAttack = 0;
-  BWAPI::Position stackingCenter;
 };
