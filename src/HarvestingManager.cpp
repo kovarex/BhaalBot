@@ -178,7 +178,6 @@ void HarvestingManager::onUnitComplete(Unit* unit)
         for (BWEM::Geyser* geyser: base.Geysers())
           geysers.push_back(geyser->Unit());
         this->addBase(unit, &base);
-        BWAPI::Broodwar->sendText("Assigned base with %d mineral patches and %d geysers", minerals.size(), geysers.size());
         return;
       }
     }

@@ -1,17 +1,18 @@
 #include <BWEM/bwem.h>
 #include <BuildingPlaceabilityHelper.hpp>
+#include <Unit.hpp>
 
 BuildingPlaceabilityHelper::BuildingPlaceabilityHelper(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
 {}
 
-bool BuildingPlaceabilityHelper::canBuild(BWAPI::UnitType unit, BWAPI::TilePosition position)
+bool BuildingPlaceabilityHelper::canBuild(BWAPI::UnitType unit, BWAPI::TilePosition position, Unit* builder)
 {
   BWAPI::TilePosition tileSize = unit.tileSize();
   BWAPI::Position rightBottom = BWAPI::Position(position + tileSize);
   BWAPI::Unitset result = BWAPI::Broodwar->getUnitsInRectangle(BWAPI::Position(position), rightBottom);
   for (BWAPI::Unit unit: result)
-    if (unit->getType().isBuilding())
+    if (builder == nullptr || unit != builder->getBWAPIUnit())
       return false;
   bool needsCreep = (unit != BWAPI::UnitTypes::Zerg_Hatchery);
   for (int32_t x = position.x; x < position.x + tileSize.x; ++x)

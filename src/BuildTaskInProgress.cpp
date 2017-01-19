@@ -45,9 +45,10 @@ bool BuildTaskInProgress::onFrame()
     BWAPI::Order order = this->worker->getOrder();
     std::string name = order.toString();
     BWAPI::Position center = BWAPI::Position(this->position) + BWAPI::Position(this->unitType.tileSize()) / 2;
-    if (this->worker->isIdle() ||
-        this->worker->isGatheringMinerals() ||
-        BWAPI::Broodwar->getFrameCount() - this->frameOfLastOrder > 10)
+    if ((this->worker->isIdle() ||
+         this->worker->isGatheringMinerals() ||
+         BWAPI::Broodwar->getFrameCount() - this->frameOfLastOrder > 10) &&
+        !worker->isConstructing())
     {
       uint32_t distance = 0;
       if (this->target)
@@ -104,7 +105,7 @@ BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingT
         BWAPI::TilePosition startLocation = BWAPI::TilePosition(bhaalBot->harvestingManager.bases[1]->againstMinerals());
         if (startLocation == BWAPI::TilePositions::None)
           return startLocation;
-        if (bhaalBot->buildingPlaceabilityHelper.canBuild(unitType, startLocation))
+        if (bhaalBot->buildingPlaceabilityHelper.canBuild(unitType, startLocation, this->worker))
           return startLocation;
         for (int32_t radius = 1; radius < 5; ++radius)
         {
@@ -114,7 +115,7 @@ BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingT
                                                 BWAPI::TilePosition(startLocation.x + radius, startLocation.y - radius + i),
                                                 BWAPI::TilePosition(startLocation.x + radius - i, startLocation.y + radius),
                                                 BWAPI::TilePosition(startLocation.x - radius, startLocation.y + radius - i)})
-              if (bhaalBot->buildingPlaceabilityHelper.canBuild(unitType, position))
+              if (bhaalBot->buildingPlaceabilityHelper.canBuild(unitType, position, this->worker))
                 return position;
           }
         }
