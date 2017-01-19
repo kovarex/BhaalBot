@@ -81,6 +81,7 @@ void BhaalBot::onFrame()
   }
 
   BWAPI::Broodwar->drawTextScreen(380, 0, "APM: %u", BWAPI::Broodwar->getAPM());
+  BWAPI::Broodwar->drawTextScreen(380, 20, "Latency: %u", BWAPI::Broodwar->getLatencyFrames());
 
   /*
   // Prevent spamming by only running our onFrame once every number of latency frames.
