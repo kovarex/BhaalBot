@@ -11,6 +11,7 @@ public:
   void add(Unit* muta);
   void onFrame();
   void stack();
+  void stackFast();
   double getAverageVelocity();
   double getVelocity(Unit* unit);
   double getStackError();
@@ -24,6 +25,8 @@ public:
   void attackStackedMutasWithOverlord(BWAPI::Unit unit);
   double averageCooldownValue();
   int maxCooldownValue();
+  int countOfMutasWith0Cooldown();
+  BWAPI::Unit getOverlordFarAway(BWAPI::Position position);
 
   enum class OverallPhase
   {
@@ -48,4 +51,5 @@ public:
   OverallPhase overalLPhase = OverallPhase::Stacking;
   AttackPhase attackPhase = AttackPhase::Nothing;
   uint32_t ticksSinceAttack = 0;
+  BWAPI::Position stackingCenter;
 };

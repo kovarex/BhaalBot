@@ -41,7 +41,7 @@ void MutaGroupManager::onFrame()
   BWAPI::Position center = this->getCenter();
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y - 10, "Velocity: %.2f", this->getAverageVelocity());
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 10, "Stack error: %.2f", this->getStackError());
-  BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 30, "Cooldown: %u", this->maxCooldownValue());
+  BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 30, "Cooldown: %u / %u", this->maxCooldownValue(), this->countOfMutasWith0Cooldown());
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 50, "State: %s AttackState: %s",
                                MutaGroupManager::overallPhaseToString(this->overalLPhase).c_str(),
                                MutaGroupManager::attackPhaseToString(this->attackPhase).c_str());
@@ -54,16 +54,17 @@ void MutaGroupManager::logic()
   switch (this->overalLPhase)
   {
   case OverallPhase::Stacking:
-    this->stack();
-    if (this->getStackError() < 3)
+    this->stackFast();
+    if (this->getStackError() < 1)
       this->overalLPhase = OverallPhase::Attacking;
     break;
   case OverallPhase::Attacking:
     switch (this->attackPhase)
     {
     case AttackPhase::Nothing:
-      if (this->getStackError() > 10)
+      if (this->getStackError() > 20)
       {
+        this->stackingCenter = this->getCenter();
         this->overalLPhase = OverallPhase::Stacking;
         return;
       }
@@ -87,7 +88,7 @@ void MutaGroupManager::logic()
         BWAPI::Position center = this->getCenter();
         BWAPI::Position unitPosition = this->unitTarget->getPosition();
         Vector vector(center, unitPosition);
-        if (vector.getLength() < 120)
+        if (vector.getLength() < 170)
         {
           this->attackStackedMutasWithOverlord(this->unitTarget);
           this->attackPhase = AttackPhase::MovingAway;
@@ -95,7 +96,7 @@ void MutaGroupManager::logic()
           return;
         }
         
-        vector.extendToLength(150);
+        vector.extendToLength(200);
         BWAPI::Position behindUnit = unitPosition;
         vector.addTo(&behindUnit);
         this->moveStackedMutasWithOverlord(behindUnit);
@@ -107,7 +108,10 @@ void MutaGroupManager::logic()
       if (this->ticksSinceAttack < 2)
         break;
       BWAPI::Position center = this->getCenter();
-      this->moveStackedMutasWithOverlord(BWAPI::Position(center.x - 150, center.y));
+      if (ticksSinceAttack < 10)
+        this->moveStackedMutasWithOverlord(BWAPI::Position(center.x - 150, center.y));
+      else
+        this->moveStackedMutasWithOverlord(BWAPI::Position(center.x - 150, center.y - 150));
       if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2)
         this->attackPhase = AttackPhase::Nothing;
     }
@@ -117,6 +121,16 @@ void MutaGroupManager::logic()
   }
 }
 
+BWAPI::Unit MutaGroupManager::getOverlordFarAway(BWAPI::Position position)
+{
+  BWAPI::Unit overlord = nullptr;
+  for (BWAPI::Unit unit: BWAPI::Broodwar->self()->getUnits())
+    if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord &&
+        unit->getPosition().getDistance(position) > 200)
+      return unit;
+  return nullptr;
+}
+
 void MutaGroupManager::moveStackedMutasWithOverlord(BWAPI::Position position)
 {
   BWAPI::Unitset mutaSet;
@@ -124,15 +138,7 @@ void MutaGroupManager::moveStackedMutasWithOverlord(BWAPI::Position position)
     mutaSet.insert(muta->getBWAPIUnit());
   if (mutaSet.empty())
     return;
-
-  BWAPI::Unit overlord = nullptr;
-  for (BWAPI::Unit unit: BWAPI::Broodwar->self()->getUnits())
-    if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord &&
-        unit->getPosition().getDistance((*mutaSet.begin())->getPosition()) > 200)
-    {
-      overlord = unit;
-      break;
-    }
+  BWAPI::Unit overlord = this->getOverlordFarAway((*mutaSet.begin())->getPosition());
   if (overlord == nullptr)
     return;
   mutaSet.insert(overlord);
@@ -185,6 +191,15 @@ int MutaGroupManager::maxCooldownValue()
   return result;
 }
 
+int MutaGroupManager::countOfMutasWith0Cooldown()
+{
+  int result = 0;
+  for (Unit* unit: this->stackMutas)
+    if (unit->getGroundWeaponCooldown() == 0)
+      ++result;
+  return result;
+}
+
 std::string MutaGroupManager::overallPhaseToString(OverallPhase overallPhase)
 {
   switch (overallPhase)
@@ -208,17 +223,45 @@ std::string MutaGroupManager::attackPhaseToString(AttackPhase attackPhase)
 
 void MutaGroupManager::stack()
 {
-  BWAPI::Position position = this->target;
+  BWAPI::Position position = this->getCenter();
   position.x += int(cos(angle) * 150);
   position.y += int(sin(angle) * 150);
   BWAPI::Broodwar->drawCircleMap(position, 10, BWAPI::Colors::Red);
   if (BWAPI::Broodwar->getFrameCount() % 3 == 0)
   {
-    angle += 0.5;
+    angle += 0.2;
     this->moveStackedMutasWithOverlord(position);
   }
 }
 
+void MutaGroupManager::stackFast()
+{
+  /*if (this->getStackError() < 10)
+  {
+    this->stack();
+    return;
+  }*/
+  //this->stack();
+  //return;
+  this->moveStackedMutasWithOverlord(this->stackingCenter);
+  /*/
+  BWAPI::Unit overlord = this->getOverlordFarAway((*this->stackMutas.begin())->getPosition());
+  if (overlord == nullptr)
+    return;
+  BWAPI::Position center = this->getCenter();
+  for (Unit* unit: this->stackMutas)
+  {
+    Vector toCenter(unit->getPosition(), center);
+    toCenter.extendToLength(200);
+    BWAPI::Position target(center);
+    toCenter.addTo(&target);
+    BWAPI::Unitset mutaSet;
+    mutaSet.insert(unit->getBWAPIUnit());
+    mutaSet.insert(overlord);
+    BWAPI::Broodwar->issueCommand(mutaSet, BWAPI::UnitCommand::move(nullptr, this->stackingCenter));
+   }
+  overlord->stop();*/
+}
 
 void MutaGroupManager::attackTarget(BWAPI::Unit unit)
 {

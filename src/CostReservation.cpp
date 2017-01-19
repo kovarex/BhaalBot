@@ -28,12 +28,12 @@ void CostReservation::onFrame()
   BWAPI::Broodwar->registerEvent([this](BWAPI::Game*)
                             {
                               BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen,
-                                                          150, 0,
+                                                          200, 0,
                                                           "Reserved %s", this->reserved.str().c_str());
 
                               for (uint32_t i = 0; i < this->items.size(); ++i)
                                 BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen,
-                                                          150, (i + 1) * 20,
+                                                          210, (i + 1) * 20,
                                                           "%d) %s for %s",
                                                           i + 1,
                                                           this->items[i]->str().c_str(),
