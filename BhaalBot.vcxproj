@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2E63AE74-758A-4607-9DE4-D28E814A6E13}</ProjectGuid>
+    <RootNamespace>ExampleAIModule</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>BhaalBot</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>src/;bwapi/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_DEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <PreLinkEvent />
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>bwapi/lib/BWAPId.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>src/;bwapi/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <PreLinkEvent />
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>bwapi/lib/BWAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Assignment.cpp" />
+    <ClCompile Include="src\BaseHarvestingManager.cpp" />
+    <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
+    <ClCompile Include="src\BuildOrder.cpp" />
+    <ClCompile Include="src\BuildOrderExecutor.cpp" />
+    <ClCompile Include="src\BuildOrderItem.cpp" />
+    <ClCompile Include="src\BuildOrderManager.cpp" />
+    <ClCompile Include="src\BuildTaskInProgress.cpp" />
+    <ClCompile Include="src\BuildTasks.cpp" />
+    <ClCompile Include="src\BWEM\area.cpp" />
+    <ClCompile Include="src\BWEM\base.cpp" />
+    <ClCompile Include="src\BWEM\bwapiExt.cpp" />
+    <ClCompile Include="src\BWEM\bwem.cpp" />
+    <ClCompile Include="src\BWEM\cp.cpp" />
+    <ClCompile Include="src\BWEM\EasyBMP_1.06\EasyBMP.cpp" />
+    <ClCompile Include="src\BWEM\examples.cpp" />
+    <ClCompile Include="src\BWEM\graph.cpp" />
+    <ClCompile Include="src\BWEM\gridMap.cpp" />
+    <ClCompile Include="src\BWEM\map.cpp" />
+    <ClCompile Include="src\BWEM\mapDrawer.cpp" />
+    <ClCompile Include="src\BWEM\mapImpl.cpp" />
+    <ClCompile Include="src\BWEM\mapPrinter.cpp" />
+    <ClCompile Include="src\BWEM\neutral.cpp" />
+    <ClCompile Include="src\BWEM\tiles.cpp" />
+    <ClCompile Include="src\BWEM\utils.cpp" />
+    <ClCompile Include="src\BWEM\winutils.cpp" />
+    <ClCompile Include="src\Cost.cpp" />
+    <ClCompile Include="src\CostReservation.cpp" />
+    <ClCompile Include="src\DangerZones.cpp" />
+    <ClCompile Include="src\DeleyedExitChecker.cpp" />
+    <ClCompile Include="src\DiscoveredMemory.cpp" />
+    <ClCompile Include="src\Dll.cpp" />
+    <ClCompile Include="src\FightManager.cpp" />
+    <ClCompile Include="src\HarvestingManager.cpp" />
+    <ClCompile Include="src\BhaalBot.cpp" />
+    <ClCompile Include="src\LarvaReservations.cpp" />
+    <ClCompile Include="src\Module.cpp" />
+    <ClCompile Include="src\ModuleContainer.cpp" />
+    <ClCompile Include="src\MorphingUnits.cpp" />
+    <ClCompile Include="src\MutaGroupManager.cpp" />
+    <ClCompile Include="src\Overmind.cpp" />
+    <ClCompile Include="src\ProducerManager.cpp" />
+    <ClCompile Include="src\ScoutingManager.cpp" />
+    <ClCompile Include="src\StringUtil.cpp" />
+    <ClCompile Include="src\TaskForce.cpp" />
+    <ClCompile Include="src\Unit.cpp" />
+    <ClCompile Include="src\Units.cpp" />
+    <ClCompile Include="src\Vector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Assignment.hpp" />
+    <ClInclude Include="src\BaseHarvestingManager.hpp" />
+    <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />
+    <ClInclude Include="src\BuildLocationType.hpp" />
+    <ClInclude Include="src\BuildOrder.hpp" />
+    <ClInclude Include="src\BuildOrderExecutor.hpp" />
+    <ClInclude Include="src\BuildOrderItem.hpp" />
+    <ClInclude Include="src\BuildOrderManager.hpp" />
+    <ClInclude Include="src\BuildTaskInProgress.hpp" />
+    <ClInclude Include="src\BuildTasks.hpp" />
+    <ClInclude Include="src\BWEM\area.h" />
+    <ClInclude Include="src\BWEM\base.h" />
+    <ClInclude Include="src\BWEM\bwapiExt.h" />
+    <ClInclude Include="src\BWEM\bwem.h" />
+    <ClInclude Include="src\BWEM\cp.h" />
+    <ClInclude Include="src\BWEM\defs.h" />
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP.h" />
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP_BMP.h" />
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP_DataStructures.h" />
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP_VariousBMPutilities.h" />
+    <ClInclude Include="src\BWEM\examples.h" />
+    <ClInclude Include="src\BWEM\graph.h" />
+    <ClInclude Include="src\BWEM\gridMap.h" />
+    <ClInclude Include="src\BWEM\map.h" />
+    <ClInclude Include="src\BWEM\mapDrawer.h" />
+    <ClInclude Include="src\BWEM\mapImpl.h" />
+    <ClInclude Include="src\BWEM\mapPrinter.h" />
+    <ClInclude Include="src\BWEM\neutral.h" />
+    <ClInclude Include="src\BWEM\tiles.h" />
+    <ClInclude Include="src\BWEM\utils.h" />
+    <ClInclude Include="src\BWEM\winutils.h" />
+    <ClInclude Include="src\Cost.hpp" />
+    <ClInclude Include="src\CostReservation.hpp" />
+    <ClInclude Include="src\DangerZones.hpp" />
+    <ClInclude Include="src\DeleyedExitChecker.hpp" />
+    <ClInclude Include="src\DiscoveredMemory.hpp" />
+    <ClInclude Include="src\FightManager.hpp" />
+    <ClInclude Include="src\HarvestingManager.hpp" />
+    <ClInclude Include="src\BhaalBot.hpp" />
+    <ClInclude Include="src\LarvaReservations.hpp" />
+    <ClInclude Include="src\Module.hpp" />
+    <ClInclude Include="src\ModuleContainer.hpp" />
+    <ClInclude Include="src\MorphingUnits.hpp" />
+    <ClInclude Include="src\MutaGroupManager.hpp" />
+    <ClInclude Include="src\Overmind.hpp" />
+    <ClInclude Include="src\ProducerManager.hpp" />
+    <ClInclude Include="src\ScoutingManager.hpp" />
+    <ClInclude Include="src\StringUtil.hpp" />
+    <ClInclude Include="src\TaskForce.hpp" />
+    <ClInclude Include="src\Unit.hpp" />
+    <ClInclude Include="src\Units.hpp" />
+    <ClInclude Include="src\Vector.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\BaseHarvestingManager.cpp" />
+    <ClCompile Include="src\Dll.cpp" />
+    <ClCompile Include="src\HarvestingManager.cpp" />
+    <ClCompile Include="src\KovarexAIModule.cpp" />
+    <ClCompile Include="src\BWEM\EasyBMP_1.06\EasyBMP.cpp">
+      <Filter>BWEM\EasyBMP</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BuildOrderManager.cpp" />
+    <ClCompile Include="src\Cost.cpp" />
+    <ClCompile Include="src\BuildOrderExecutor.cpp" />
+    <ClCompile Include="src\BuildOrder.cpp" />
+    <ClCompile Include="src\BuildOrderItem.cpp" />
+    <ClCompile Include="src\Module.cpp" />
+    <ClCompile Include="src\BWEM\area.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\base.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\bwapiExt.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\bwem.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\cp.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\examples.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\graph.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\gridMap.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\map.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\mapDrawer.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\mapImpl.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\mapPrinter.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\neutral.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\tiles.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\utils.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BWEM\winutils.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModuleContainer.cpp" />
+    <ClCompile Include="src\DeleyedExitChecker.cpp" />
+    <ClCompile Include="src\MorphingUnits.cpp" />
+    <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
+    <ClCompile Include="src\StringUtil.cpp" />
+    <ClCompile Include="src\FightManager.cpp" />
+    <ClCompile Include="src\MutaGroupManager.cpp" />
+    <ClCompile Include="src\CostReservation.cpp" />
+    <ClCompile Include="src\BuildTaskInProgress.cpp" />
+    <ClCompile Include="src\ProducerManager.cpp" />
+    <ClCompile Include="src\LarvaReservations.cpp" />
+    <ClCompile Include="src\ScoutingManager.cpp" />
+    <ClCompile Include="src\DiscoveredMemory.cpp" />
+    <ClCompile Include="src\BuildTasks.cpp" />
+    <ClCompile Include="src\DangerZones.cpp" />
+    <ClCompile Include="src\TaskForce.cpp" />
+    <ClCompile Include="src\Overmind.cpp" />
+    <ClCompile Include="src\Unit.cpp" />
+    <ClCompile Include="src\Units.cpp" />
+    <ClCompile Include="src\Assignment.cpp" />
+    <ClCompile Include="src\Vector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\BaseHarvestingManager.hpp" />
+    <ClInclude Include="src\HarvestingManager.hpp" />
+    <ClInclude Include="src\KovarexAIModule.h" />
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP.h">
+      <Filter>BWEM\EasyBMP</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP_BMP.h">
+      <Filter>BWEM\EasyBMP</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP_DataStructures.h">
+      <Filter>BWEM\EasyBMP</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP_VariousBMPutilities.h">
+      <Filter>BWEM\EasyBMP</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BuildOrderManager.hpp" />
+    <ClInclude Include="src\Cost.hpp" />
+    <ClInclude Include="src\BuildOrderExecutor.hpp" />
+    <ClInclude Include="src\BuildOrder.hpp" />
+    <ClInclude Include="src\BuildOrderItem.hpp" />
+    <ClInclude Include="src\Module.hpp" />
+    <ClInclude Include="src\BWEM\area.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\base.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\bwapiExt.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\bwem.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\cp.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\defs.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\examples.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\graph.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\gridMap.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\map.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\mapDrawer.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\mapImpl.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\mapPrinter.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\neutral.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\tiles.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\utils.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BWEM\winutils.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleContainer.hpp" />
+    <ClInclude Include="src\DeleyedExitChecker.hpp" />
+    <ClInclude Include="src\MorphingUnits.hpp" />
+    <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />
+    <ClInclude Include="src\StringUtil.hpp" />
+    <ClInclude Include="src\BuildLocationType.hpp" />
+    <ClInclude Include="src\FightManager.hpp" />
+    <ClInclude Include="src\MutaGroupManager.hpp" />
+    <ClInclude Include="src\CostReservation.hpp" />
+    <ClInclude Include="src\BuildTaskInProgress.hpp" />
+    <ClInclude Include="src\ProducerManager.hpp" />
+    <ClInclude Include="src\LarvaReservations.hpp" />
+    <ClInclude Include="src\ScoutingManager.hpp" />
+    <ClInclude Include="src\DiscoveredMemory.hpp" />
+    <ClInclude Include="src\BuildTasks.hpp" />
+    <ClInclude Include="src\DangerZones.hpp" />
+    <ClInclude Include="src\TaskForce.hpp" />
+    <ClInclude Include="src\Overmind.hpp" />
+    <ClInclude Include="src\Unit.hpp" />
+    <ClInclude Include="src\Units.hpp" />
+    <ClInclude Include="src\Assignment.hpp" />
+    <ClInclude Include="src\Vector.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="BWEM">
+      <UniqueIdentifier>{f711dc3d-e338-4f51-a692-e5d5015a4dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BWEM\EasyBMP">
+      <UniqueIdentifier>{f4dfc80a-e94b-4aad-8b90-8917bf88a194}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
