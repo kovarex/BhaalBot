@@ -24,6 +24,10 @@ public:
   const std::set<Unit*>& getUnits() const { return this->units; }
   void onFrame();
   Unit* getUnit(BWAPI::UnitType unitType);
+  void assignController(GroupController* groupController);
+  void setAttackTarget(BWAPI::Unit target);
+  BWAPI::Unit getAttackTarget();
+  BWAPI::Position getPosition() const;
 
 private:
   std::set<Unit*> units;

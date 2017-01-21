@@ -25,9 +25,7 @@ void FightManager::onUnitComplete(Unit* unit)
   if (unit->getPlayer() != BWAPI::Broodwar->self())
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Mutalisk)
-  {
     this->attack->addUnit(unit);
-  }
   else if (unit->canAttack() && !unit->canGather())
     this->baseDefend->addUnit(unit);
 }

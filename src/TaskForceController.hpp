@@ -19,6 +19,7 @@ class AttackTaskForceController : public TaskForceController
 public:
   AttackTaskForceController(TaskForce& owner);
   void assignUnit(Unit* unit) override;
+  void onFrame() override;
 
   std::vector<Group*> mutaGroups;
   Group* groundGroup;

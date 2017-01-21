@@ -4,12 +4,18 @@
 #include <Unit.hpp>
 #include <Vector.hpp>
 
-MutaGroupManager::MutaGroupManager(Group& owner)
+MutaGroupController::MutaGroupController(Group& owner)
  : GroupController(owner)
  , target(BWAPI::Positions::None)
 {}
 
-void MutaGroupManager::add(Unit* muta)
+void MutaGroupController::setAttackTarget(BWAPI::Unit target)
+{
+  this->unitTarget = target;
+  this->target = this->unitTarget->getPosition();
+}
+
+void MutaGroupController::onAdded(Unit* muta)
 {
   if (this->stackMutas.empty())
     this->stackMutas.push_back(muta);
@@ -17,7 +23,7 @@ void MutaGroupManager::add(Unit* muta)
     this->joiningMutas.push_back(muta);
 }
 
-void MutaGroupManager::onFrame()
+void MutaGroupController::onFrame()
 {
   if (this->target == BWAPI::Positions::None)
     return;
@@ -44,13 +50,13 @@ void MutaGroupManager::onFrame()
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 10, "Stack error: %.2f", this->getStackError());
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 30, "Cooldown: %u / %u", this->maxCooldownValue(), this->countOfMutasWith0Cooldown());
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 50, "State: %s AttackState: %s",
-                               MutaGroupManager::overallPhaseToString(this->overalLPhase).c_str(),
-                               MutaGroupManager::attackPhaseToString(this->attackPhase).c_str());
+                               MutaGroupController::overallPhaseToString(this->overalLPhase).c_str(),
+                               MutaGroupController::attackPhaseToString(this->attackPhase).c_str());
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 70, "Stack: %u Joining: %u", this->stackMutas.size(), this->joiningMutas.size());
   
 }
 
-void MutaGroupManager::logic()
+void MutaGroupController::logic()
 {
   switch (this->overalLPhase)
   {
@@ -134,7 +140,7 @@ void MutaGroupManager::logic()
   }
 }
 
-BWAPI::Unit MutaGroupManager::getOverlordFarAway(BWAPI::Position position)
+BWAPI::Unit MutaGroupController::getOverlordFarAway(BWAPI::Position position)
 {
   BWAPI::Unit overlord = nullptr;
   for (BWAPI::Unit unit: BWAPI::Broodwar->self()->getUnits())
@@ -144,7 +150,7 @@ BWAPI::Unit MutaGroupManager::getOverlordFarAway(BWAPI::Position position)
   return nullptr;
 }
 
-void MutaGroupManager::moveStackedMutasWithOverlord(BWAPI::Position position)
+void MutaGroupController::moveStackedMutasWithOverlord(BWAPI::Position position)
 {
   BWAPI::Unitset mutaSet;
   for (Unit* muta: this->stackMutas)
@@ -160,7 +166,7 @@ void MutaGroupManager::moveStackedMutasWithOverlord(BWAPI::Position position)
   overlord->stop();
 }
 
-void MutaGroupManager::attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::Position position)
+void MutaGroupController::attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::Position position)
 {
     BWAPI::Unitset mutaSet;
   for (Unit* muta: this->stackMutas)
@@ -184,7 +190,7 @@ void MutaGroupManager::attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::P
   overlord->stop();
 }
 
-double MutaGroupManager::averageCooldownValue()
+double MutaGroupController::averageCooldownValue()
 {
   double sum = 0;
   for (Unit* unit: this->stackMutas)
@@ -192,7 +198,7 @@ double MutaGroupManager::averageCooldownValue()
   return sum / this->stackMutas.size();
 }
 
-int MutaGroupManager::maxCooldownValue()
+int MutaGroupController::maxCooldownValue()
 {
   int result = 0;
   for (Unit* unit: this->stackMutas)
@@ -204,7 +210,7 @@ int MutaGroupManager::maxCooldownValue()
   return result;
 }
 
-int MutaGroupManager::countOfMutasWith0Cooldown()
+int MutaGroupController::countOfMutasWith0Cooldown()
 {
   int result = 0;
   for (Unit* unit: this->stackMutas)
@@ -213,7 +219,7 @@ int MutaGroupManager::countOfMutasWith0Cooldown()
   return result;
 }
 
-std::string MutaGroupManager::overallPhaseToString(OverallPhase overallPhase)
+std::string MutaGroupController::overallPhaseToString(OverallPhase overallPhase)
 {
   switch (overallPhase)
   {
@@ -224,7 +230,7 @@ std::string MutaGroupManager::overallPhaseToString(OverallPhase overallPhase)
   return "<Unknown>";
 }
 
-std::string MutaGroupManager::attackPhaseToString(AttackPhase attackPhase)
+std::string MutaGroupController::attackPhaseToString(AttackPhase attackPhase)
 {
   switch (attackPhase)
   {
@@ -235,7 +241,7 @@ std::string MutaGroupManager::attackPhaseToString(AttackPhase attackPhase)
   return "<Unknown>";
 }
 
-void MutaGroupManager::stack(bool secondPhase)
+void MutaGroupController::stack(bool secondPhase)
 {
   BWAPI::Position position = this->getCenter();
   double distance = secondPhase ? 150 : 40;
@@ -249,7 +255,7 @@ void MutaGroupManager::stack(bool secondPhase)
   }
 }
 
-void MutaGroupManager::stackFast()
+void MutaGroupController::stackFast()
 {
   this->stack(true);
   return;
@@ -272,12 +278,12 @@ void MutaGroupManager::stackFast()
   overlord->stop();*/
 }
 
-void MutaGroupManager::attackTarget(BWAPI::Unit unit)
+void MutaGroupController::attackTarget(BWAPI::Unit unit)
 {
   this->unitTarget = unit;
 }
 
-void MutaGroupManager::chooseClosestTarget()
+void MutaGroupController::chooseClosestTarget()
 {
   BWAPI::Position center = this->getCenter();
   BWAPI::Unit candidate = nullptr;
@@ -295,7 +301,7 @@ void MutaGroupManager::chooseClosestTarget()
   this->unitTarget = candidate;
 }
 
-double MutaGroupManager::getAverageVelocity()
+double MutaGroupController::getAverageVelocity()
 {
   double velocitySum = 0;
   uint32_t breaking = 0;
@@ -304,12 +310,12 @@ double MutaGroupManager::getAverageVelocity()
   return velocitySum / stackMutas.size();
 }
 
-double MutaGroupManager::getVelocity(Unit* unit)
+double MutaGroupController::getVelocity(Unit* unit)
 {
   return sqrt(unit->getVelocityX()*unit->getVelocityX() + unit->getVelocityY()*unit->getVelocityY());
 }
 
-double MutaGroupManager::getStackError()
+double MutaGroupController::getStackError()
 {
   BWAPI::Position center = this->getCenter();
   double distanceFromCenterSum = 0;
@@ -318,7 +324,7 @@ double MutaGroupManager::getStackError()
   return distanceFromCenterSum / this->stackMutas.size();
 }
 
-BWAPI::Position MutaGroupManager::getCenter()
+BWAPI::Position MutaGroupController::getCenter()
 {
   BWAPI::Position center;
   for (Unit* unit: this->stackMutas)
@@ -328,14 +334,14 @@ BWAPI::Position MutaGroupManager::getCenter()
   return center;
 }
 
-void MutaGroupManager::sendJoiningMutas()
+void MutaGroupController::sendJoiningMutas()
 {
   BWAPI::Position center = this->getCenter();
   for (Unit* unit: this->joiningMutas)
     unit->move(center);
 }
 
-void MutaGroupManager::transferJoiningMutasToStackMutas()
+void MutaGroupController::transferJoiningMutasToStackMutas()
 {
   BWAPI::Position center = this->getCenter();
   for (uint32_t i = 0; i < this->joiningMutas.size(); ++i)

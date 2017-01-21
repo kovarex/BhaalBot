@@ -14,9 +14,7 @@ TaskForce::TaskForce()
 
 void TaskForce::addUnit(Unit* unit)
 {
-  if (this->groups.empty())
-    throw std::runtime_error("No groups to add.");
-  (*this->groups.begin())->add(unit);
+  this->taskForceController->assignUnit(unit);
   this->onAdded(unit);
 }
 
@@ -68,4 +66,5 @@ Unit* TaskForce::getUnit(BWAPI::UnitType unitType)
   for (Group* group: this->groups)
     if (Unit* result = group->getUnit(unitType))
       return result;
+  return nullptr;
 }

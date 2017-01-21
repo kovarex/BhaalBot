@@ -4,12 +4,15 @@
 #include <vector>
 class Unit;
 
-class MutaGroupManager : public GroupController
+class MutaGroupController : public GroupController
 {
 public:
-  MutaGroupManager(Group& owner);
+  MutaGroupController(Group& owner);
+  void setAttackTarget(BWAPI::Unit target) override;
+  BWAPI::Unit getAttackTarget() override { return this->unitTarget; }
+
   bool isFull() const { return stackMutas.size() + joiningMutas.size() >= 11; }
-  void add(Unit* muta);
+  void onAdded(Unit* muta);
   void onFrame();
   void stack(bool secondPhase);
   void stackFast();
