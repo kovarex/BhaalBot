@@ -9,6 +9,7 @@ ScoutingManager::ScoutingManager(ModuleContainer& moduleContainer)\
 void ScoutingManager::assignGroundScout(Unit* unit)
 {
   this->unassignedGroundScouters.push_back(unit);
+  unit->assign(new ScoutTaskAssignment());
 }
 
 void ScoutingManager::onFrame()
@@ -128,25 +129,29 @@ bool ScoutingManager::scoutAssigned(const BWEM::Base* base)
   return false;
 }
 
-void ScoutingManager::onUnitDestroy(Unit* unit)
+void ScoutingManager::unassignScout(Unit* unit)
 {
   for (uint32_t i = 0; i < this->unassignedGroundScouters.size(); ++i)
     if (this->unassignedGroundScouters[i] == unit)
+    {
       this->unassignedGroundScouters.erase(this->unassignedGroundScouters.begin() + i);
-    else
-      ++i;
+      return;
+    }
 
   for (uint32_t i = 0; i < this->scoutTasks.size(); ++i)
     if (this->scoutTasks[i].scout == unit)
+    {
       this->scoutTasks.erase(this->scoutTasks.begin() + i);
-    else
-      ++i;
+      return;
+    }
 
-  for (uint32_t i = 0; i < this->baseCheckTasks.size(); ++i)
+  for (uint32_t i = 0; i < this->baseCheckTasks.size();++i)
     if (this->baseCheckTasks[i].scout == unit)
+    {
       this->baseCheckTasks.erase(this->baseCheckTasks.begin() + i);
-    else
-      ++i;
+      return;
+    }
+  throw std::runtime_error("Couldn't find the scout that was assigned.");
 }
 
 BWAPI::Position ScoutingManager::enemyMainBase()
@@ -200,4 +205,9 @@ void ScoutingManager::CheckBaseTask::onFrame()
   else
     if (this->scout->getDistance(this->target->Center()) < 100)
       this->finished = true;
+}
+
+ScoutTaskAssignment::~ScoutTaskAssignment()
+{
+  bhaalBot->scoutingManager.unassignScout(this->unit);
 }

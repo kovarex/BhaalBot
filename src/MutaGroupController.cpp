@@ -122,7 +122,7 @@ void MutaGroupController::logic()
 
         if (originalVector.getLength() < 170 && this->maxCooldownValue() == 0)
         {
-          this->attackStackedMutasWithOverlord(nullptr, behindUnit);
+          this->attackStackedMutasWithOverlord(this->unitTarget.getUnitData()->unit, BWAPI::Positions::None);
           BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Red);
           this->attackPhase = AttackPhase::MovingAway;
           this->ticksSinceAttack = 0;

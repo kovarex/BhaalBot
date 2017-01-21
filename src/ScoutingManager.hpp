@@ -1,7 +1,16 @@
 #pragma once
+#include <Assignment.hpp>
 #include <BWAPI.h>
 #include <BWEM/bwem.h>
 #include <Module.hpp>
+
+class ScoutTaskAssignment : public Assignment
+{
+public:
+  ScoutTaskAssignment() {}
+  virtual ~ScoutTaskAssignment();
+  std::string str() const override { return "Scout"; }
+};
 
 class ScoutingManager : public Module
 {
@@ -12,7 +21,7 @@ public:
   const BWEM::Base* getClosestBase(BWAPI::Position position);
   const BWEM::Base* baseToScout();
   bool scoutAssigned(const BWEM::Base* base);
-  void onUnitDestroy(Unit* unit);
+  void unassignScout(Unit* unit);
   BWAPI::Position enemyMainBase();
 
   class DiscoverScoutingLocationsScoutTask
