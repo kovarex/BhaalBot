@@ -8,6 +8,7 @@ class TaskForceController
 public:
   TaskForceController(TaskForce& owner);
   virtual void assignUnit(Unit* unit) = 0;
+  virtual void onFrame() {}
   
 protected:
   TaskForce& owner;

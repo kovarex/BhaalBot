@@ -12,3 +12,9 @@ void Group::remove(Unit* unit)
   this->units.erase(unit);
   this->controller->onRemoved(unit);
 }
+
+void Group::onFrame()
+{
+  if (this->controller)
+    this->controller->onFrame();
+}

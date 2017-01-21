@@ -8,11 +8,8 @@ TaskForce::~TaskForce()
   delete this->taskForceController;
 }
 
-TaskForce::TaskForce(TaskForceController* taskForceController)
-  : taskForceController(taskForceController)
-{
-  this->groups.insert(new Group());
-}
+TaskForce::TaskForce()
+{}
 
 void TaskForce::addUnit(Unit* unit)
 {
@@ -20,6 +17,12 @@ void TaskForce::addUnit(Unit* unit)
     throw std::runtime_error("No groups to add.");
   (*this->groups.begin())->add(unit);
   this->onAdded(unit);
+}
+
+void TaskForce::assignTaskController(TaskForceController* taskForceController)
+{
+  delete this->taskForceController;
+  this->taskForceController = taskForceController;
 }
 
 std::vector<Unit*> TaskForce::removeGroup(Group* group)
@@ -49,4 +52,12 @@ Group* TaskForce::createGroup()
   Group* group = new Group();
   this->groups.insert(group);
   return group;
+}
+
+void TaskForce::onFrame()
+{
+  if (this->taskForceController != nullptr)
+    this->taskForceController->onFrame();
+  for (Group* group: this->groups)
+    group->onFrame();
 }
