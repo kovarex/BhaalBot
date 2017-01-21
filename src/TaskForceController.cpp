@@ -19,7 +19,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Mutalisk)
   {
     for (Group* group: this->mutaGroups)
-      if (group->getUnits().size() < 6)
+      if (group->getUnits().size() < 11)
       {
         group->add(unit);
         return;
