@@ -4,16 +4,13 @@
 #include <TaskForce.hpp>
 class ModuleContainer;
 
-class HarvestingManager
-  : public Module
-  , public TaskForce
+class HarvestingManager : public Module
 {
 public:
   HarvestingManager(ModuleContainer& moduleContainer);
   ~HarvestingManager();
 
-protected:
-  void onAdded(Unit* unit) override;
+  void add(Unit* unit);
 public:
   void addBase(Unit* base, const BWEM::Base* bwemBase);
   Unit* getClosestWorker(BWAPI::Position position);

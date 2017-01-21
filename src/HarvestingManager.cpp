@@ -20,7 +20,7 @@ void HarvestingManager::onFrame()
   this->balanceWorkersAssignmentBetweenBases();
 }
 
-void HarvestingManager::onAdded(Unit* unit)
+void HarvestingManager::add(Unit* unit)
 {
   if (this->bases.empty())
     this->baseLessMiners.push_back(unit);

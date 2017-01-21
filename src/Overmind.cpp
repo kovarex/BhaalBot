@@ -9,5 +9,5 @@ Overmind::Overmind(ModuleContainer& moduleContainer)
 void Overmind::onUnitComplete(Unit* unit)
 {
   if (unit->canGather())
-    bhaalBot->harvestingManager.addUnit(unit);
+    bhaalBot->harvestingManager.add(unit);
 }
