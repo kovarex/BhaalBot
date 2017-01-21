@@ -49,9 +49,12 @@ std::string BuildBuildOrderItem::str() const
 
 bool SendScoutBuildOrderItem::execute()
 {
-  Unit* unit = bhaalBot->fightManager.freeUnit(this->unitType);
+  Unit* unit = bhaalBot->fightManager.getUnit(this->unitType);
   if (unit)
+  {
+    unit->assign(nullptr);
     bhaalBot->scoutingManager.assignGroundScout(unit);
+  }
   return true;
 }
 

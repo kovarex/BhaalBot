@@ -38,14 +38,7 @@ void FightManager::onFrame()
     taskForce->onFrame();
 }
 
-Unit* FightManager::freeUnit(BWAPI::UnitType unitType)
+Unit* FightManager::getUnit(BWAPI::UnitType unitType)
 {
-  for (uint32_t i = 0; i < this->otherUnits.size(); ++i)
-    if (this->otherUnits[i]->getType() == unitType)
-    {
-      Unit* result = this->otherUnits[i];
-      this->otherUnits.erase(this->otherUnits.begin() + i);
-      return result;
-    }
-  return nullptr;
+  return this->baseDefend->getUnit(unitType);
 }

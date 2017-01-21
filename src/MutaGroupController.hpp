@@ -7,7 +7,7 @@ class Unit;
 class MutaGroupManager : public GroupController
 {
 public:
-  MutaGroupManager();
+  MutaGroupManager(Group& owner);
   bool isFull() const { return stackMutas.size() + joiningMutas.size() >= 11; }
   void add(Unit* muta);
   void onFrame();

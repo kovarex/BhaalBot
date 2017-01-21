@@ -10,7 +10,7 @@ public:
   ~FightManager();
   virtual void onUnitComplete(Unit* unit) override;
   virtual void onFrame() override;
-  Unit* freeUnit(BWAPI::UnitType unitType);
+  Unit* getUnit(BWAPI::UnitType unitType);
 
   std::vector<TaskForce*> taskForces;
   TaskForce* baseDefend;

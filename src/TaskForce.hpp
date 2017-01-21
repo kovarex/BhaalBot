@@ -21,6 +21,7 @@ public:
   std::vector<Unit*> removeAllGroups();
   Group* createGroup();
   void onFrame();
+  Unit* getUnit(BWAPI::UnitType unitType);
 protected:
   virtual void onAdded(Unit*) {}
 

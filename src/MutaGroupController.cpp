@@ -4,8 +4,9 @@
 #include <Unit.hpp>
 #include <Vector.hpp>
 
-MutaGroupManager::MutaGroupManager()
- : target(BWAPI::Positions::None)
+MutaGroupManager::MutaGroupManager(Group& owner)
+ : GroupController(owner)
+ , target(BWAPI::Positions::None)
 {}
 
 void MutaGroupManager::add(Unit* muta)

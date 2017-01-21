@@ -50,6 +50,7 @@ public:
   /** Connects the assignment with this unit. If there is some assignment already it is properly removed.
    * @param assignment nullptr only unassigns the current assignment. */
   void assign(Assignment* assignment);
+  Assignment* getAssignment() { return this->assignment; }
 
 private:
   BWAPI::Unit bwapiUnit;

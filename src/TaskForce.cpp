@@ -1,5 +1,6 @@
 #include <TaskForce.hpp>
 #include <Group.hpp>
+#include <TaskForceController.hpp>
 
 TaskForce::~TaskForce()
 {
@@ -60,4 +61,11 @@ void TaskForce::onFrame()
     this->taskForceController->onFrame();
   for (Group* group: this->groups)
     group->onFrame();
+}
+
+Unit* TaskForce::getUnit(BWAPI::UnitType unitType)
+{
+  for (Group* group: this->groups)
+    if (Unit* result = group->getUnit(unitType))
+      return result;
 }
