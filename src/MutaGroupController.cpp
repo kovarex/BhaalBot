@@ -23,6 +23,22 @@ void MutaGroupController::onAdded(Unit* muta)
     this->joiningMutas.push_back(muta);
 }
 
+void MutaGroupController::onRemoved(Unit* unit)
+{
+  for (auto it = this->stackMutas.begin(); it != this->stackMutas.end(); ++it)
+    if (*it == unit)
+    {
+      this->stackMutas.erase(it);
+      return;
+    }
+  for (auto it = this->joiningMutas.begin(); it != this->joiningMutas.end(); ++it)
+    if (*it == unit)
+    {
+      this->joiningMutas.erase(it);
+      return;
+    }
+}
+
 void MutaGroupController::onFrame()
 {
   if (this->target == BWAPI::Positions::None)
@@ -326,6 +342,8 @@ double MutaGroupController::getStackError()
 
 BWAPI::Position MutaGroupController::getCenter()
 {
+  if (this->stackMutas.empty())
+    return BWAPI::Positions::None;
   BWAPI::Position center;
   for (Unit* unit: this->stackMutas)
     center += unit->getPosition();
@@ -344,7 +362,7 @@ void MutaGroupController::sendJoiningMutas()
 void MutaGroupController::transferJoiningMutasToStackMutas()
 {
   BWAPI::Position center = this->getCenter();
-  for (uint32_t i = 0; i < this->joiningMutas.size(); ++i)
+  for (uint32_t i = 0; i < this->joiningMutas.size();)
   {
     Unit* muta = this->joiningMutas[i];
     if (muta->getDistance(center) < 50)

@@ -10,7 +10,11 @@ Unit* Units::onUnitComplete(BWAPI::Unit unit)
 
 void Units::onUnitDestroy(BWAPI::Unit unit)
 {
-  this->units.erase(unit);
+  auto position = this->units.find(unit);
+  if (position == this->units.end())
+    return;
+  delete position->second;
+  this->units.erase(position);
 }
 
 Unit* Units::find(BWAPI::Unit unit)

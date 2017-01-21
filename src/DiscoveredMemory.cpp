@@ -6,6 +6,12 @@ DiscoveredMemory::DiscoveredMemory(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
 {}
 
+DiscoveredMemory::~DiscoveredMemory()
+{
+  for (auto& item: this->units)
+    delete item.second;
+}
+
 void DiscoveredMemory::onFrame()
 {
   for (BWAPI::Unit unit: BWAPI::Broodwar->getAllUnits())
@@ -45,7 +51,8 @@ void DiscoveredMemory::onForeignUnitDestroy(BWAPI::Unit unit)
    auto position = this->units.find(unit);
   if (position != this->units.end())
     this->onRemove(position);
-  this->units.erase(unit);
+  delete position->second;
+  this->units.erase(position);
 }
 
 void DiscoveredMemory::addUnit(BWAPI::Unit unit)

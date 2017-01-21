@@ -36,6 +36,7 @@ class DiscoveredMemory : public Module
 public:
   class EnemyUnitTarget;
   DiscoveredMemory(ModuleContainer& moduleContainer);
+  ~DiscoveredMemory();
 
   void onFrame() override;
   void onForeignUnitComplete(BWAPI::Unit unit) override;

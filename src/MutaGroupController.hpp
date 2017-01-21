@@ -12,9 +12,9 @@ public:
   MutaGroupController(Group& owner);
   void setAttackTarget(BWAPI::Unit target) override;
   UnitMemoryInfo* getAttackTarget() override { return this->unitTarget.getUnitData(); }
+  void onAdded(Unit* muta) override;
+  void onRemoved(Unit* unit) override;
 
-  bool isFull() const { return stackMutas.size() + joiningMutas.size() >= 11; }
-  void onAdded(Unit* muta);
   void onFrame();
   void stack(bool secondPhase);
   void stackFast();
