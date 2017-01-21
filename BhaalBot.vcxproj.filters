@@ -4,7 +4,6 @@
     <ClCompile Include="src\BaseHarvestingManager.cpp" />
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\HarvestingManager.cpp" />
-    <ClCompile Include="src\KovarexAIModule.cpp" />
     <ClCompile Include="src\BWEM\EasyBMP_1.06\EasyBMP.cpp">
       <Filter>BWEM\EasyBMP</Filter>
     </ClCompile>
@@ -68,7 +67,6 @@
     <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
     <ClCompile Include="src\StringUtil.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
-    <ClCompile Include="src\MutaGroupManager.cpp" />
     <ClCompile Include="src\CostReservation.cpp" />
     <ClCompile Include="src\BuildTaskInProgress.cpp" />
     <ClCompile Include="src\ProducerManager.cpp" />
@@ -83,11 +81,15 @@
     <ClCompile Include="src\Units.cpp" />
     <ClCompile Include="src\Assignment.cpp" />
     <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="src\BhaalBot.cpp" />
+    <ClCompile Include="src\Group.cpp" />
+    <ClCompile Include="src\GroupController.cpp" />
+    <ClCompile Include="src\MutaGroupController.cpp" />
+    <ClCompile Include="src\TaskForceController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseHarvestingManager.hpp" />
     <ClInclude Include="src\HarvestingManager.hpp" />
-    <ClInclude Include="src\KovarexAIModule.h" />
     <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP.h">
       <Filter>BWEM\EasyBMP</Filter>
     </ClInclude>
@@ -164,7 +166,6 @@
     <ClInclude Include="src\StringUtil.hpp" />
     <ClInclude Include="src\BuildLocationType.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
-    <ClInclude Include="src\MutaGroupManager.hpp" />
     <ClInclude Include="src\CostReservation.hpp" />
     <ClInclude Include="src\BuildTaskInProgress.hpp" />
     <ClInclude Include="src\ProducerManager.hpp" />
@@ -179,6 +180,11 @@
     <ClInclude Include="src\Units.hpp" />
     <ClInclude Include="src\Assignment.hpp" />
     <ClInclude Include="src\Vector.hpp" />
+    <ClInclude Include="src\BhaalBot.hpp" />
+    <ClInclude Include="src\Group.hpp" />
+    <ClInclude Include="src\GroupController.hpp" />
+    <ClInclude Include="src\MutaGroupController.hpp" />
+    <ClInclude Include="src\TaskForceController.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

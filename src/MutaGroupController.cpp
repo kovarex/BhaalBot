@@ -1,4 +1,4 @@
-#include <MutaGroupManager.hpp>
+#include <MutaGroupController.hpp>
 #include <HarvestingManager.hpp>
 #include <BhaalBot.hpp>
 #include <Unit.hpp>

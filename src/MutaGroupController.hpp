@@ -1,9 +1,10 @@
 #pragma once
+#include <GroupController.hpp>
 #include <BWAPI.h>
 #include <vector>
 class Unit;
 
-class MutaGroupManager
+class MutaGroupManager : public GroupController
 {
 public:
   MutaGroupManager();

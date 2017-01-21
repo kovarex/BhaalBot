@@ -2,10 +2,20 @@
 #include <BhaalBot.hpp>
 #include <DiscoveredMemory.hpp>
 #include <Unit.hpp>
+#include <TaskForceController.hpp>
 
 FightManager::FightManager(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
-{}
+{
+  this->taskForces.push_back(this->baseDefend = new TaskForce(new AttackTaskForceController()));
+  this->taskForces.push_back(this->attack = new TaskForce(new DefendTaskForceController()));
+}
+
+FightManager::~FightManager()
+{
+  for (TaskForce* taskForce: this->taskForces)
+    delete taskForce;
+}
 
 void FightManager::onUnitComplete(Unit* unit)
 {
@@ -13,14 +23,16 @@ void FightManager::onUnitComplete(Unit* unit)
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Mutalisk)
   {
-    for (MutaGroupManager& mutaGroup: this->mutaGroups)
-      if (!mutaGroup.isFull())
+    this->mutalisks->addUnit(unit);
+
+    for (MutaGroupManager* mutaGroup: this->mutaGroups)
+      if (!mutaGroup->isFull())
       {
-        mutaGroup.add(unit);
+        mutaGroup->add(unit);
         return;
       }
-    this->mutaGroups.push_back(MutaGroupManager());
-    this->mutaGroups.back().add(unit);
+    this->mutaGroups.push_back(new MutaGroupManager());
+    this->mutaGroups.back()->add(unit);
   }
   else if (unit->canAttack() && !unit->canGather())
     this->otherUnits.push_back(unit);
@@ -28,16 +40,16 @@ void FightManager::onUnitComplete(Unit* unit)
 
 void FightManager::onFrame()
 {
-  for (MutaGroupManager& mutaGroupManager: this->mutaGroups)
-    mutaGroupManager.onFrame();
+  for (MutaGroupManager* mutaGroupManager: this->mutaGroups)
+    mutaGroupManager->onFrame();
   if (this->mutaGroups.size() > 3)
   {
     //BWAPI::Position enemyMain = KovarexAIModule::instance->scoutingManager.enemyMainBase();
     if (!bhaalBot->discoveredMemory.units.empty())
     {
       BWAPI::Position target =  bhaalBot->discoveredMemory.units.begin()->second.position;
-      for (MutaGroupManager& mutaGroupManager: this->mutaGroups)
-        mutaGroupManager.target = target;
+      for (MutaGroupManager* mutaGroupManager: this->mutaGroups)
+        mutaGroupManager->target = target;
     }
   }
   else
@@ -45,18 +57,18 @@ void FightManager::onFrame()
     if (!bhaalBot->harvestingManager.bases.empty())
     {
       BWAPI::Position target =  bhaalBot->harvestingManager.bases.back()->base->getPosition();
-      for (MutaGroupManager& mutaGroupManager: this->mutaGroups)
+      for (MutaGroupManager* mutaGroupManager: this->mutaGroups)
       {
-        mutaGroupManager.target = target;
+        mutaGroupManager->target = target;
         target.x += 50;
       }
     }
     else
     {
       BWAPI::Position target = BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation());
-      for (MutaGroupManager& mutaGroupManager: this->mutaGroups)
+      for (MutaGroupManager* mutaGroupManager: this->mutaGroups)
       {
-        mutaGroupManager.target = target;
+        mutaGroupManager->target = target;
         target.x += 100;
       }
     }
