@@ -1,0 +1,9 @@
+.vs/
+BhaalBot.VC.VC.opendb
+BhaalBot.VC.db
+ChaosLauncher/*.log
+ChaosLauncher/Plugins/*.log
+ChaosLauncher/__log.txt
+Debug/
+Starcraft/maps/replays/
+Starcraft/Errors/
