@@ -1,5 +1,6 @@
 #include <DiscoveredMemory.hpp>
 #include <BhaalBot.hpp>
+#include <EnemyUnitTarget.hpp>
 
 DiscoveredMemory::DiscoveredMemory(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
@@ -14,13 +15,13 @@ void DiscoveredMemory::onFrame()
   for (auto it = this->units.begin(); it != this->units.end();)
   {
     auto& item = *it;
-    BWAPI::Broodwar->drawBoxMap(BWAPI::Position(item.second.position.x - item.second.unitType.dimensionLeft(),
-                                                item.second.position.y - item.second.unitType.dimensionUp()),
-                                BWAPI::Position(item.second.position.x + item.second.unitType.dimensionLeft(),
-                                                item.second.position.y + item.second.unitType.dimensionUp()),
+    BWAPI::Broodwar->drawBoxMap(BWAPI::Position(item.second->position.x - item.second->unitType.dimensionLeft(),
+                                                item.second->position.y - item.second->unitType.dimensionUp()),
+                                BWAPI::Position(item.second->position.x + item.second->unitType.dimensionLeft(),
+                                                item.second->position.y + item.second->unitType.dimensionUp()),
                                 BWAPI::Colors::Grey);
-    BWAPI::Broodwar->drawTextMap(item.second.position, "%s", item.second.unitType.getName().c_str());
-    if (!item.second.unitType.isBuilding() && BWAPI::Broodwar->getFrameCount() - item.second.lastSeenTick > 24 * 10)
+    BWAPI::Broodwar->drawTextMap(item.second->position, "%s", item.second->unitType.getName().c_str());
+    if (!item.second->unitType.isBuilding() && BWAPI::Broodwar->getFrameCount() - item.second->lastSeenTick > 24 * 10)
     {
       this->onRemove(it);
       it = this->units.erase(it);
@@ -51,8 +52,13 @@ void DiscoveredMemory::addUnit(BWAPI::Unit unit)
 {
   auto position = this->units.find(unit);
   if (position != this->units.end())
+  {
     this->onRemove(position);
-  this->units[unit] = UnitMemoryInfo(unit);
+    position->second->update(unit);
+    
+  }
+  else
+    this->units[unit] = new UnitMemoryInfo(unit);
   this->onAdd(unit);
 }
 
@@ -64,16 +70,54 @@ void DiscoveredMemory::onAdd(BWAPI::Unit unit)
                                                      unit->getType().airWeapon().damageAmount());
 }
 
-void DiscoveredMemory::onRemove(std::map<BWAPI::Unit, UnitMemoryInfo>::iterator unit)
+void DiscoveredMemory::onRemove(std::map<BWAPI::Unit, UnitMemoryInfo*>::iterator unit)
 {
-  if (unit->second.unitType.airWeapon().isValid())
-    bhaalBot->dangerZones.removeDanger(unit->second.position,
-                                                        unit->second.unitType.airWeapon().maxRange() / 32,
-                                                        unit->second.unitType.airWeapon().damageAmount());
+  if (unit->second->unitType.airWeapon().isValid())
+    bhaalBot->dangerZones.removeDanger(unit->second->position,
+                                       unit->second->unitType.airWeapon().maxRange() / 32,
+                                       unit->second->unitType.airWeapon().damageAmount());
 }
 
-DiscoveredMemory::UnitMemoryInfo::UnitMemoryInfo(BWAPI::Unit unit)
-  : position(unit->getPosition())
+UnitMemoryInfo* DiscoveredMemory::getUnit(BWAPI::Unit unit)
+{
+  auto position = this->units.find(unit);
+  if (position != this->units.end())
+    return position->second;
+  return nullptr;
+}
+
+UnitMemoryInfo::UnitMemoryInfo(BWAPI::Unit unit)
+  : unit(unit)
+  , position(unit->getPosition())
   , unitType(unit->getType())
   , lastSeenTick(BWAPI::Broodwar->getFrameCount())
 {}
+
+UnitMemoryInfo::~UnitMemoryInfo()
+{
+  for (EnemyUnitTarget* target: this->targetingMe)
+    target->data = nullptr;
+}
+
+void UnitMemoryInfo::update(BWAPI::Unit unit)
+{
+  this->position = unit->getPosition();
+  this->unitType = unit->getType();
+  this->lastSeenTick = BWAPI::Broodwar->getFrameCount();
+}
+
+void UnitMemoryInfo::addTarget(EnemyUnitTarget* target)
+{
+  this->targetingMe.push_back(target);
+}
+
+void UnitMemoryInfo::removeTarget(EnemyUnitTarget* target)
+{
+  for (auto it = this->targetingMe.begin(); it != this->targetingMe.end(); ++it)
+    if (*it == target)
+    {
+      this->targetingMe.erase(it);
+      return;
+    }
+  throw std::runtime_error("Trying to remove target that is not here.");
+}

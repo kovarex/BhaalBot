@@ -12,7 +12,7 @@ MutaGroupController::MutaGroupController(Group& owner)
 void MutaGroupController::setAttackTarget(BWAPI::Unit target)
 {
   this->unitTarget = target;
-  this->target = this->unitTarget->getPosition();
+  this->target = target->getPosition();
 }
 
 void MutaGroupController::onAdded(Unit* muta)
@@ -79,9 +79,9 @@ void MutaGroupController::logic()
         this->overalLPhase = OverallPhase::StackingPhase1;
         return;
       }
-      if (this->unitTarget == nullptr || !this->unitTarget->exists())
+      if (this->unitTarget.isZero())
         this->chooseClosestTarget();
-      if (this->unitTarget != nullptr)
+      if (!this->unitTarget.isZero())
       {
         this->attackPhase = AttackPhase::MovingTowardsTarget;
         this->logic();
@@ -89,7 +89,7 @@ void MutaGroupController::logic()
       break;
     case AttackPhase::MovingTowardsTarget:
       {
-        if (this->unitTarget == nullptr || !this->unitTarget->exists())
+        if (this->unitTarget.isZero())
         {
           this->unitTarget = nullptr;
           this->attackPhase = AttackPhase::Nothing;
@@ -97,7 +97,7 @@ void MutaGroupController::logic()
           return;
         }
         BWAPI::Position center = this->getCenter();
-        BWAPI::Position unitPosition = this->unitTarget->getPosition();
+        BWAPI::Position unitPosition = this->unitTarget.getUnitData()->position;
         Vector originalVector(center, unitPosition);
         Vector targetVector(originalVector);
         targetVector.extendToLength(250);
@@ -131,7 +131,7 @@ void MutaGroupController::logic()
       this->moveStackedMutasWithOverlord(target);
       BWAPI::Broodwar->drawCircleMap(target, 10, BWAPI::Colors::Blue);
       if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2 &&
-          (this->unitTarget == nullptr || this->unitTarget->getDistance(center) > 150))
+          (this->unitTarget.isZero() || this->unitTarget.getUnitData()->position.getDistance(center) > 150))
         this->attackPhase = AttackPhase::Nothing;
     }
       break;

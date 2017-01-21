@@ -1,15 +1,17 @@
 #pragma once
+#include <EnemyUnitTarget.hpp>
 #include <GroupController.hpp>
 #include <BWAPI.h>
 #include <vector>
 class Unit;
+class UnitMemoryInfo;
 
 class MutaGroupController : public GroupController
 {
 public:
   MutaGroupController(Group& owner);
   void setAttackTarget(BWAPI::Unit target) override;
-  BWAPI::Unit getAttackTarget() override { return this->unitTarget; }
+  UnitMemoryInfo* getAttackTarget() override { return this->unitTarget.getUnitData(); }
 
   bool isFull() const { return stackMutas.size() + joiningMutas.size() >= 11; }
   void onAdded(Unit* muta);
@@ -50,7 +52,7 @@ public:
 
   std::vector<Unit*> joiningMutas;
   std::vector<Unit*> stackMutas;
-  BWAPI::Unit unitTarget = nullptr;
+  EnemyUnitTarget unitTarget;
   BWAPI::Position target;
   double angle = 0;
   OverallPhase overalLPhase = OverallPhase::StackingPhase1;

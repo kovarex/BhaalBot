@@ -5,6 +5,7 @@
 class Group;
 class GroupController;
 class Unit;
+class UnitMemoryInfo;
 
 class SimpleGroupAssignment : public Assignment
 {
@@ -26,7 +27,7 @@ public:
   Unit* getUnit(BWAPI::UnitType unitType);
   void assignController(GroupController* groupController);
   void setAttackTarget(BWAPI::Unit target);
-  BWAPI::Unit getAttackTarget();
+  UnitMemoryInfo* getAttackTarget();
   BWAPI::Position getPosition() const;
 
 private:

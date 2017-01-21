@@ -86,6 +86,7 @@
     <ClCompile Include="src\GroupController.cpp" />
     <ClCompile Include="src\MutaGroupController.cpp" />
     <ClCompile Include="src\TaskForceController.cpp" />
+    <ClCompile Include="src\EnemyUnitTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseHarvestingManager.hpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\GroupController.hpp" />
     <ClInclude Include="src\MutaGroupController.hpp" />
     <ClInclude Include="src\TaskForceController.hpp" />
+    <ClInclude Include="src\EnemyUnitTarget.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

@@ -44,7 +44,7 @@ void Group::setAttackTarget(BWAPI::Unit target)
     this->controller->setAttackTarget(target);
 }
 
-BWAPI::Unit Group::getAttackTarget()
+UnitMemoryInfo* Group::getAttackTarget()
 {
   if (this->controller)
     return this->controller->getAttackTarget();

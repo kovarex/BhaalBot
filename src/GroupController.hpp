@@ -2,6 +2,7 @@
 #include <BWAPI.h>
 class Group;
 class Unit;
+class UnitMemoryInfo;
 
 class GroupController
 {
@@ -11,7 +12,7 @@ public:
   virtual void onRemoved(Unit* unit) {}
   virtual void onFrame() {}
   virtual void setAttackTarget(BWAPI::Unit target) {}
-  virtual BWAPI::Unit getAttackTarget() { return nullptr; }
+  virtual UnitMemoryInfo* getAttackTarget() { return nullptr; }
 
   Group& owner;
 };

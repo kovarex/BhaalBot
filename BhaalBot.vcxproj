@@ -123,6 +123,7 @@
     <ClCompile Include="src\DeleyedExitChecker.cpp" />
     <ClCompile Include="src\DiscoveredMemory.cpp" />
     <ClCompile Include="src\Dll.cpp" />
+    <ClCompile Include="src\EnemyUnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
     <ClCompile Include="src\Group.cpp" />
     <ClCompile Include="src\GroupController.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\DangerZones.hpp" />
     <ClInclude Include="src\DeleyedExitChecker.hpp" />
     <ClInclude Include="src\DiscoveredMemory.hpp" />
+    <ClInclude Include="src\EnemyUnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
     <ClInclude Include="src\Group.hpp" />
     <ClInclude Include="src\GroupController.hpp" />
