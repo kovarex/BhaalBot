@@ -2,6 +2,7 @@
 #include <Module.hpp>
 class Unit;
 
+/** Manages the (our) Unit objects. Provides mapping from the BWAPI::Unit pointer to our unit wrapper. */
 class Units
 {
 public:

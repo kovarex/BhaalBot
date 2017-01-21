@@ -2,12 +2,15 @@
 #include <BWAPI.h>
 class Assignment;
 
+/**< Wrapper of the BWAPI::Unit with our additional info.
+ * It is currently used only for our units. */
 class Unit
 {
 public:
   Unit(BWAPI::Unit bwapiUnit) : bwapiUnit(bwapiUnit) {}
   ~Unit();
 
+  /* The BWAPI::Unit interface is re-routed to the BWAPI::Unit in these methods. */
   BWAPI::Player getPlayer() { return this->bwapiUnit->getPlayer(); }
   BWAPI::UnitType getType() { return this->bwapiUnit->getType(); }
   BWAPI::UnitType getBuildType() { return this->bwapiUnit->getBuildType(); }
@@ -43,6 +46,9 @@ public:
   int getDistance(Unit* unit) const { return this->bwapiUnit->getDistance(unit->bwapiUnit); }
   bool equals(BWAPI::Unit unit) { return this->bwapiUnit == unit; }
   BWAPI::Unit getBWAPIUnit() { return this->bwapiUnit; }
+
+  /** Connects the assignment with this unit. If there is some assignment already it is properly removed.
+   * @param assignment nullptr only unassigns the current assignment. */
   void assign(Assignment* assignment);
 
 private:

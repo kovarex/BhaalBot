@@ -3,6 +3,7 @@
 class ModuleContainer;
 class Unit;
 
+/** Interface of anything that needs to get the BWAPI::evenets. */
 class Module
 {
 public:
