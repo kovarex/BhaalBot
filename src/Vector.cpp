@@ -17,6 +17,7 @@ void Vector::extendToLength(double length)
     this->dy = length;
     return;
   }
-  this->dx *= length / this->getLength();
-  this->dy *= length / this->getLength();
+  double thisLength = this->getLength();
+  this->dx *= length / thisLength;
+  this->dy *= length / thisLength;
 }
