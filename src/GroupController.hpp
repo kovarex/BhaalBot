@@ -6,20 +6,20 @@ class UnitMemoryInfo;
 
 enum class GroupObjective
 {
-  none,   // no objective set 
-  move,   // move to the target
-  attack, // attack the target
-  hold,   // hold ground
-  defend, // defend the target
-  kite,   // kite the target
-  flee    // move away from danger
+  NONE,   // no objective set 
+  MOVE,   // move to the target
+  ATTACK, // attack the target
+  HOLD,   // hold ground
+  DEFEND, // defend the target
+  KITE,   // kite the target
+  FLEE    // move away from danger
   // TODO add advanced objectives, such as guard area, attack unit type, ...
 };
 
 class GroupController
 {
 public:
-  GroupController(Group& owner, GroupObjective objective = GroupObjective::none) : owner(owner), objective(objective) {}
+  GroupController(Group& owner, GroupObjective objective = GroupObjective::NONE) : owner(owner), objective(objective) {}
   virtual void onAdded(Unit* unit) {}
   virtual void onRemoved(Unit* unit) {}
   virtual void onFrame() {}
