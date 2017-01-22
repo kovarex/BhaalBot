@@ -29,12 +29,17 @@ void AttackTaskForceController::assignUnit(Unit* unit)
     group->add(unit);
     this->mutaGroups.push_back(group);
   }
+  else if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
+  {
+    this->lingReinforementsGroup->add(unit);
+  }
   else
     this->groundGroup->add(unit);
 }
 
 void AttackTaskForceController::onFrame()
 {
+  //--------------------------------------------- MUTAS
   for (Group* group: this->mutaGroups)
   {
     if (group->getAttackTarget() == nullptr)
@@ -56,6 +61,12 @@ void AttackTaskForceController::onFrame()
         group->setAttackTarget(bestCandidate);
     }
   }
+  //--------------------------------------------- LINGZ
+  // TODO
+  // maybe transform reinforcements into attack group
+  // if sunken exists, assign lings not under direct attack to kill it
+  // if drones run too much, assign lings to kill pool
+  // handle combat groups - maybe just let them do their do.
 }
 
 DefendTaskForceController::DefendTaskForceController(TaskForce& owner)

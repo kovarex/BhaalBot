@@ -68,7 +68,7 @@ BuildOrderManager::BuildOrderManager(ModuleContainer& moduleContainer)
     }
     this->buildOrders.push_back(pool11Exp);
   }
-  this->executor.startBuildOrder(this->buildOrders.back());
+  this->executor.startBuildOrder(this->buildOrders.front());
 }
 
 BuildOrderManager::~BuildOrderManager()

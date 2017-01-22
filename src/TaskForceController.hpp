@@ -22,6 +22,12 @@ public:
   void onFrame() override;
 
   std::vector<Group*> mutaGroups;
+
+  std::vector<Group*> lingReinforementGroups;  // group used to move lings to the enemy base
+  std::vector<Group*> lingCombatGroups;         // general offensive combat against lings, drones etc.
+  std::vector<Group*> lingSunkenKillGroups;     // group assigned to kill a specific sunken colony
+  Group* lingPoolKillGroup;                     // group assigned to kill spawning pool
+
   Group* groundGroup;
 };
 

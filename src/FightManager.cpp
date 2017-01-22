@@ -26,6 +26,8 @@ void FightManager::onUnitComplete(Unit* unit)
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Mutalisk)
     this->attack->addUnit(unit);
+  else if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
+    this->attack->addUnit(unit);
   else if (unit->canAttack() && !unit->canGather())
     this->baseDefend->addUnit(unit);
 }
