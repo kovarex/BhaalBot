@@ -16,6 +16,7 @@
 #include <BuildTasks.hpp>
 #include <DangerZones.hpp>
 #include <Overmind.hpp>
+#include <Bases.hpp>
 #include <Units.hpp>
 
 class BhaalBot : public BWAPI::AIModule
@@ -44,6 +45,7 @@ public:
 
   ModuleContainer moduleContainer;
   Overmind overmind;
+  Bases bases;
   Units units;
   HarvestingManager harvestingManager;
   BuildOrderManager buildOrderManager;

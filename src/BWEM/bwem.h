@@ -16,7 +16,7 @@
 #include "tiles.h"
 #include "area.h"
 #include "cp.h"
-#include "base.h"
+#include "bwemBase.h"
 #include "neutral.h"
 #include "gridMap.h"
 #include "examples.h"

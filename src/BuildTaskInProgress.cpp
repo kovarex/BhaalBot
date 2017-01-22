@@ -1,3 +1,4 @@
+#include <Base.hpp>
 #include <BuildTaskInProgress.hpp>
 #include <BhaalBot.hpp>
 #include <Unit.hpp>
@@ -97,7 +98,7 @@ BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingT
       }
       if (bhaalBot->harvestingManager.bases.empty())
         return BWAPI::TilePositions::None;
-      return BWAPI::Broodwar->getBuildLocation(unitType, BWAPI::TilePosition(bhaalBot->harvestingManager.bases[0]->bwemBase->Center()));
+      return BWAPI::Broodwar->getBuildLocation(unitType, BWAPI::TilePosition(bhaalBot->harvestingManager.bases[0]->base->getCenter()));
     case BuildLocationType::NearFirstExpansion:
     {
       if (bhaalBot->harvestingManager.bases.size() < 2)

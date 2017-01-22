@@ -1,13 +1,14 @@
+#include <Base.hpp>
 #include <BaseHarvestingManager.hpp>
 #include <Unit.hpp>
 
-BaseHarvestingManager::BaseHarvestingManager(Unit* base, const BWEM::Base* bwemBase)
-  : base(base)
-  , bwemBase(bwemBase)
+BaseHarvestingManager::BaseHarvestingManager(Unit* baseUnit, Base* base)
+  : baseUnit(baseUnit)
+  , base(base)
 {
-  for (BWEM::Mineral* mineral: this->bwemBase->Minerals())
+  for (BWEM::Mineral* mineral: this->base->getBWEMBase()->Minerals())
     this->minerals.push_back(Mineral(mineral->Unit()));
-  for (BWEM::Geyser* geyser: this->bwemBase->Geysers())
+  for (BWEM::Geyser* geyser: this->base->getBWEMBase()->Geysers())
     this->geysers.push_back(Geyser(geyser->Unit()));
 }
 
@@ -29,8 +30,8 @@ void BaseHarvestingManager::update()
     {
       if (miner->isCarryingMinerals())
       {
-        if (!this->base->equals(miner->getOrderTarget()))
-          miner->rightClick(this->base->getBWAPIUnit());
+        if (!this->baseUnit->equals(miner->getOrderTarget()))
+          miner->rightClick(this->baseUnit->getBWAPIUnit());
       }
       else if (miner->getOrderTarget() != mineral.mineral)
           miner->gather(mineral.mineral);
@@ -40,7 +41,7 @@ void BaseHarvestingManager::update()
     {
       if (miner->isIdle() ||
           !miner->isGatheringGas() ||
-          (miner->getTarget() != geyser.geyser && !this->base->equals(miner->getTarget())))
+          (miner->getTarget() != geyser.geyser && !this->baseUnit->equals(miner->getTarget())))
         miner->gather(geyser.geyser);
     }
 }
@@ -121,7 +122,7 @@ BaseHarvestingManager::Mineral* BaseHarvestingManager::getBestMineral()
         bestMineral = &mineral;
       continue;
     }
-    if (this->base->getDistance(bestMineral->mineral) > this->base->getDistance(mineral.mineral))
+    if (this->baseUnit->getDistance(bestMineral->mineral) > this->baseUnit->getDistance(mineral.mineral))
     {
       bestMineral = &mineral;
       continue;
@@ -178,7 +179,7 @@ Unit* BaseHarvestingManager::freeLeastNeededWorker()
 
 BWAPI::Position BaseHarvestingManager::againstMinerals()
 {
-  BWAPI::Position basePosition = this->base->getPosition();
+  BWAPI::Position basePosition = this->baseUnit->getPosition();
   std::vector<BWAPI::Position> oppositePositions;
   int xSum = 0, ySum = 0;
   int count = 0;

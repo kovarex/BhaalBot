@@ -1,6 +1,7 @@
 #include <ScoutingManager.hpp>
 #include <BhaalBot.hpp>
 #include <Unit.hpp>
+#include <Base.hpp>
 
 ScoutingManager::ScoutingManager(ModuleContainer& moduleContainer)\
   : Module(moduleContainer)
@@ -14,37 +15,9 @@ void ScoutingManager::assignGroundScout(Unit* unit)
 
 void ScoutingManager::onFrame()
 {
-  if (!this->initialised && !bhaalBot->harvestingManager.bases.empty())
-  {
-    for (BWAPI::TilePosition startingLocation: BWEM::Map::Instance().StartingLocations())
-    {
-      const BWEM::Base* base = this->getClosestBase(BWAPI::Position(startingLocation));
-
-      if (bhaalBot->harvestingManager.bases[0]->bwemBase == base)
-      {
-        this->startingLocations[base] = StartingLocationState::Self;
-        this->startingBase = base;
-      }
-      else
-        this->startingLocations[base] = StartingLocationState::Unknown;
-    }
-    for (const BWEM::Area& area: BWEM::Map::Instance().Areas())
-      for (const BWEM::Base& base: area.Bases())
-      {
-        if (&base == this->startingBase)
-          continue;
-        int length = 0;
-        auto& path = BWEM::Map::Instance().GetPath(this->startingBase->Center(), base.Center(), &length);
-        if (length == -1)
-          continue;
-        this->bases[&base] = BaseScoutingData();
-      }
-    this->initialised = true;
-  }
-
   while (!this->unassignedGroundScouters.empty())
   {
-    const BWEM::Base* base = this->baseToScout();
+    Base* base = this->baseToScout();
     if (base == nullptr)
       break;
     this->scoutTasks.push_back(DiscoverScoutingLocationsScoutTask(base, this->unassignedGroundScouters.back()));
@@ -62,7 +35,7 @@ void ScoutingManager::onFrame()
     else
     {
       BWAPI::Broodwar->drawTextMap(task.scout->getPosition(), "Scout of starting location");
-      BWAPI::Broodwar->drawLineMap(task.scout->getPosition(), task.target->Center(), BWAPI::Colors::White);
+      BWAPI::Broodwar->drawLineMap(task.scout->getPosition(), task.target->getCenter(), BWAPI::Colors::White);
       ++i;
     }
   }
@@ -78,50 +51,42 @@ void ScoutingManager::onFrame()
     else
     {
       BWAPI::Broodwar->drawTextMap(it->scout->getPosition(), "Scout of base");
-      BWAPI::Broodwar->drawLineMap(it->scout->getPosition(), it->target->Center(), BWAPI::Colors::White);
+      BWAPI::Broodwar->drawLineMap(it->scout->getPosition(), it->target->getCenter(), BWAPI::Colors::White);
       ++it;
     }
   }
 
   
-  for (auto& item: bases)
-  {
-    if (!this->unassignedGroundScouters.empty())
+  for (Base* base: bhaalBot->bases.bases)
+    if (base->status == Base::Status::Unknown ||
+        base->status == Base::Status::Empty)
     {
-      if (BWAPI::Broodwar->getFrameCount() - item.second.lastCheckedTick > scoutCooldown)
-      {
-        Unit* scout = this->unassignedGroundScouters.back();
-        this->unassignedGroundScouters.pop_back();
-        this->baseCheckTasks.push_back(CheckBaseTask(item.first, scout));
-        item.second.lastCheckedTick = BWAPI::Broodwar->getFrameCount();
-      }
+      if (!this->unassignedGroundScouters.empty() &&
+          BWAPI::Broodwar->getFrameCount() - base->lastCheckedTick > scoutCooldown)
+        {
+          Unit* scout = this->unassignedGroundScouters.back();
+          this->unassignedGroundScouters.pop_back();
+          this->baseCheckTasks.push_back(CheckBaseTask(base, scout));
+          base->lastCheckedTick = BWAPI::Broodwar->getFrameCount();
+        }
+      BWAPI::Broodwar->drawTextMap(base->getCenter(),
+                                   "Scout in %d seconds",
+                                   (scoutCooldown - (BWAPI::Broodwar->getFrameCount() - base->lastCheckedTick)) / 24);
     }
-    BWAPI::Broodwar->drawTextMap(item.first->Center(),
-                                 "Scout in %d seconds",
-                                 (scoutCooldown - (BWAPI::Broodwar->getFrameCount() - item.second.lastCheckedTick)) / 24);
-  }
 }
 
-const BWEM::Base* ScoutingManager::getClosestBase(BWAPI::Position position)
+Base* ScoutingManager::baseToScout()
 {
-  for (const BWEM::Area& area: BWEM::Map::Instance().Areas())
-    for (const BWEM::Base& base: area.Bases())
-      if (base.Center().getDistance(position) < 100)
-        return &base;
-  return nullptr;
-}
-
-const BWEM::Base* ScoutingManager::baseToScout()
-{
-  for (auto item: this->startingLocations)
+  for (Base* base: bhaalBot->bases.startingLocations)
   {
-    if (item.second == StartingLocationState::Unknown && !this->scoutAssigned(item.first))
-      return item.first;
+    if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown &&
+        !this->scoutAssigned(base))
+      return base;
   }
   return nullptr;
 }
 
-bool ScoutingManager::scoutAssigned(const BWEM::Base* base)
+bool ScoutingManager::scoutAssigned(Base* base)
 {
   for (DiscoverScoutingLocationsScoutTask& task: this->scoutTasks)
     if (task.target == base)
@@ -154,19 +119,11 @@ void ScoutingManager::unassignScout(Unit* unit)
   throw std::runtime_error("Couldn't find the scout that was assigned.");
 }
 
-BWAPI::Position ScoutingManager::enemyMainBase()
-{
-  for (auto& item: this->startingLocations)
-    if (item.second == StartingLocationState::Enemy)
-      return item.first->Center();
-  return BWAPI::Positions::Unknown;
-}
-
 void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
 {
-  if (this->scout->getTargetPosition() != this->target->Center())
-    this->scout->move(this->target->Center());
-  if (this->scout->getPosition().getDistance(this->target->Center()) < 50)
+  if (this->scout->getTargetPosition() != this->target->getCenter())
+    this->scout->move(this->target->getCenter());
+  if (this->scout->getPosition().getDistance(this->target->getCenter()) < 50)
   {
     BWAPI::Unitset nearbyUnits = this->scout->getUnitsInRadius(100);
     bool containsBuilding = false;
@@ -174,22 +131,22 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
       if (nearbyUnit->getType().isBuilding())
         containsBuilding = true;
     if (containsBuilding)
-      bhaalBot->scoutingManager.startingLocations[this->target] = StartingLocationState::Enemy;
+      this->target->startingBaseStatus = Base::StartingBaseStatus::Enemy;
     else
     {
-      bhaalBot->scoutingManager.startingLocations[this->target] = StartingLocationState::Empty;
+      this->target->startingBaseStatus = Base::StartingBaseStatus::Empty;
       bool enemyExists = false;
       uint32_t unknownCount = 0;
-      for (auto& item: bhaalBot->scoutingManager.startingLocations)
-        if (item.second == StartingLocationState::Enemy)
+      for (Base* base: bhaalBot->bases.startingLocations)
+        if (base->startingBaseStatus == Base::StartingBaseStatus::Enemy)
           enemyExists = true;
-        else if (item.second == StartingLocationState::Unknown)
+        else if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown)
           ++unknownCount;
       if (!enemyExists && unknownCount == 1)
       {
-        for (auto& item: bhaalBot->scoutingManager.startingLocations)
-          if (item.second == StartingLocationState::Unknown)
-            item.second = StartingLocationState::Enemy;
+        for (Base* base: bhaalBot->bases.bases)
+          if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown)
+            base->startingBaseStatus = Base::StartingBaseStatus::Enemy;
       }
     }
     this->finished = true;
@@ -198,12 +155,12 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
 
 void ScoutingManager::CheckBaseTask::onFrame()
 {
-  if (this->scout->getTargetPosition() != this->target->Center())
-    this->scout->move(this->target->Center());
+  if (this->scout->getTargetPosition() != this->target->getCenter())
+    this->scout->move(this->target->getCenter());
   if (this->scout == nullptr)
     this->finished = true;
   else
-    if (this->scout->getDistance(this->target->Center()) < 100)
+    if (this->scout->getDistance(this->target->getCenter()) < 100)
       this->finished = true;
 }
 

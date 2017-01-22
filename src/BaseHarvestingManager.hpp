@@ -2,6 +2,7 @@
 #include <Assignment.hpp>
 #include <BWAPI.h>
 #include <BWEM/bwem.h>
+class Base;
 class Unit;
 class BaseHarvestingManager;
 
@@ -36,7 +37,7 @@ public:
     std::vector<Unit*> miners;
   };
 
-  BaseHarvestingManager(Unit* base, const BWEM::Base* bwemBase);
+  BaseHarvestingManager(Unit* baseUnit, Base* base);
   void assignMiner(Unit* unit);
   void update();
   void drawDebug();
@@ -47,7 +48,7 @@ public:
   Unit* freeLeastNeededWorker();
   BWAPI::Position againstMinerals();
   
-  Unit* base;
+  Unit* baseUnit;
   std::vector<Mineral> minerals;
   struct Geyser
   {
@@ -65,7 +66,7 @@ public:
     std::vector<Unit*> miners;
   };
   std::vector<Geyser> geysers;
-  const BWEM::Base* bwemBase;
+  Base* base;
 private:
   friend class MineralHarvestingAssignment;
   friend class GasHarvestingAssignment;

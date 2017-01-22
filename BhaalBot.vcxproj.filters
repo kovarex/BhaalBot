@@ -16,9 +16,6 @@
     <ClCompile Include="src\BWEM\area.cpp">
       <Filter>BWEM</Filter>
     </ClCompile>
-    <ClCompile Include="src\BWEM\base.cpp">
-      <Filter>BWEM</Filter>
-    </ClCompile>
     <ClCompile Include="src\BWEM\bwapiExt.cpp">
       <Filter>BWEM</Filter>
     </ClCompile>
@@ -87,6 +84,11 @@
     <ClCompile Include="src\MutaGroupController.cpp" />
     <ClCompile Include="src\TaskForceController.cpp" />
     <ClCompile Include="src\EnemyUnitTarget.cpp" />
+    <ClCompile Include="src\Base.cpp" />
+    <ClCompile Include="src\Bases.cpp" />
+    <ClCompile Include="src\BWEM\bwemBase.cpp">
+      <Filter>BWEM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseHarvestingManager.hpp" />
@@ -110,9 +112,6 @@
     <ClInclude Include="src\BuildOrderItem.hpp" />
     <ClInclude Include="src\Module.hpp" />
     <ClInclude Include="src\BWEM\area.h">
-      <Filter>BWEM</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BWEM\base.h">
       <Filter>BWEM</Filter>
     </ClInclude>
     <ClInclude Include="src\BWEM\bwapiExt.h">
@@ -187,6 +186,11 @@
     <ClInclude Include="src\MutaGroupController.hpp" />
     <ClInclude Include="src\TaskForceController.hpp" />
     <ClInclude Include="src\EnemyUnitTarget.hpp" />
+    <ClInclude Include="src\Base.hpp" />
+    <ClInclude Include="src\Bases.hpp" />
+    <ClInclude Include="src\BWEM\bwemBase.h">
+      <Filter>BWEM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

@@ -16,7 +16,7 @@ bool BuildBuildOrderItem::execute()
   {
     if ( bhaalBot->harvestingManager.bases.empty())
       return false;
-    Unit* target =  bhaalBot->harvestingManager.bases[0]->base;
+    Unit* target =  bhaalBot->harvestingManager.bases[0]->baseUnit;
     return target->morph(unitType);
   }
   if (unitType == BWAPI::UnitTypes::Zerg_Sunken_Colony ||

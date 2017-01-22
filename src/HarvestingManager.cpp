@@ -1,3 +1,5 @@
+#include <Base.hpp>
+#include <BhaalBot.hpp>
 #include <HarvestingManager.hpp>
 #include <BWEM/bwem.h>
 #include <Unit.hpp>
@@ -28,9 +30,9 @@ void HarvestingManager::add(Unit* unit)
     this->bases.front()->assignMiner(unit);
 }
 
-void HarvestingManager::addBase(Unit* base, const BWEM::Base* bwemBase)
+void HarvestingManager::addBase(Unit* baseUnit, Base* base)
 {
-  this->bases.push_back(new BaseHarvestingManager(base, bwemBase));
+  this->bases.push_back(new BaseHarvestingManager(baseUnit, base));
   for (Unit* unit: this->baseLessMiners)
     this->bases.back()->assignMiner(unit);
   this->baseLessMiners.clear();
@@ -55,7 +57,7 @@ Unit* HarvestingManager::getClosestWorker(BWAPI::Position position)
 bool HarvestingManager::hasBaseNearby(BWAPI::Position position) const
 {
   for (const BaseHarvestingManager* base: this->bases)
-    if (base->base->getDistance(position) < 5)
+    if (base->baseUnit->getDistance(position) < 5)
       return true;
   return false;
 }
@@ -66,7 +68,7 @@ float HarvestingManager::averageDistanceToBases(BWAPI::Position position) const
   for (const BaseHarvestingManager* base: this->bases)
   {
     int length = 0;
-    auto& path = BWEM::Map::Instance().GetPath(position, base->base->getPosition(), &length);
+    auto& path = BWEM::Map::Instance().GetPath(position, base->baseUnit->getPosition(), &length);
     result += length;
   }
   return result / this->bases.size();
@@ -162,24 +164,21 @@ void HarvestingManager::onUnitComplete(Unit* unit)
     base->onUnitComplete(unit);
   if (unit->getType().isResourceDepot()) // A resource depot is a Command Center, Nexus, or Hatchery
   {
-    const BWEM::Area* area = BWEM::Map::Instance().GetNearestArea(BWAPI::TilePosition(unit->getPosition()));
-    for (const BWEM::Base& base: area->Bases())
-    {
-      if (base.Center().getDistance(unit->getPosition()) < 3)
-      {
-        for (BaseHarvestingManager* myBase: this->bases)
-          if (myBase->bwemBase == &base)
-            return; // I already have this base registered
-        std::vector<BWAPI::Unit> minerals;
-        for (BWEM::Mineral* mineral: base.Minerals())
-          minerals.push_back(mineral->Unit());
+    Base* base = bhaalBot->bases.getClosestBase(unit->getPosition());
+    if (base == nullptr)
+      return;
+    for (BaseHarvestingManager* myBase: this->bases)
+      if (myBase->base == base)
+        return; // I already have this base registered
+    base->status = Base::Status::OwnedByMe;
+    std::vector<BWAPI::Unit> minerals;
+    for (BWEM::Mineral* mineral: base->getBWEMBase()->Minerals())
+      minerals.push_back(mineral->Unit());
 
-        std::vector<BWAPI::Unit> geysers;
-        for (BWEM::Geyser* geyser: base.Geysers())
-          geysers.push_back(geyser->Unit());
-        this->addBase(unit, &base);
-        return;
-      }
-    }
+    std::vector<BWAPI::Unit> geysers;
+    for (BWEM::Geyser* geyser: base->getBWEMBase()->Geysers())
+      geysers.push_back(geyser->Unit());
+    this->addBase(unit, base);
+    return;
   }
 }

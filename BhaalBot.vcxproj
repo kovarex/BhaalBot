@@ -92,7 +92,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Assignment.cpp" />
+    <ClCompile Include="src\Base.cpp" />
     <ClCompile Include="src\BaseHarvestingManager.cpp" />
+    <ClCompile Include="src\Bases.cpp" />
     <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
     <ClCompile Include="src\BuildOrder.cpp" />
     <ClCompile Include="src\BuildOrderExecutor.cpp" />
@@ -101,7 +103,7 @@
     <ClCompile Include="src\BuildTaskInProgress.cpp" />
     <ClCompile Include="src\BuildTasks.cpp" />
     <ClCompile Include="src\BWEM\area.cpp" />
-    <ClCompile Include="src\BWEM\base.cpp" />
+    <ClCompile Include="src\BWEM\bwemBase.cpp" />
     <ClCompile Include="src\BWEM\bwapiExt.cpp" />
     <ClCompile Include="src\BWEM\bwem.cpp" />
     <ClCompile Include="src\BWEM\cp.cpp" />
@@ -146,7 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Assignment.hpp" />
+    <ClInclude Include="src\Base.hpp" />
     <ClInclude Include="src\BaseHarvestingManager.hpp" />
+    <ClInclude Include="src\Bases.hpp" />
     <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />
     <ClInclude Include="src\BuildLocationType.hpp" />
     <ClInclude Include="src\BuildOrder.hpp" />
@@ -156,7 +160,7 @@
     <ClInclude Include="src\BuildTaskInProgress.hpp" />
     <ClInclude Include="src\BuildTasks.hpp" />
     <ClInclude Include="src\BWEM\area.h" />
-    <ClInclude Include="src\BWEM\base.h" />
+    <ClInclude Include="src\BWEM\bwemBase.h" />
     <ClInclude Include="src\BWEM\bwapiExt.h" />
     <ClInclude Include="src\BWEM\bwem.h" />
     <ClInclude Include="src\BWEM\cp.h" />

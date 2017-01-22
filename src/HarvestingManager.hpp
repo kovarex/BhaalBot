@@ -12,7 +12,7 @@ public:
 
   void add(Unit* unit);
 public:
-  void addBase(Unit* base, const BWEM::Base* bwemBase);
+  void addBase(Unit* baseUnit, Base* base);
   Unit* getClosestWorker(BWAPI::Position position);
   bool hasBaseNearby(BWAPI::Position position) const;
   float averageDistanceToBases(BWAPI::Position position) const;

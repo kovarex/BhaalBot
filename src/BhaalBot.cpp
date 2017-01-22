@@ -53,7 +53,8 @@ void BhaalBot::onStart()
       bool startingLocationsOK = theMap.FindBasesForStartingLocations();
       assert(startingLocationsOK);
 
-      BWEM::utils::MapPrinter::Initialize(&theMap);
+      //BWEM::utils::MapPrinter::Initialize(&theMap);
+      this->bases.init();
 
       BWAPI::Broodwar->setLocalSpeed(10);
       //BWAPI::Broodwar->setFrameSkip(10);

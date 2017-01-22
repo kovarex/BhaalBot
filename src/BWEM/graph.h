@@ -12,7 +12,7 @@
 #define BWEM_GRAPH_H
 
 #include <BWAPI.h>
-#include "base.h"
+#include "bwemBase.h"
 #include "cp.h"
 #include "area.h"
 #include "bwapiExt.h"

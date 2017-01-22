@@ -10,7 +10,7 @@
 
 #include "examples.h"
 #include "map.h"
-#include "base.h"
+#include "bwemBase.h"
 #include "neutral.h"
 #include "mapPrinter.h"
 #include "mapDrawer.h"

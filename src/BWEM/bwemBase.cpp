@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-#include "base.h"
+#include "bwemBase.h"
 #include "graph.h"
 #include "mapImpl.h"
 #include "neutral.h"
