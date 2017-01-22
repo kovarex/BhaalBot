@@ -4,7 +4,7 @@ class Group;
 class Unit;
 class UnitMemoryInfo;
 
-enum class groupObjective
+enum class GroupObjective
 {
   none,   // no objective set 
   move,   // move to the target
@@ -19,15 +19,15 @@ enum class groupObjective
 class GroupController
 {
 public:
-  GroupController(Group& owner, groupObjective objective = groupObjective::none) : owner(owner), objective(objective) {}
+  GroupController(Group& owner, GroupObjective objective = GroupObjective::none) : owner(owner), objective(objective) {}
   virtual void onAdded(Unit* unit) {}
   virtual void onRemoved(Unit* unit) {}
   virtual void onFrame() {}
   virtual void setAttackTarget(BWAPI::Unit target) {} // TODO rename to setTarget as the group does not need to attack it.
   virtual UnitMemoryInfo* getAttackTarget() { return nullptr; }
-  virtual void setObjective(groupObjective objective) { this->objective = objective; }
-  virtual groupObjective getObjective(void) const { return this->objective; }
+  virtual void setObjective(GroupObjective objective) { this->objective = objective; }
+  virtual GroupObjective getObjective(void) const { return this->objective; }
 
   Group& owner;
-  groupObjective objective; // this, in combination with target, is the basic command given to the group by it's TaskForce.
+  GroupObjective objective; // this, in combination with target, is the basic command given to the group by it's TaskForce.
 };
