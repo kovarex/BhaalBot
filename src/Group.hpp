@@ -26,7 +26,7 @@ public:
   void onFrame();
   Unit* getUnit(BWAPI::UnitType unitType);
   void assignController(GroupController* groupController);
-  void setAttackTarget(BWAPI::Unit target);
+  void setAttackTarget(BWAPI::Unit target); // TODO this should not be needed - orders should be given to controller.
   UnitMemoryInfo* getAttackTarget();
   BWAPI::Position getPosition() const;
 
