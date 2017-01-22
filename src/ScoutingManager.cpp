@@ -58,8 +58,9 @@ void ScoutingManager::onFrame()
 
   
   for (Base* base: bhaalBot->bases.bases)
-    if (base->status == Base::Status::Unknown ||
-        base->status == Base::Status::Empty)
+    if ((base->status == Base::Status::Unknown ||
+         base->status == Base::Status::Empty) &&
+        base->accessibleOnGround)
     {
       if (!this->unassignedGroundScouters.empty() &&
           BWAPI::Broodwar->getFrameCount() - base->lastCheckedTick > scoutCooldown)
@@ -69,7 +70,9 @@ void ScoutingManager::onFrame()
           this->baseCheckTasks.push_back(CheckBaseTask(base, scout));
           base->lastCheckedTick = BWAPI::Broodwar->getFrameCount();
         }
-      BWAPI::Broodwar->drawTextMap(base->getCenter(),
+      BWAPI::Position textPosition(base->getCenter());
+      textPosition.y += 20;
+      BWAPI::Broodwar->drawTextMap(textPosition,
                                    "Scout in %d seconds",
                                    (scoutCooldown - (BWAPI::Broodwar->getFrameCount() - base->lastCheckedTick)) / 24);
     }

@@ -31,7 +31,9 @@ void AttackTaskForceController::assignUnit(Unit* unit)
   }
   else if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
   {
-    this->lingReinforementsGroup->add(unit);
+    if (this->lingReinforementGroups.empty())
+      this->lingReinforementGroups.push_back(new Group());
+    this->lingReinforementGroups[0]->add(unit);
   }
   else
     this->groundGroup->add(unit);

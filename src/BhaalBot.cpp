@@ -7,6 +7,7 @@ namespace { auto & theMap = BWEM::Map::Instance(); }
 
 BhaalBot::BhaalBot()
   : overmind(this->moduleContainer)
+  , bases(this->moduleContainer)
   , buildOrderManager(this->moduleContainer)
   , harvestingManager(this->moduleContainer)
   , morphingUnits(this->moduleContainer)

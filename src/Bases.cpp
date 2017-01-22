@@ -2,7 +2,8 @@
 #include <Base.hpp>
 #include <BWEM/bwem.h>
 
-Bases::Bases()
+Bases::Bases(ModuleContainer& moduleContainer)
+  : Module(moduleContainer)
 {}
 
 void Bases::init()
@@ -56,6 +57,23 @@ Base* Bases::getClosestBase(BWAPI::Position position)
     if (base->getCenter().getDistance(position) < 150)
       return base;
   return nullptr;
+}
+
+void Bases::onFrame()
+{
+  for (Base* base: this->bases)
+  {
+    BWAPI::Broodwar->drawCircleMap(base->getCenter(), 60, BWAPI::Colors::Orange);
+    std::string text;
+    switch (base->status)
+    {
+     case Base::Status::Unknown: text = "Unknown base"; break;
+     case Base::Status::OwnedByMe: text = "My base"; break;
+     case Base::Status::Empty: text = "Empty base"; break;
+     case Base::Status::OwnedByEnemy: text = "Enemy base"; break;
+    }
+    BWAPI::Broodwar->drawTextMap(base->getCenter(), "%s", text.c_str());
+  }
 }
 
 Base* Bases::enemyMainBase()
