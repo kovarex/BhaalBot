@@ -7,6 +7,12 @@ BuildOrderManager::BuildOrderManager(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
 {
   {
+    BuildOrder* pool4 = new BuildOrder();
+    pool4->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
+    pool4->add(6, BWAPI::UnitTypes::Zerg_Zergling);
+    this->buildOrders.push_back(pool4);
+  }
+  {
     BuildOrder* pool9 = new BuildOrder();
     pool9->add(5, BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
