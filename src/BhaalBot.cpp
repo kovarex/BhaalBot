@@ -191,5 +191,6 @@ void BhaalBot::onUnitComplete(BWAPI::Unit unit)
 
 bool BhaalBot::isUMSMap()
 {
-  return  BWAPI::Broodwar->getGameType() == BWAPI::GameTypes::Use_Map_Settings;
+  return  BWAPI::Broodwar->getGameType() == BWAPI::GameTypes::Use_Map_Settings &&
+          BWAPI::Broodwar->mapFileName() != "rush-test.scm";
 }
