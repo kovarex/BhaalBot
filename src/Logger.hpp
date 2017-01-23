@@ -1,7 +1,7 @@
 #pragma once
 #include <Filesystem.hpp>
 #include <string>
-
+class WriteStream;
 class FileWriteStream;
 
 enum class LogLevel
@@ -88,8 +88,8 @@ private:
                            LogLevel level, const std::string& string);
   /** Write already formated message to output (file and stdout for now). */
   INLINE_CPP void writeRecord(const std::string& record);
-  static INLINE_CPP void writeRecord(const std::string& record, FileWriteStream* stream);
-  static void writeStacktrace(FileWriteStream* stream, StackTraceInfo* stackTraceInfo);
+  static INLINE_CPP void writeRecord(const std::string& record, WriteStream* stream);
+  static void writeStacktrace(WriteStream* stream, StackTraceInfo* stackTraceInfo);
   void writeFailed();
 
   static uint64_t microsecondClock();

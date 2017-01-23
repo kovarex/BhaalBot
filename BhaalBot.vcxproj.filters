@@ -104,6 +104,7 @@
     <ClCompile Include="src\ParseReadState.cpp" />
     <ClCompile Include="src\FileReadStream.cpp" />
     <ClCompile Include="src\StringReadStream.cpp" />
+    <ClCompile Include="src\BroodwarWriteStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="src\StringWriteStream.hpp" />
     <ClInclude Include="src\FileReadStream.hpp" />
     <ClInclude Include="src\StringReadStream.hpp" />
+    <ClInclude Include="src\BroodwarWriteStream.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

@@ -1,7 +1,7 @@
 #include <ApplicationVersion.hpp>
 #include <Log.hpp>
 #include <Logger.hpp>
-//#include <Util/StdoutWriteStream.hpp>
+#include <BroodwarWriteStream.hpp>
 #include <StringUtil.hpp>
 #include <Filesystem.hpp>
 #include <FileWriteStream.hpp>
@@ -91,6 +91,8 @@ void Logger::log(const char* file, uint32_t line, LogLevel level,
   va_end(args);
 
   this->writeRecord(this->formatRecord(file, line, level, message));
+  if (level >= LogLevel::Notice)
+    this->writeRecord(message, &BroodwarWriteStream::instance);
 }
 
 void Logger::log(const char* file, uint32_t line, LogLevel level,
@@ -103,7 +105,7 @@ void Logger::logToStdout(const char* file, uint32_t line, LogLevel level,
                          const std::string& string)
 {
   // We will log to bw instead
-  //writeRecord(formatRecord(0, "", file, line, level, string), &StdoutWriteStream::instance);
+  writeRecord(formatRecord(0, "", file, line, level, string), &BroodwarWriteStream::instance);
 }
 
 void Logger::logToStdout(const char* file,
@@ -112,14 +114,12 @@ void Logger::logToStdout(const char* file,
                          const char* format,
                          ...)
 {
-  // We will log to bw instead
-  /*
   va_list args;
   va_start(args, format);
   std::string message = vssprintf(format, args);
   va_end(args);
 
-  writeRecord(formatRecord(0, "", file, line, level, message), &StdoutWriteStream::instance);*/
+  writeRecord(formatRecord(0, "", file, line, level, message), &BroodwarWriteStream::instance);
 }
 
 std::string Logger::formatRecord(const char* file, uint32_t line,
@@ -160,14 +160,9 @@ std::string Logger::formatRecord(uint64_t time,
 void Logger::writeRecord(const std::string& record)
 {
   this->writeRecord(record, this->stream);
-  // we will log to bw instead
-  /*
-  if (this->stdoutEnabled)
-    this->writeRecord(record, &StdoutWriteStream::instance);
-  */
 }
 
-void Logger::writeRecord(const std::string& record, FileWriteStream* stream)
+void Logger::writeRecord(const std::string& record, WriteStream* stream)
 {
   stream->write((const char*)record.data(), uint32_t(record.size()));
   stream->write("\n", 1);
@@ -326,7 +321,7 @@ public:
 };
 #endif // WIN32
 
-void Logger::writeStacktrace(FileWriteStream* stream, StackTraceInfo* stackTraceInfo)
+void Logger::writeStacktrace(WriteStream* stream, StackTraceInfo* stackTraceInfo)
 {
   if (Logger::skipStacktrace)
   {
@@ -404,7 +399,7 @@ void Logger::flush()
 
 void Logger::logStacktraceToStdout()
 {
-  //writeStacktrace(&StdoutWriteStream::instance, nullptr);
+  writeStacktrace(&BroodwarWriteStream::instance, nullptr);
 }
 
 uint64_t Logger::microsecondFromStart() const

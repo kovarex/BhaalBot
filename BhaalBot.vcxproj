@@ -98,6 +98,7 @@
     <ClCompile Include="src\Base.cpp" />
     <ClCompile Include="src\BaseHarvestingController.cpp" />
     <ClCompile Include="src\Bases.cpp" />
+    <ClCompile Include="src\BroodwarWriteStream.cpp" />
     <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
     <ClCompile Include="src\BuildOrder.cpp" />
     <ClCompile Include="src\BuildOrderExecutor.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\Base.hpp" />
     <ClInclude Include="src\BaseHarvestingController.hpp" />
     <ClInclude Include="src\Bases.hpp" />
+    <ClInclude Include="src\BroodwarWriteStream.hpp" />
     <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />
     <ClInclude Include="src\BuildLocationType.hpp" />
     <ClInclude Include="src\BuildOrder.hpp" />

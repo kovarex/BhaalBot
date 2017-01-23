@@ -99,13 +99,13 @@ void BuildOrderManager::onStart()
     else
     {
       buildOrder = position->second;
-      LOG_INFO("Selected build order (%s) based on the config", buildOrderName.c_str());
+      LOG_NOTICE("Selected build order (%s) based on the config", buildOrderName.c_str());
     }
   }
   else
   {
     buildOrder = this->buildOrders.begin()->second;
-    LOG_INFO("Build order not specified in config, selected %s", buildOrder->name.c_str());
+    LOG_NOTICE("Build order not specified in config, selected %s", buildOrder->name.c_str());
   }
   
   this->executor.startBuildOrder(buildOrder);
