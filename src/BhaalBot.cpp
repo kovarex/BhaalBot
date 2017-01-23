@@ -1,12 +1,17 @@
 #include <BhaalBot.hpp>
 #include <iostream>
 #include <BWEM/bwem.h>
+#include <PropertyTreeIni.hpp>
 
 BhaalBot* bhaalBot = nullptr;
 namespace { auto & theMap = BWEM::Map::Instance(); }
 
+Filesystem::Path myFolder = "bwapi-data/BhaalBot";
+Filesystem::Path configPath = myFolder / "config.ini";
+Filesystem::Path localConfigPath = myFolder / "config-local.ini";
+
 BhaalBot::BhaalBot()
-  : logger("bwapi-data/BhaalBot/")
+  : logger(myFolder)
   , overmind(this->moduleContainer)
   , bases(this->moduleContainer)
   , buildOrderManager(this->moduleContainer)
@@ -23,6 +28,13 @@ BhaalBot::BhaalBot()
   , buildTasks(this->moduleContainer)
   , dangerZones(this->moduleContainer)
 {
+  if (Filesystem::exists(configPath))
+    this->config = readIni(configPath);
+  if (Filesystem::exists(localConfigPath))
+  {
+    PropertyTree localConfig = readIni(localConfigPath);
+    this->config.merge(localConfig);
+  }
   bhaalBot = this;
 }
 

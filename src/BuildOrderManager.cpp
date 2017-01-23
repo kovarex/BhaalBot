@@ -2,9 +2,24 @@
 #include <BhaalBot.hpp>
 #include <BWEM/bwem.h>
 #include <BuildOrder.hpp>
+#include <Log.hpp>
 
 BuildOrderManager::BuildOrderManager(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
+{}
+
+BuildOrderManager::~BuildOrderManager()
+{
+  for (auto& item: this->buildOrders)
+    delete item.second;
+}
+
+void BuildOrderManager::onFrame()
+{
+  this->executor.update();
+}
+
+void BuildOrderManager::onStart()
 {
   {
     BuildOrder* pool4 = new BuildOrder("4 pool");
@@ -68,18 +83,32 @@ BuildOrderManager::BuildOrderManager(ModuleContainer& moduleContainer)
     }
     this->add(pool11Exp);
   }
-  this->executor.startBuildOrder(this->buildOrders["4 pool"]);
-}
 
-BuildOrderManager::~BuildOrderManager()
-{
-  for (auto& item: this->buildOrders)
-    delete item.second;
-}
-
-void BuildOrderManager::onFrame()
-{
-  this->executor.update();
+  BuildOrder* buildOrder = nullptr;
+  if (auto item = bhaalBot->config.findp("preferred-build-order"))
+  {
+    std::string buildOrderName = item->get<std::string>().c_str();
+    auto position = this->buildOrders.find(buildOrderName);
+    if (position == this->buildOrders.end())
+    {
+      buildOrder = this->buildOrders.begin()->second;
+      LOG_WARNING("Didn't find preferred-build-order specified in the config (%s), choosing (%s) instead",
+                  buildOrderName.c_str(),
+                  buildOrder->name.c_str());
+    }
+    else
+    {
+      buildOrder = position->second;
+      LOG_INFO("Selected build order (%s) based on the config", buildOrderName.c_str());
+    }
+  }
+  else
+  {
+    buildOrder = this->buildOrders.begin()->second;
+    LOG_INFO("Build order not specified in config, selected %s", buildOrder->name.c_str());
+  }
+  
+  this->executor.startBuildOrder(buildOrder);
 }
 
 void BuildOrderManager::onUnitComplete(BWAPI::Unit)

@@ -9,3 +9,4 @@ Starcraft/maps/replays/
 Starcraft/Errors/
 Starcraft/save
 Starcraft/bwapi-data/BhaalBot/*.log
+Starcraft/bwapi-data/BhaalBot/config-local.ini

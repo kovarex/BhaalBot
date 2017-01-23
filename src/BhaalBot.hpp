@@ -19,6 +19,7 @@
 #include <Bases.hpp>
 #include <Units.hpp>
 #include <Logger.hpp>
+#include <PropertyTree.hpp>
 
 class BhaalBot : public BWAPI::AIModule
 {
@@ -45,6 +46,7 @@ public:
   // Everything below this line is safe to modify.
 
   Logger logger;
+  PropertyTree config;
   ModuleContainer moduleContainer;
   Overmind overmind;
   Bases bases;

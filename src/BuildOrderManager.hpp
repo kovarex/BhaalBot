@@ -12,6 +12,7 @@ public:
   ~BuildOrderManager();
 
   virtual void onFrame() override;
+  virtual void onStart() override;
   void onUnitComplete(BWAPI::Unit unit);
   void add(BuildOrder* buildOrder);
 

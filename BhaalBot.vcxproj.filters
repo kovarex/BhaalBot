@@ -96,6 +96,14 @@
     <ClCompile Include="src\StackWalker.cpp" />
     <ClCompile Include="src\FileUtil.cpp" />
     <ClCompile Include="src\FileWriteStream.cpp" />
+    <ClCompile Include="src\LingGroupController.cpp" />
+    <ClCompile Include="src\PropertyTree.cpp" />
+    <ClCompile Include="src\PropertyTreeIni.cpp" />
+    <ClCompile Include="src\PropertyTreeJson.cpp" />
+    <ClCompile Include="src\PtreeUtil.cpp" />
+    <ClCompile Include="src\ParseReadState.cpp" />
+    <ClCompile Include="src\FileReadStream.cpp" />
+    <ClCompile Include="src\StringReadStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -207,6 +215,18 @@
     <ClInclude Include="src\FileUtil.hpp" />
     <ClInclude Include="src\FileWriteStream.hpp" />
     <ClInclude Include="src\WriteStream.hpp" />
+    <ClInclude Include="src\ImmutableString.hpp" />
+    <ClInclude Include="src\LingGroupController.hpp" />
+    <ClInclude Include="src\PropertyTree.hpp" />
+    <ClInclude Include="src\PropertyTreeIni.hpp" />
+    <ClInclude Include="src\PropertyTreeJson.hpp" />
+    <ClInclude Include="src\PtreeUtil.hpp" />
+    <ClInclude Include="src\CStringReadStream.hpp" />
+    <ClInclude Include="src\ParseReadState.hpp" />
+    <ClInclude Include="src\ReadStream.hpp" />
+    <ClInclude Include="src\StringWriteStream.hpp" />
+    <ClInclude Include="src\FileReadStream.hpp" />
+    <ClInclude Include="src\StringReadStream.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">
