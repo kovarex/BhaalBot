@@ -22,6 +22,7 @@ public:
   Base* baseToScout();
   bool scoutAssigned(Base* base);
   void unassignScout(Unit* unit);
+  void orderToScout(BWAPI::UnitType unitType);
 
   class DiscoverScoutingLocationsScoutTask
   {
@@ -50,6 +51,7 @@ public:
     Unit* scout;
     bool finished = false;
   };
+  std::map<BWAPI::UnitType, int> ordersToScout;
   std::vector<CheckBaseTask> baseCheckTasks;
   static constexpr int scoutCooldown = 24 * 60 * 4;
 };

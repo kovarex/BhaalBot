@@ -24,7 +24,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
         group->add(unit);
         return;
       }
-    Group* group = owner.createGroup();
+    Group* group = this->owner.createGroup();
     group->assignController(new MutaGroupController(*group));
     group->add(unit);
     this->mutaGroups.push_back(group);
@@ -32,7 +32,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
   else if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
   {
     if (this->lingReinforementGroups.empty())
-      this->lingReinforementGroups.push_back(new Group());
+      this->lingReinforementGroups.push_back(this->owner.createGroup());
     this->lingReinforementGroups[0]->add(unit);
   }
   else

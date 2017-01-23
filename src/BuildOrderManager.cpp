@@ -46,11 +46,9 @@ void BuildOrderManager::onStart()
     pool11Exp->add(3, BWAPI::UnitTypes::Zerg_Drone);
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Hatchery, BuildLocationType::ClosestExpansion);
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Zergling);
-    for (uint32_t i = 0; i < 2; ++i)
-      pool11Exp->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Zergling));
+    pool11Exp->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Zergling));
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Zergling);
-    for (uint32_t i = 0; i < 2; ++i)
-      pool11Exp->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Zergling));
+    pool11Exp->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Zergling));
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Hatchery);
     pool11Exp->add(6, BWAPI::UnitTypes::Zerg_Drone);
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Extractor);

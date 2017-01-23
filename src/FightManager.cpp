@@ -40,5 +40,8 @@ void FightManager::onFrame()
 
 Unit* FightManager::getUnit(BWAPI::UnitType unitType)
 {
-  return this->baseDefend->getUnit(unitType);
+  for (TaskForce* taskForce: this->taskForces)
+    if (Unit* unit = taskForce->getUnit(unitType))
+      return unit;
+  return nullptr;
 }

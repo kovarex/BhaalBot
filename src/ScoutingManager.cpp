@@ -16,6 +16,20 @@ void ScoutingManager::assignGroundScout(Unit* unit)
 
 void ScoutingManager::onFrame()
 {
+  for (auto it = this->ordersToScout.begin(); it != this->ordersToScout.end();)
+    if (Unit* unit = bhaalBot->fightManager.getUnit(it->first))
+    {
+      unit->assign(nullptr);
+      bhaalBot->scoutingManager.assignGroundScout(unit);
+      it->second--;
+      if (it->second == 0)
+        it = this->ordersToScout.erase(it);
+      else
+        ++it;
+    }
+    else
+      ++it;
+
   while (!this->unassignedGroundScouters.empty())
   {
     Base* base = this->baseToScout();
@@ -123,6 +137,11 @@ void ScoutingManager::unassignScout(Unit* unit)
   LOG_AND_ABORT("Couldn't find the scout that was assigned.");
 }
 
+void ScoutingManager::orderToScout(BWAPI::UnitType unitType)
+{
+  this->ordersToScout[unitType]++;
+}
+
 void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
 {
   if (this->scout->getTargetPosition() != this->target->getCenter())
@@ -135,10 +154,14 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
       if (nearbyUnit->getType().isBuilding())
         containsBuilding = true;
     if (containsBuilding)
+    {
       this->target->startingBaseStatus = Base::StartingBaseStatus::Enemy;
+      this->target->status = Base::Status::OwnedByEnemy;
+    }
     else
     {
       this->target->startingBaseStatus = Base::StartingBaseStatus::Empty;
+      this->target->status = Base::Status::Empty;
       bool enemyExists = false;
       uint32_t unknownCount = 0;
       for (Base* base: bhaalBot->bases.startingLocations)
@@ -150,7 +173,10 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
       {
         for (Base* base: bhaalBot->bases.bases)
           if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown)
+          {
             base->startingBaseStatus = Base::StartingBaseStatus::Enemy;
+            base->status = Base::Status::OwnedByEnemy;
+          }
       }
     }
     this->finished = true;
