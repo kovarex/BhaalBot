@@ -6,7 +6,8 @@ BhaalBot* bhaalBot = nullptr;
 namespace { auto & theMap = BWEM::Map::Instance(); }
 
 BhaalBot::BhaalBot()
-  : overmind(this->moduleContainer)
+  : logger("bwapi-data/BhaalBot/")
+  , overmind(this->moduleContainer)
   , bases(this->moduleContainer)
   , buildOrderManager(this->moduleContainer)
   , harvestingManager(this->moduleContainer)

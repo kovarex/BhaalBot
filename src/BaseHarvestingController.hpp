@@ -4,30 +4,30 @@
 #include <BWEM/bwem.h>
 class Base;
 class Unit;
-class BaseHarvestingManager;
+class BaseHarvestingController;
 
 class MineralHarvestingAssignment : public Assignment
 {
 public:
-  MineralHarvestingAssignment(BaseHarvestingManager* base) : base(base) {}
+  MineralHarvestingAssignment(BaseHarvestingController* base) : base(base) {}
   virtual ~MineralHarvestingAssignment();
   std::string str() const override { return "Minerals"; }
 
 private:
-  BaseHarvestingManager* base;
+  BaseHarvestingController* base;
 };
 
 class GasHarvestingAssignment : public Assignment
 {
 public:
-  GasHarvestingAssignment(BaseHarvestingManager* base) : base(base) {}
+  GasHarvestingAssignment(BaseHarvestingController* base) : base(base) {}
   virtual ~GasHarvestingAssignment();
   std::string str() const override { return "Gas"; }
 private:
-  BaseHarvestingManager* base;
+  BaseHarvestingController* base;
 };
 
-class BaseHarvestingManager
+class BaseHarvestingController
 {
 public:
   struct Mineral
@@ -37,7 +37,8 @@ public:
     std::vector<Unit*> miners;
   };
 
-  BaseHarvestingManager(Unit* baseUnit, Base* base);
+  BaseHarvestingController(Unit* baseUnit, Base* base);
+  ~BaseHarvestingController();
   void assignMiner(Unit* unit);
   void update();
   void drawDebug();

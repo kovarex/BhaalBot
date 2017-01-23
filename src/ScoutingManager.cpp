@@ -2,6 +2,7 @@
 #include <BhaalBot.hpp>
 #include <Unit.hpp>
 #include <Base.hpp>
+#include <Log.hpp>
 
 ScoutingManager::ScoutingManager(ModuleContainer& moduleContainer)\
   : Module(moduleContainer)
@@ -119,7 +120,7 @@ void ScoutingManager::unassignScout(Unit* unit)
       this->baseCheckTasks.erase(this->baseCheckTasks.begin() + i);
       return;
     }
-  throw std::runtime_error("Couldn't find the scout that was assigned.");
+  LOG_AND_ABORT("Couldn't find the scout that was assigned.");
 }
 
 void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()

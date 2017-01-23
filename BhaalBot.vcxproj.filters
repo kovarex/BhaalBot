@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\BaseHarvestingManager.cpp" />
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\HarvestingManager.cpp" />
     <ClCompile Include="src\BWEM\EasyBMP_1.06\EasyBMP.cpp">
@@ -89,9 +88,16 @@
     <ClCompile Include="src\BWEM\bwemBase.cpp">
       <Filter>BWEM</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseHarvestingController.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\Filesystem.cpp" />
+    <ClCompile Include="src\ApplicationVersion.cpp" />
+    <ClCompile Include="src\Version.cpp" />
+    <ClCompile Include="src\StackWalker.cpp" />
+    <ClCompile Include="src\FileUtil.cpp" />
+    <ClCompile Include="src\FileWriteStream.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BaseHarvestingManager.hpp" />
     <ClInclude Include="src\HarvestingManager.hpp" />
     <ClInclude Include="src\BWEM\EasyBMP_1.06\EasyBMP.h">
       <Filter>BWEM\EasyBMP</Filter>
@@ -191,6 +197,16 @@
     <ClInclude Include="src\BWEM\bwemBase.h">
       <Filter>BWEM</Filter>
     </ClInclude>
+    <ClInclude Include="src\BaseHarvestingController.hpp" />
+    <ClInclude Include="src\Log.hpp" />
+    <ClInclude Include="src\Logger.hpp" />
+    <ClInclude Include="src\Filesystem.hpp" />
+    <ClInclude Include="src\ApplicationVersion.hpp" />
+    <ClInclude Include="src\Version.hpp" />
+    <ClInclude Include="src\StackWalker.h" />
+    <ClInclude Include="src\FileUtil.hpp" />
+    <ClInclude Include="src\FileWriteStream.hpp" />
+    <ClInclude Include="src\WriteStream.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

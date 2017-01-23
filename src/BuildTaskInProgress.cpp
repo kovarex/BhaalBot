@@ -2,6 +2,7 @@
 #include <BuildTaskInProgress.hpp>
 #include <BhaalBot.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
 BuildTaskInProgress::BuildTaskInProgress(BuildLocationType locationType,
                                          BWAPI::UnitType unitType)
@@ -89,10 +90,10 @@ BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingT
     case BuildLocationType::Auto:
       if (unitType == BWAPI::UnitTypes::Zerg_Extractor)
       {
-        BaseHarvestingManager::Geyser* freeGeyser = bhaalBot->harvestingManager.getFreeGeyser();
+        BaseHarvestingController::Geyser* freeGeyser = bhaalBot->harvestingManager.getFreeGeyser();
         if (!freeGeyser)
           return BWAPI::TilePositions::None;
-        freeGeyser->state = BaseHarvestingManager::Geyser::State::OrderToBuildOverGiven;
+        freeGeyser->state = BaseHarvestingController::Geyser::State::OrderToBuildOverGiven;
         *buildingTarget = freeGeyser->geyser;
         return freeGeyser->geyser->getInitialTilePosition();
       }
@@ -155,7 +156,7 @@ BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingT
 void BuildTaskInProgress::unassign(Unit* unit)
 {
   if (this->worker != unit)
-    throw std::runtime_error("Trying to unassign wrong unit.");
+    LOG_AND_ABORT("Trying to unassign wrong unit.");
   this->worker = nullptr;
 }
 

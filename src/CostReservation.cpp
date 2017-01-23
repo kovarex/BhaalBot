@@ -1,5 +1,6 @@
 #include <CostReservation.hpp>
 #include <BhaalBot.hpp>
+#include <Log.hpp>
 
 CostReservation::CostReservation(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
@@ -58,7 +59,7 @@ void CostReservation::erase(CostReservationItem* item)
       this->items.erase(this->items.begin() + i);
       return;
     }
-  throw std::runtime_error("Trying to remove cost reservation item that is not present.");
+  LOG_AND_ABORT("Trying to remove cost reservation item that is not present.");
 }
 
 CostReservationItem::CostReservationItem(Cost cost)

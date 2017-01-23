@@ -1,6 +1,7 @@
 #include <Bases.hpp>
 #include <Base.hpp>
 #include <BWEM/bwem.h>
+#include <Log.hpp>
 
 Bases::Bases(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
@@ -17,7 +18,7 @@ void Bases::init()
       if (base->getCenter().getDistance(myStartingLocationPosition) < 100)
       {
         if (this->startingBase != nullptr)
-          throw std::runtime_error("Two starting bases.");
+          LOG_AND_ABORT("Two starting bases.");
         this->startingBase = base;
         this->startingBase->status = Base::Status::OwnedByMe;
       }

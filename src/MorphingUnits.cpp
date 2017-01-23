@@ -1,5 +1,6 @@
 #include <MorphingUnits.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
 MorphingUnits::MorphingUnits(ModuleContainer& moduleContainer)
  : Module(moduleContainer)
@@ -15,7 +16,7 @@ void MorphingUnits::onUnitMorph(Unit* unit)
   {
     std::string message = unit->getType().getName();
     if (this->counts[unit->getType()] == 0)
-      throw std::runtime_error("Morph count of something would go under 0");
+      LOG_AND_ABORT("Morph count of something would go under 0");
     this->counts[unit->getType()]--;
   }
 }

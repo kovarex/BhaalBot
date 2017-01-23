@@ -1,18 +1,29 @@
 #include <Base.hpp>
-#include <BaseHarvestingManager.hpp>
+#include <BaseHarvestingController.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
-BaseHarvestingManager::BaseHarvestingManager(Unit* baseUnit, Base* base)
+BaseHarvestingController::BaseHarvestingController(Unit* baseUnit, Base* base)
   : baseUnit(baseUnit)
   , base(base)
 {
+  if (base->harvestingController != nullptr)
+    LOG_AND_ABORT("base->harvestingController != nullptr");
+  base->harvestingController = this;
   for (BWEM::Mineral* mineral: this->base->getBWEMBase()->Minerals())
     this->minerals.push_back(Mineral(mineral->Unit()));
   for (BWEM::Geyser* geyser: this->base->getBWEMBase()->Geysers())
     this->geysers.push_back(Geyser(geyser->Unit()));
 }
 
-void BaseHarvestingManager::assignMiner(Unit* unit)
+BaseHarvestingController::~BaseHarvestingController()
+{
+  if (base->harvestingController != this)
+    LOG_AND_ABORT("base->harvestingController != this");
+  this->base->harvestingController = nullptr;
+}
+
+void BaseHarvestingController::assignMiner(Unit* unit)
 {
   Mineral* bestMineral = this->getBestMineral();
   if (bestMineral != nullptr)
@@ -22,7 +33,7 @@ void BaseHarvestingManager::assignMiner(Unit* unit)
   }
 }
 
-void BaseHarvestingManager::update()
+void BaseHarvestingController::update()
 {
   //this->drawDebug();
   for (Mineral& mineral: this->minerals)
@@ -46,7 +57,7 @@ void BaseHarvestingManager::update()
     }
 }
 
-void BaseHarvestingManager::drawDebug()
+void BaseHarvestingController::drawDebug()
 {
   uint32_t index = 0;
   for (Mineral& mineral: this->minerals)
@@ -61,7 +72,7 @@ void BaseHarvestingManager::drawDebug()
                               against.x, against.y, 10, BWAPI::Color(255, 0, 0));
 }
 
-void BaseHarvestingManager::onUnitComplete(Unit* unit)
+void BaseHarvestingController::onUnitComplete(Unit* unit)
 {
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Extractor)
     for (Geyser& geyser: this->geysers)
@@ -72,7 +83,7 @@ void BaseHarvestingManager::onUnitComplete(Unit* unit)
       }
 }
 
-void BaseHarvestingManager::unassignFromMinerals(Unit* unit)
+void BaseHarvestingController::unassignFromMinerals(Unit* unit)
 {
   for (Mineral& mineral: this->minerals)
     for (auto it = mineral.miners.begin(); it != mineral.miners.end();)
@@ -85,10 +96,10 @@ void BaseHarvestingManager::unassignFromMinerals(Unit* unit)
       else
         ++it;
     }
-  throw std::runtime_error("Trying to unassign mineral worker that is not here.");
+  LOG_AND_ABORT("Trying to unassign mineral worker that is not here.");
 }
 
-void BaseHarvestingManager::unassignFromGas(Unit* unit)
+void BaseHarvestingController::unassignFromGas(Unit* unit)
 {
   for (Geyser& geyser: this->geysers)
     for (auto it = geyser.miners.begin(); it != geyser.miners.end();)
@@ -101,10 +112,10 @@ void BaseHarvestingManager::unassignFromGas(Unit* unit)
       else
         ++it;
     }
-  throw std::runtime_error("Trying to unassign gas worker that is not here.");
+  LOG_AND_ABORT("Trying to unassign gas worker that is not here.");
 }
 
-BaseHarvestingManager::Mineral* BaseHarvestingManager::getBestMineral()
+BaseHarvestingController::Mineral* BaseHarvestingController::getBestMineral()
 {
   if (this->minerals.empty())
     return nullptr;
@@ -131,7 +142,7 @@ BaseHarvestingManager::Mineral* BaseHarvestingManager::getBestMineral()
   return bestMineral;
 }
 
-uint32_t BaseHarvestingManager::smallestMineralSaturation() const
+uint32_t BaseHarvestingController::smallestMineralSaturation() const
 {
   uint32_t result = uint32_t(-1);
   for (const Mineral& mineral: this->minerals)
@@ -140,7 +151,7 @@ uint32_t BaseHarvestingManager::smallestMineralSaturation() const
   return result;
 }
 
-uint32_t BaseHarvestingManager::biggestMineralSaturation() const
+uint32_t BaseHarvestingController::biggestMineralSaturation() const
 {
   uint32_t result = 0;
   for (const Mineral& mineral: this->minerals)
@@ -149,7 +160,7 @@ uint32_t BaseHarvestingManager::biggestMineralSaturation() const
   return result;
 }
 
-Unit* BaseHarvestingManager::freeLeastNeededWorker()
+Unit* BaseHarvestingController::freeLeastNeededWorker()
 {
   Mineral* mostSatisfiedMineral = nullptr;
   for (Mineral& mineral: this->minerals)
@@ -177,7 +188,7 @@ Unit* BaseHarvestingManager::freeLeastNeededWorker()
   return bestWorkerToFree;
 }
 
-BWAPI::Position BaseHarvestingManager::againstMinerals()
+BWAPI::Position BaseHarvestingController::againstMinerals()
 {
   BWAPI::Position basePosition = this->baseUnit->getPosition();
   std::vector<BWAPI::Position> oppositePositions;

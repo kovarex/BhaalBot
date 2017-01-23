@@ -1,5 +1,6 @@
 #include <Units.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
 Unit* Units::onUnitComplete(BWAPI::Unit unit)
 {
@@ -35,6 +36,6 @@ Unit* Units::findOrThrow(BWAPI::Unit unit)
 {
   auto position = this->units.find(unit);
   if (position == this->units.end())
-    throw std::runtime_error("Trying to find unknown " + unit->getType().getName());
+    LOG_AND_ABORT("Trying to find unknown " + unit->getType().getName());
   return position->second;
 }

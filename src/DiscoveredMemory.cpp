@@ -1,6 +1,7 @@
 #include <DiscoveredMemory.hpp>
 #include <BhaalBot.hpp>
 #include <EnemyUnitTarget.hpp>
+#include <Log.hpp>
 
 DiscoveredMemory::DiscoveredMemory(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
@@ -126,5 +127,5 @@ void UnitMemoryInfo::removeTarget(EnemyUnitTarget* target)
       this->targetingMe.erase(it);
       return;
     }
-  throw std::runtime_error("Trying to remove target that is not here.");
+  LOG_AND_ABORT("Trying to remove target that is not here.");
 }

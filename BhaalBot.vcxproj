@@ -46,7 +46,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>src/;bwapi/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;WIN32;_DEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;INLINE_CPP=;_DEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -55,6 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <PreLinkEvent />
     <Link>
@@ -70,7 +71,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>src/;bwapi/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;INLINE_CPP=;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
@@ -78,6 +79,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <PreLinkEvent />
     <Link>
@@ -91,9 +93,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ApplicationVersion.cpp" />
     <ClCompile Include="src\Assignment.cpp" />
     <ClCompile Include="src\Base.cpp" />
-    <ClCompile Include="src\BaseHarvestingManager.cpp" />
+    <ClCompile Include="src\BaseHarvestingController.cpp" />
     <ClCompile Include="src\Bases.cpp" />
     <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
     <ClCompile Include="src\BuildOrder.cpp" />
@@ -127,11 +130,15 @@
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\EnemyUnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
+    <ClCompile Include="src\Filesystem.cpp" />
+    <ClCompile Include="src\FileUtil.cpp" />
+    <ClCompile Include="src\FileWriteStream.cpp" />
     <ClCompile Include="src\Group.cpp" />
     <ClCompile Include="src\GroupController.cpp" />
     <ClCompile Include="src\HarvestingManager.cpp" />
     <ClCompile Include="src\BhaalBot.cpp" />
     <ClCompile Include="src\LarvaReservations.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Module.cpp" />
     <ClCompile Include="src\ModuleContainer.cpp" />
     <ClCompile Include="src\MorphingUnits.cpp" />
@@ -139,17 +146,20 @@
     <ClCompile Include="src\Overmind.cpp" />
     <ClCompile Include="src\ProducerManager.cpp" />
     <ClCompile Include="src\ScoutingManager.cpp" />
+    <ClCompile Include="src\StackWalker.cpp" />
     <ClCompile Include="src\StringUtil.cpp" />
     <ClCompile Include="src\TaskForce.cpp" />
     <ClCompile Include="src\TaskForceController.cpp" />
     <ClCompile Include="src\Unit.cpp" />
     <ClCompile Include="src\Units.cpp" />
     <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="src\Version.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ApplicationVersion.hpp" />
     <ClInclude Include="src\Assignment.hpp" />
     <ClInclude Include="src\Base.hpp" />
-    <ClInclude Include="src\BaseHarvestingManager.hpp" />
+    <ClInclude Include="src\BaseHarvestingController.hpp" />
     <ClInclude Include="src\Bases.hpp" />
     <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />
     <ClInclude Include="src\BuildLocationType.hpp" />
@@ -187,11 +197,16 @@
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\EnemyUnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
+    <ClInclude Include="src\Filesystem.hpp" />
+    <ClInclude Include="src\FileUtil.hpp" />
+    <ClInclude Include="src\FileWriteStream.hpp" />
     <ClInclude Include="src\Group.hpp" />
     <ClInclude Include="src\GroupController.hpp" />
     <ClInclude Include="src\HarvestingManager.hpp" />
     <ClInclude Include="src\BhaalBot.hpp" />
     <ClInclude Include="src\LarvaReservations.hpp" />
+    <ClInclude Include="src\Log.hpp" />
+    <ClInclude Include="src\Logger.hpp" />
     <ClInclude Include="src\Module.hpp" />
     <ClInclude Include="src\ModuleContainer.hpp" />
     <ClInclude Include="src\MorphingUnits.hpp" />
@@ -199,12 +214,15 @@
     <ClInclude Include="src\Overmind.hpp" />
     <ClInclude Include="src\ProducerManager.hpp" />
     <ClInclude Include="src\ScoutingManager.hpp" />
+    <ClInclude Include="src\StackWalker.h" />
     <ClInclude Include="src\StringUtil.hpp" />
     <ClInclude Include="src\TaskForce.hpp" />
     <ClInclude Include="src\TaskForceController.hpp" />
     <ClInclude Include="src\Unit.hpp" />
     <ClInclude Include="src\Units.hpp" />
     <ClInclude Include="src\Vector.hpp" />
+    <ClInclude Include="src\Version.hpp" />
+    <ClInclude Include="src\WriteStream.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

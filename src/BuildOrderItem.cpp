@@ -1,6 +1,6 @@
 #include <BWEM/bwem.h>
 #include <BuildOrderItem.hpp>
-#include <BaseHarvestingManager.hpp>
+#include <BaseHarvestingController.hpp>
 #include <BhaalBot.hpp>
 #include <StringUtil.hpp>
 #include <BuildTaskInProgress.hpp>

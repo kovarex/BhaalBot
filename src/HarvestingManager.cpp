@@ -10,13 +10,13 @@ HarvestingManager::HarvestingManager(ModuleContainer& moduleContainer)
 
 HarvestingManager::~HarvestingManager()
 {
-  for (BaseHarvestingManager* base: this->bases)
+  for (BaseHarvestingController* base: this->bases)
     delete base;
 }
 
 void HarvestingManager::onFrame()
 {
-  for (BaseHarvestingManager* base: this->bases)
+  for (BaseHarvestingController* base: this->bases)
     base->update();
   this->balanceGasMining();
   this->balanceWorkersAssignmentBetweenBases();
@@ -32,7 +32,7 @@ void HarvestingManager::add(Unit* unit)
 
 void HarvestingManager::addBase(Unit* baseUnit, Base* base)
 {
-  this->bases.push_back(new BaseHarvestingManager(baseUnit, base));
+  this->bases.push_back(new BaseHarvestingController(baseUnit, base));
   for (Unit* unit: this->baseLessMiners)
     this->bases.back()->assignMiner(unit);
   this->baseLessMiners.clear();
@@ -42,8 +42,8 @@ Unit* HarvestingManager::getClosestWorker(BWAPI::Position position)
 {
   Unit* closestUnit = nullptr;
 
-  for (BaseHarvestingManager* base: this->bases)
-    for (BaseHarvestingManager::Mineral& mineral: base->minerals)
+  for (BaseHarvestingController* base: this->bases)
+    for (BaseHarvestingController::Mineral& mineral: base->minerals)
       for (uint32_t i = 0; i < mineral.miners.size(); ++i)
       {
         Unit* worker = mineral.miners[i];
@@ -56,7 +56,7 @@ Unit* HarvestingManager::getClosestWorker(BWAPI::Position position)
 
 bool HarvestingManager::hasBaseNearby(BWAPI::Position position) const
 {
-  for (const BaseHarvestingManager* base: this->bases)
+  for (const BaseHarvestingController* base: this->bases)
     if (base->baseUnit->getDistance(position) < 5)
       return true;
   return false;
@@ -65,7 +65,7 @@ bool HarvestingManager::hasBaseNearby(BWAPI::Position position) const
 float HarvestingManager::averageDistanceToBases(BWAPI::Position position) const
 {
   float result = 0;
-  for (const BaseHarvestingManager* base: this->bases)
+  for (const BaseHarvestingController* base: this->bases)
   {
     int length = 0;
     auto& path = BWEM::Map::Instance().GetPath(position, base->baseUnit->getPosition(), &length);
@@ -74,11 +74,11 @@ float HarvestingManager::averageDistanceToBases(BWAPI::Position position) const
   return result / this->bases.size();
 }
 
-BaseHarvestingManager::Geyser* HarvestingManager::getFreeGeyser()
+BaseHarvestingController::Geyser* HarvestingManager::getFreeGeyser()
 {
-  for (BaseHarvestingManager* base: this->bases)
-    for (BaseHarvestingManager::Geyser& geyser: base->geysers)
-      if (geyser.state == BaseHarvestingManager::Geyser::State::Free)
+  for (BaseHarvestingController* base: this->bases)
+    for (BaseHarvestingController::Geyser& geyser: base->geysers)
+      if (geyser.state == BaseHarvestingController::Geyser::State::Free)
         return &geyser;
   return nullptr;
 }
@@ -86,19 +86,19 @@ BaseHarvestingManager::Geyser* HarvestingManager::getFreeGeyser()
 void HarvestingManager::balanceGasMining()
 {
   uint32_t gasMiners = 0;
-  for (BaseHarvestingManager* base: this->bases)
-    for (BaseHarvestingManager::Geyser& geyser: base->geysers)
+  for (BaseHarvestingController* base: this->bases)
+    for (BaseHarvestingController::Geyser& geyser: base->geysers)
       gasMiners += geyser.miners.size();
   if (gasMiners == this->geyserMinersWanted)
     return;
   if (gasMiners < this->geyserMinersWanted)
   {
-    BaseHarvestingManager::Geyser* bestGeyser = nullptr;
-    BaseHarvestingManager* theBase = nullptr;
-    for (BaseHarvestingManager* base: this->bases)
-      for (BaseHarvestingManager::Geyser& geyser: base->geysers)
+    BaseHarvestingController::Geyser* bestGeyser = nullptr;
+    BaseHarvestingController* theBase = nullptr;
+    for (BaseHarvestingController* base: this->bases)
+      for (BaseHarvestingController::Geyser& geyser: base->geysers)
       {
-        if (geyser.state != BaseHarvestingManager::Geyser::State::Ready)
+        if (geyser.state != BaseHarvestingController::Geyser::State::Ready)
           continue;
         if (geyser.miners.size() >= 3)
           continue;
@@ -130,10 +130,10 @@ void HarvestingManager::balanceWorkersAssignmentBetweenBases()
   if (this->bases.size() < 2)
     return;
   uint32_t smallestBaseSaturation = uint32_t(-1);
-  BaseHarvestingManager* smallestBase = nullptr;
+  BaseHarvestingController* smallestBase = nullptr;
   uint32_t biggestBaseSaturation = 0;
-  BaseHarvestingManager* biggestBase = nullptr;
-  for (BaseHarvestingManager* base: this->bases)
+  BaseHarvestingController* biggestBase = nullptr;
+  for (BaseHarvestingController* base: this->bases)
   {
     uint32_t smallestMineralSaturation = base->smallestMineralSaturation();
     if (smallestMineralSaturation < smallestBaseSaturation)
@@ -160,14 +160,14 @@ void HarvestingManager::onUnitComplete(Unit* unit)
 {
   if (unit->getPlayer() != BWAPI::Broodwar->self())
     return;
-  for (BaseHarvestingManager* base: this->bases)
+  for (BaseHarvestingController* base: this->bases)
     base->onUnitComplete(unit);
   if (unit->getType().isResourceDepot()) // A resource depot is a Command Center, Nexus, or Hatchery
   {
     Base* base = bhaalBot->bases.getClosestBase(unit->getPosition());
     if (base == nullptr)
       return;
-    for (BaseHarvestingManager* myBase: this->bases)
+    for (BaseHarvestingController* myBase: this->bases)
       if (myBase->base == base)
         return; // I already have this base registered
     base->status = Base::Status::OwnedByMe;

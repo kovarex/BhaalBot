@@ -1,5 +1,5 @@
 #pragma once
-#include <BaseHarvestingManager.hpp>
+#include <BaseHarvestingController.hpp>
 #include <Module.hpp>
 #include <TaskForce.hpp>
 class ModuleContainer;
@@ -16,7 +16,7 @@ public:
   Unit* getClosestWorker(BWAPI::Position position);
   bool hasBaseNearby(BWAPI::Position position) const;
   float averageDistanceToBases(BWAPI::Position position) const;
-  BaseHarvestingManager::Geyser* getFreeGeyser();
+  BaseHarvestingController::Geyser* getFreeGeyser();
   void balanceGasMining();
   void balanceWorkersAssignmentBetweenBases();
 
@@ -24,6 +24,6 @@ public:
   virtual void onFrame() override;
 
   std::vector<Unit*> baseLessMiners;
-  std::vector<BaseHarvestingManager*> bases;
+  std::vector<BaseHarvestingController*> bases;
   uint32_t geyserMinersWanted = uint32_t(-1); // uint32_t(-1) is infinity, 0 means don't mine gas, 2 means 2 miners etc...
 };

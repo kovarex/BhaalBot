@@ -1,5 +1,6 @@
 #pragma once
 #include <BWEM/bwem.h>
+class BaseHarvestingController;
 
 class Base
 {
@@ -27,6 +28,7 @@ public:
 
   StartingBaseStatus startingBaseStatus = StartingBaseStatus::None;
   Status status = Status::Unknown;
+  BaseHarvestingController* harvestingController = nullptr;
 private:
   const BWEM::Base* bwemBase;
 };
