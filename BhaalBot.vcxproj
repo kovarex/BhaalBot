@@ -97,6 +97,7 @@
     <ClCompile Include="src\Assignment.cpp" />
     <ClCompile Include="src\Base.cpp" />
     <ClCompile Include="src\BaseHarvestingController.cpp" />
+    <ClCompile Include="src\BaseInDangerDetector.cpp" />
     <ClCompile Include="src\Bases.cpp" />
     <ClCompile Include="src\BroodwarWriteStream.cpp" />
     <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\Assignment.hpp" />
     <ClInclude Include="src\Base.hpp" />
     <ClInclude Include="src\BaseHarvestingController.hpp" />
+    <ClInclude Include="src\BaseInDangerDetector.hpp" />
     <ClInclude Include="src\Bases.hpp" />
     <ClInclude Include="src\BroodwarWriteStream.hpp" />
     <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />

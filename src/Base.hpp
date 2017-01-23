@@ -1,6 +1,7 @@
 #pragma once
 #include <BWEM/bwem.h>
 class BaseHarvestingController;
+class BaseInDangerDetector;
 
 class Base
 {
@@ -10,6 +11,7 @@ public:
   bool accessibleOnGround = true;
   BWAPI::Position getCenter() { return bwemBase->Center(); }
   const BWEM::Base* getBWEMBase() { return this->bwemBase; }
+  void onFrame();
 
   enum class StartingBaseStatus
   {
@@ -25,10 +27,25 @@ public:
     OwnedByEnemy,
     Empty
   };
+  enum class DefenseState
+  {
+    None,
+    Defending
+  };
 
+  enum class DefenseStrategy
+  {
+    None,
+    FightWithDrones,
+    EscapeWithDrones
+  };
+
+  DefenseState defenseState = DefenseState::None;
+  DefenseStrategy defenseStrategy = DefenseStrategy::FightWithDrones;
   StartingBaseStatus startingBaseStatus = StartingBaseStatus::None;
   Status status = Status::Unknown;
   BaseHarvestingController* harvestingController = nullptr;
+  BaseInDangerDetector* baseInDangerDetector = nullptr;
 private:
   const BWEM::Base* bwemBase;
 };

@@ -7,4 +7,5 @@ public:
   Overmind(ModuleContainer& moduleContainer);
 
   void onUnitComplete(Unit* unit) override;
+  void onFrame();
 };

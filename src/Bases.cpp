@@ -74,6 +74,7 @@ void Bases::onFrame()
      case Base::Status::OwnedByEnemy: text = "Enemy base"; break;
     }
     BWAPI::Broodwar->drawTextMap(base->getCenter(), "%s", text.c_str());
+    base->onFrame();
   }
 }
 

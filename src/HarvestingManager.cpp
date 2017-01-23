@@ -1,3 +1,4 @@
+#include <BaseInDangerDetector.hpp>
 #include <Base.hpp>
 #include <BhaalBot.hpp>
 #include <HarvestingManager.hpp>
@@ -171,6 +172,7 @@ void HarvestingManager::onUnitComplete(Unit* unit)
       if (myBase->base == base)
         return; // I already have this base registered
     base->status = Base::Status::OwnedByMe;
+    base->baseInDangerDetector = new BaseInDangerDetector(*base);
     std::vector<BWAPI::Unit> minerals;
     for (BWEM::Mineral* mineral: base->getBWEMBase()->Minerals())
       minerals.push_back(mineral->Unit());

@@ -146,9 +146,9 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
 {
   if (this->scout->getTargetPosition() != this->target->getCenter())
     this->scout->move(this->target->getCenter());
-  if (this->scout->getPosition().getDistance(this->target->getCenter()) < 50)
+  if (this->scout->getPosition().getDistance(this->target->getCenter()) < 200)
   {
-    BWAPI::Unitset nearbyUnits = this->scout->getUnitsInRadius(100);
+    BWAPI::Unitset nearbyUnits = this->scout->getUnitsInRadius(200);
     bool containsBuilding = false;
     for (BWAPI::Unit nearbyUnit: nearbyUnits)
       if (nearbyUnit->getType().isBuilding())
