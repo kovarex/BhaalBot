@@ -7,23 +7,23 @@ BuildOrderManager::BuildOrderManager(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
 {
   {
-    BuildOrder* pool4 = new BuildOrder();
+    BuildOrder* pool4 = new BuildOrder("4 pool");
     pool4->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool4->add(6, BWAPI::UnitTypes::Zerg_Zergling);
-    this->buildOrders.push_back(pool4);
+    this->add(pool4);
   }
   {
-    BuildOrder* pool9 = new BuildOrder();
+    BuildOrder* pool9 = new BuildOrder("9 pool");
     pool9->add(5, BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool9->add(BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(BWAPI::UnitTypes::Zerg_Overlord);
     pool9->add(BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(6, BWAPI::UnitTypes::Zerg_Zergling);
-    this->buildOrders.push_back(pool9);
+    this->add(pool9);
   }
   {
-    BuildOrder*  pool11Exp = new BuildOrder();
+    BuildOrder*  pool11Exp = new BuildOrder("11 pool exp");
     pool11Exp->add(5, BWAPI::UnitTypes::Zerg_Drone);
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Overlord);
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Drone);
@@ -66,15 +66,15 @@ BuildOrderManager::BuildOrderManager(ModuleContainer& moduleContainer)
       for (uint32_t i = 0; i < 2; ++i)
         pool11Exp->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Zergling));
     }
-    this->buildOrders.push_back(pool11Exp);
+    this->add(pool11Exp);
   }
-  this->executor.startBuildOrder(this->buildOrders.front());
+  this->executor.startBuildOrder(this->buildOrders["4 pool"]);
 }
 
 BuildOrderManager::~BuildOrderManager()
 {
-  for (BuildOrder* buildOrder: buildOrders)
-    delete buildOrder;
+  for (auto& item: this->buildOrders)
+    delete item.second;
 }
 
 void BuildOrderManager::onFrame()
@@ -84,6 +84,11 @@ void BuildOrderManager::onFrame()
 
 void BuildOrderManager::onUnitComplete(BWAPI::Unit)
 {}
+
+void BuildOrderManager::add(BuildOrder* buildOrder)
+{
+  this->buildOrders[buildOrder->name] = buildOrder;
+}
 
 BuildOrder::~BuildOrder()
 {
