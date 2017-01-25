@@ -18,6 +18,11 @@ void Overmind::onUnitComplete(Unit* unit)
   }
 }
 
+void Overmind::onUnitDestroy(Unit* unit)
+{
+  LOG_INFO("My %s destroyed", unit->getType().getName().c_str());
+}
+
 void Overmind::onFrame()
 {
   for (Base* base: bhaalBot->bases.bases)
