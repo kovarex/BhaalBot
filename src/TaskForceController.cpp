@@ -5,6 +5,7 @@
 #include <Unit.hpp>
 #include <MutaGroupController.hpp>
 #include <LingGroupController.hpp>
+#include <log.hpp>
 
 #define MAX_DISTANCE_TO_GROUP_NEW_LINGS 300 // currently in pixels
 #define MAX_LING_GROUP_ERROR 100
@@ -46,6 +47,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
       {
         if (unit->getPosition().getDistance(group->getPosition()) < MAX_DISTANCE_TO_GROUP_NEW_LINGS)
         {
+          LOG_NOTICE("Adding ling to reinforcements");
           group->add(unit);
           if (!group->getController()->isGrouped(MAX_LING_GROUP_ERROR))
           {
@@ -59,6 +61,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
     // if ling still not handled, create a new group for him.
     if (this->lingReinforementGroups.empty() || !lingAdded)
     {
+      LOG_NOTICE("Starting new reinforecements group");
       this->lingReinforementGroups.push_back(this->owner.createGroup());
       Group* group = this->lingReinforementGroups.back();
       group->add(unit);
@@ -102,6 +105,7 @@ void AttackTaskForceController::onFrame()
   {
     if (enemyBasePos.getDistance((*it)->getPosition()) > DISTANCE_FROM_ENEMY_TO_START_COMBAT)
     {
+      LOG_NOTICE("Switching ling reinforcements to combat");
       this->lingCombatGroups.push_back((*it));
       (*it)->getController()->setTargetPosition({2300, 200});
       (*it)->getController()->setObjective(GroupObjective::ATTACK);
