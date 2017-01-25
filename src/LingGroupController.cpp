@@ -65,15 +65,3 @@ void LingGroupController::chooseTarget()
   */
 
 }
-
-BWAPI::Position LingGroupController::getCenter()
-{
-  if (this->owner.getUnits().empty())
-    return BWAPI::Positions::None;
-  BWAPI::Position center;
-  for (Unit* unit : this->owner.getUnits())
-    center += unit->getPosition();
-  center.x /= this->owner.getUnits().size();
-  center.y /= this->owner.getUnits().size();
-  return center;
-}

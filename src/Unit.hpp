@@ -41,6 +41,8 @@ public:
   BWAPI::Position getTargetPosition() { return this->bwapiUnit->getTargetPosition(); }
   int getGroundWeaponCooldown() const { return this->bwapiUnit->getGroundWeaponCooldown(); }
   bool isConstructing() const { return this->bwapiUnit->isConstructing(); }
+  bool attack(BWAPI::Unit unit) { return this->bwapiUnit->attack(unit); }
+  bool attack(BWAPI::Position position) { return this->bwapiUnit->attack(position); }
 
   void printAssignment();
   int getDistance(Unit* unit) const { return this->bwapiUnit->getDistance(unit->bwapiUnit); }

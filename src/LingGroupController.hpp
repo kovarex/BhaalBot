@@ -18,7 +18,6 @@ public:
   void setTargetUnit(BWAPI::Unit targetUnit) { this->targetUnit = targetUnit;  }
   void setTargetPosition(BWAPI::Position targetPosition) { this->targetPosition = targetPosition; }
 
-  BWAPI::Position getCenter();
   //void attackTarget(BWAPI::Unit unit);
   //void move(); // moves to target position or unit
   //void attack();  // attacks target position or unit

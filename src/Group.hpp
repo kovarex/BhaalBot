@@ -29,6 +29,7 @@ public:
   void setAttackTarget(BWAPI::Unit target); // TODO this should not be needed - orders should be given to controller.
   UnitMemoryInfo* getAttackTarget();
   BWAPI::Position getPosition() const;
+  int getSize(void) { return this->units.size(); }
 
 private:
   std::set<Unit*> units;

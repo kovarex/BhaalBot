@@ -31,6 +31,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
   }
   else if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
   {
+    // TODO see, if there is a reinforcement group nearby, if it is, join it and make it regroup.
     if (this->lingReinforementGroups.empty())
       this->lingReinforementGroups.push_back(this->owner.createGroup());
     this->lingReinforementGroups[0]->add(unit);
