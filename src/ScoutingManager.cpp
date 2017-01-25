@@ -14,18 +14,27 @@ void ScoutingManager::assignGroundScout(Unit* unit)
   unit->assign(new ScoutTaskAssignment());
 }
 
+Unit* ScoutingManager::getScoutCandidate(BWAPI::UnitType unitType)
+{
+  for (auto& item: bhaalBot->units.getUnits())
+    if (item.second->getType() == unitType &&
+        item.second->canMove() &&
+        (item.second->getAssignment() == nullptr ||
+         item.second->getAssignment()->getPriority() == Assignment::Priority::Low))
+      return item.second;
+  return nullptr;
+}
+
 void ScoutingManager::onFrame()
 {
   for (auto it = this->ordersToScout.begin(); it != this->ordersToScout.end();)
-    if (Unit* unit = bhaalBot->fightManager.getUnit(it->first))
+    if (Unit* unit = this->getScoutCandidate(it->first))
     {
       unit->assign(nullptr);
       bhaalBot->scoutingManager.assignGroundScout(unit);
       it->second--;
       if (it->second == 0)
         it = this->ordersToScout.erase(it);
-      else
-        ++it;
     }
     else
       ++it;
@@ -95,13 +104,17 @@ void ScoutingManager::onFrame()
 
 Base* ScoutingManager::baseToScout()
 {
+  Base* bestCandidate = nullptr;
   for (Base* base: bhaalBot->bases.startingLocations)
   {
     if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown &&
-        !this->scoutAssigned(base))
-      return base;
+        !this->scoutAssigned(base) &&
+        (bestCandidate == nullptr ||
+         bestCandidate->getCenter().getDistance(bhaalBot->bases.startingBase->getCenter()) >
+         base->getCenter().getDistance(bhaalBot->bases.startingBase->getCenter())))
+        bestCandidate = base;
   }
-  return nullptr;
+  return bestCandidate;
 }
 
 bool ScoutingManager::scoutAssigned(Base* base)
