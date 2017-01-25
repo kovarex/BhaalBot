@@ -12,6 +12,7 @@ public:
   MineralHarvestingAssignment(BaseHarvestingController* base) : base(base) {}
   virtual ~MineralHarvestingAssignment();
   std::string str() const override { return "Minerals"; }
+  Priority getPriority() const override { return Priority::Low; }
 
 private:
   BaseHarvestingController* base;

@@ -30,6 +30,7 @@ public:
   BWAPI::Unitset getUnitsInRadius(int radius) { return this->bwapiUnit->getUnitsInRadius(radius); }
   bool morph(BWAPI::UnitType unitType) { return this->bwapiUnit->morph(unitType); }
   bool canAttack() const { return this->bwapiUnit->canAttack(); }
+  bool canMove() const { return this->bwapiUnit->canMove(); }
   bool canTrain(BWAPI::UnitType unitType) const { return this->bwapiUnit->canTrain(unitType); }
   bool train(BWAPI::UnitType unitType) { return this->bwapiUnit->train(unitType); }
   BWAPI::Unit getHatchery() { return this->bwapiUnit->getHatchery(); }

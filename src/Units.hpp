@@ -11,6 +11,7 @@ public:
   Unit* findOrThrow(BWAPI::Unit unit);
   Unit* find(BWAPI::Unit unit);
   void printAssignments();
+  const std::map<BWAPI::Unit, Unit*>& getUnits() const { return this->units; }
 
 private:
   std::map<BWAPI::Unit, Unit*> units;

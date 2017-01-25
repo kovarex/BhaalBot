@@ -23,6 +23,7 @@ public:
   bool scoutAssigned(Base* base);
   void unassignScout(Unit* unit);
   void orderToScout(BWAPI::UnitType unitType);
+  Unit* getScoutCandidate(BWAPI::UnitType unitType);
 
   class DiscoverScoutingLocationsScoutTask
   {

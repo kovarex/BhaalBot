@@ -11,11 +11,17 @@ Overmind::Overmind(ModuleContainer& moduleContainer)
 
 void Overmind::onUnitComplete(Unit* unit)
 {
-  if (unit->canGather())
-  {
-    LOG_INFO("New drone assigned to gather");
-    bhaalBot->harvestingManager.add(unit);
-  }
+  this->assignUnit(unit);
+}
+
+void Overmind::onUnitIdle(Unit* unit)
+{
+  this->assignUnit(unit);
+}
+
+void Overmind::onUnitDestroy(Unit* unit)
+{
+  LOG_INFO("My %s destroyed", unit->getType().getName().c_str());
 }
 
 void Overmind::onFrame()
@@ -38,4 +44,13 @@ void Overmind::onFrame()
           LOG_NOTICE("Switching base to normal mode.");
         }
       }
+}
+
+void Overmind::assignUnit(Unit* unit)
+{
+  if (unit->canGather())
+  {
+    LOG_INFO("Drone assigned to gather");
+    bhaalBot->harvestingManager.add(unit);
+  }
 }

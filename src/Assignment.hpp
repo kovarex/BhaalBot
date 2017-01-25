@@ -7,8 +7,14 @@ class Unit;
 class Assignment
 {
 public:
+  enum class Priority
+  {
+    Normal,
+    Low
+  };
   virtual ~Assignment() {} /**< Automatically unassigns the unit from its task. */
   virtual std::string str() const = 0; /**< @return String representation of the assignment */
+  virtual Priority getPriority() const { return Priority::Normal; }
 
   Unit* unit = nullptr; /**< The unit witht the assignement. This is set it Unit::assign. */
 };

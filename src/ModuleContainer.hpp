@@ -17,6 +17,7 @@ public:
   void onStart();
   void onUnitDestroy(Unit* unit);
   void onForeignUnitDestroy(BWAPI::Unit unit);
+  void onUnitIdle(Unit* unit);
 private:
   std::vector<Module*> modules;
 };

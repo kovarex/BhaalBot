@@ -24,11 +24,26 @@ void BuildOrderManager::onStart()
   {
     BuildOrder* pool4 = new BuildOrder("4 pool");
     pool4->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
+    pool4->add(1, BWAPI::UnitTypes::Zerg_Drone);
     pool4->add(6, BWAPI::UnitTypes::Zerg_Zergling);
     pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
     pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
     pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool4);
+  }
+
+  {
+    BuildOrder* pool5 = new BuildOrder("5 pool");
+    pool5->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Overlord));
+    pool5->add(1, BWAPI::UnitTypes::Zerg_Drone);
+    pool5->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
+    pool5->add(1, BWAPI::UnitTypes::Zerg_Drone);
+    pool5->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Drone));
+    pool5->add(6, BWAPI::UnitTypes::Zerg_Zergling);
+    pool5->add(2, BWAPI::UnitTypes::Zerg_Zergling);
+    pool5->add(2, BWAPI::UnitTypes::Zerg_Zergling);
+    pool5->add(2, BWAPI::UnitTypes::Zerg_Zergling);
+    this->add(pool5);
   }
   {
     BuildOrder* pool9 = new BuildOrder("9 pool");
