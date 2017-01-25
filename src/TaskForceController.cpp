@@ -7,8 +7,8 @@
 #include <LingGroupController.hpp>
 #include <log.hpp>
 
-#define MAX_DISTANCE_TO_GROUP_NEW_LINGS 300 // currently in pixels
-#define MAX_LING_GROUP_ERROR 100
+#define MAX_DISTANCE_TO_GROUP_NEW_LINGS 200 // currently in pixels
+#define MAX_LING_GROUP_ERROR 50
 #define DISTANCE_FROM_ENEMY_TO_START_COMBAT 500
 
 AttackTaskForceController::AttackTaskForceController(TaskForce& owner)
@@ -18,7 +18,7 @@ AttackTaskForceController::AttackTaskForceController(TaskForce& owner)
   this->groundGroup = owner.createGroup();
   for (Unit* unit: units)
     this->assignUnit(unit);
-  enemyBasePos = { 2200, 200 }; // TODO update
+  enemyBasePos = { 2600, 160 }; // TODO update
 }
 
 void AttackTaskForceController::assignUnit(Unit* unit)
@@ -101,15 +101,27 @@ void AttackTaskForceController::onFrame()
   }
   //--------------------------------------------- LINGZ
   // transform reinforcements into combat groups, if they are close enough to enemy base
-  for (auto it = this->lingReinforementGroups.begin(); it < this->lingReinforementGroups.begin(); ++it)
+  for (auto it = this->lingReinforementGroups.begin(); it < this->lingReinforementGroups.end();)
   {
-    if (enemyBasePos.getDistance((*it)->getPosition()) > DISTANCE_FROM_ENEMY_TO_START_COMBAT)
+    if (enemyBasePos.getDistance((*it)->getPosition()) < DISTANCE_FROM_ENEMY_TO_START_COMBAT)
     {
-      LOG_NOTICE("Switching ling reinforcements to combat");
+      LOG_NOTICE("Switching ling from reinforcements to combat, grouping");
       this->lingCombatGroups.push_back((*it));
-      (*it)->getController()->setTargetPosition({2300, 200});
-      (*it)->getController()->setObjective(GroupObjective::ATTACK_MOVE);
-      lingReinforementGroups.erase(it);
+      //(*it)->getController()->setTargetPosition(BWAPI::Position({ 2400, 100 }));
+      (*it)->getController()->setObjective(GroupObjective::GROUP);
+      it = lingReinforementGroups.erase(it);
+    }
+    else
+      ++it;
+  }
+
+  for (Group* group : this->lingCombatGroups)
+  {
+    if (group->getController()->getObjective() == GroupObjective::GROUP &&
+      group->getController()->isGrouped(MAX_LING_GROUP_ERROR))
+    {
+      LOG_NOTICE("Grouped, attacking");
+      group->getController()->setObjective(GroupObjective::ATTACK_MOVE);
     }
   }
 

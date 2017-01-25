@@ -23,18 +23,19 @@ class GroupController
 {
 public:
   GroupController(Group& owner, GroupObjective objective = GroupObjective::NONE) : owner(owner), objective(objective) {}
-  virtual void onAdded(Unit* unit) {}
+  virtual void onAdded(Unit* unit) { this->updateAction();  }
   virtual void onRemoved(Unit* unit) {}
-  virtual void onFrame();
-  virtual void setTarget(BWAPI::Unit target) { this->target = target; }
-  virtual void setTargetPosition(BWAPI::Position position) { this->target = position; }
+  virtual void onFrame() {}
+  virtual void setTarget(BWAPI::Unit target);
+  virtual void setTargetPosition(BWAPI::Position position);
   const Target& getTarget() { return this->target; }
-  virtual void setObjective(GroupObjective objective) { this->objective = objective; }
+  virtual void setObjective(GroupObjective objective);
   virtual GroupObjective getObjective(void) const { return this->objective; }
   virtual BWAPI::Position getPosition(void) const { return this->getGroupCenter(); }
   virtual BWAPI::Position getGroupCenter(void) const;
   virtual bool isGrouped(double maxCenterDistance) const;
 
+  virtual void updateAction(); //!< updates action of the unit's group based on target and objective.
   virtual void preAction() {} //!< actions performed onFrame before objective action is performed.
   virtual void postAction() {} //!< actions performed onFrame after objective action is performed.
   // behaviour implementations

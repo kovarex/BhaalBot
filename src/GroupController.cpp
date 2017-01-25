@@ -2,11 +2,28 @@
 #include "GroupController.hpp"
 #include "Group.hpp"
 #include "Unit.hpp"
+#include <Log.hpp>
 
-void GroupController::onFrame()
+void GroupController::setTarget(BWAPI::Unit target)
+{ 
+  this->target = target; 
+  this->updateAction();
+}
+
+void GroupController::setTargetPosition(BWAPI::Position position)
+{ 
+  this->target = position; 
+  this->updateAction();
+}
+
+void GroupController::setObjective(GroupObjective objective)
+{ 
+  this->objective = objective; 
+  this->updateAction();
+}
+
+void GroupController::updateAction()
 {
-  this->preAction();
-
   switch (this->objective)
   {
     case GroupObjective::NONE: 
@@ -39,14 +56,17 @@ void GroupController::onFrame()
     default:
       this->actionNone();
   }
-
-  this->postAction();
 }
 
 void GroupController::actionMove(void)
 {
+  BWAPI::Position position;
   for (Unit* unit : this->owner.getUnits())
-    unit->move(this->target.getPosition());
+  {
+    position = this->target.getPosition();
+    unit->move(position);
+  }
+  LOG_INFO("moving to position %u, %u", position.x, position.y);
 }
 
 void GroupController::actionAttackTarget(void)
@@ -56,12 +76,15 @@ void GroupController::actionAttackTarget(void)
       unit->attack(unit);
     else
       unit->attack(this->target.getPosition());
+  LOG_INFO("attack target");
 }
 
 void GroupController::actionAttackMove(void)
 {
+  BWAPI::Position position = this->target.getPosition();
   for (Unit* unit : this->owner.getUnits())
-    unit->attack(this->target.getPosition());
+    unit->attack(position);
+  LOG_INFO("attack move %u, %u", position.x, position.y);
 }
 
 void GroupController::actionGroup(void)
@@ -69,6 +92,7 @@ void GroupController::actionGroup(void)
   BWAPI::Position center = this->getGroupCenter();
   for (Unit* unit : this->owner.getUnits())
     unit->move(center);
+  LOG_DEBUG("grouping up");
 }
 
 BWAPI::Position GroupController::getGroupCenter(void) const

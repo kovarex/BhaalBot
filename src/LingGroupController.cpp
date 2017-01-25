@@ -6,17 +6,11 @@
 
 LingGroupController::LingGroupController(Group& owner)
   : GroupController(owner)
-  , targetPosition(BWAPI::Positions::None)
-  , targetUnit(nullptr)
 {}
-
-void LingGroupController::setTarget(BWAPI::Unit target)
-{
-  this->setTargetUnit(target);
-}
 
 void LingGroupController::onAdded(Unit* muta)
 {
+  this->updateAction();
   // TODO assign it target. Or is it done in on Frame?
 }
 
