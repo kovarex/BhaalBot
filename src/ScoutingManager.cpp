@@ -168,7 +168,8 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
     BWAPI::Unitset nearbyUnits = this->scout->getUnitsInRadius(200);
     bool containsBuilding = false;
     for (BWAPI::Unit nearbyUnit: nearbyUnits)
-      if (nearbyUnit->getType().isBuilding())
+      if (nearbyUnit->getType().isBuilding() &&
+          BWAPI::Broodwar->self()->isEnemy(nearbyUnit->getPlayer()))
         containsBuilding = true;
     if (containsBuilding)
     {
