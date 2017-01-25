@@ -1,4 +1,6 @@
 #include <BhaalBot.hpp>
+#include <Bases.hpp>
+#include <Base.hpp>
 #include <Group.hpp>
 #include <TaskForceController.hpp>
 #include <TaskForce.hpp>
@@ -18,7 +20,6 @@ AttackTaskForceController::AttackTaskForceController(TaskForce& owner)
   this->groundGroup = owner.createGroup();
   for (Unit* unit: units)
     this->assignUnit(unit);
-  enemyBasePos = { 2600, 160 }; // TODO update
 }
 
 void AttackTaskForceController::assignUnit(Unit* unit)
@@ -67,7 +68,9 @@ void AttackTaskForceController::assignUnit(Unit* unit)
       group->add(unit);
       LingGroupController* controller = new LingGroupController(*group);
       group->assignController(controller);
-      controller->setTargetPosition(enemyBasePos);
+      controller->setTargetPosition(this->enemyBase ?
+                                    this->enemyBase->getCenter() :
+                                    BWAPI::Position(BWAPI::Broodwar->mapWidth() * 16, BWAPI::Broodwar->mapHeight() * 16));
       controller->setObjective(GroupObjective::MOVE);
     }
   }
@@ -77,6 +80,17 @@ void AttackTaskForceController::assignUnit(Unit* unit)
 
 void AttackTaskForceController::onFrame()
 {
+  if (!this->enemyBase)
+  {
+    this->enemyBase = bhaalBot->bases.getEnemyBaseClosestTo(bhaalBot->bases.startingBase->getCenter());
+    if (this->enemyBase)
+    {
+      for (auto* theGroup: {&this->lingReinforementGroups, &this->lingCombatGroups})
+        for (Group* group: *theGroup)
+          group->getController()->setTargetPosition(this->enemyBase->getCenter());
+    }
+  }
+
   //--------------------------------------------- MUTAS
   for (Group* group: this->mutaGroups)
   {
@@ -103,11 +117,11 @@ void AttackTaskForceController::onFrame()
   // transform reinforcements into combat groups, if they are close enough to enemy base
   for (auto it = this->lingReinforementGroups.begin(); it < this->lingReinforementGroups.end();)
   {
-    if (enemyBasePos.getDistance((*it)->getPosition()) < DISTANCE_FROM_ENEMY_TO_START_COMBAT)
+    if (this->enemyBase != nullptr &&
+        this->enemyBase->getCenter().getDistance((*it)->getPosition()) < DISTANCE_FROM_ENEMY_TO_START_COMBAT)
     {
       LOG_NOTICE("Switching ling from reinforcements to combat, grouping");
       this->lingCombatGroups.push_back((*it));
-      //(*it)->getController()->setTargetPosition(BWAPI::Position({ 2400, 100 }));
       (*it)->getController()->setObjective(GroupObjective::GROUP);
       it = lingReinforementGroups.erase(it);
     }

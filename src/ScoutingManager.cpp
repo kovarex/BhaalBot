@@ -25,6 +25,7 @@ Unit* ScoutingManager::getScoutCandidate(BWAPI::UnitType unitType)
   return nullptr;
 }
 
+
 void ScoutingManager::onFrame()
 {
   for (auto it = this->ordersToScout.begin(); it != this->ordersToScout.end();)

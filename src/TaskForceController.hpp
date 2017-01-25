@@ -1,4 +1,5 @@
 #pragma once
+class Base;
 class Group;
 class TaskForce;
 class Unit;
@@ -27,9 +28,9 @@ public:
   std::vector<Group*> lingCombatGroups;         // general offensive combat against lings, drones etc.
   std::vector<Group*> lingSunkenKillGroups;     // groups assigned to kill a specific sunken colonies
   Group* lingPoolKillGroup;                     // group assigned to kill spawning pool
-  BWAPI::Position enemyBasePos; // TODO get rid of this
 
   Group* groundGroup;
+  Base* enemyBase = nullptr;
 };
 
 class DefendTaskForceController : public TaskForceController

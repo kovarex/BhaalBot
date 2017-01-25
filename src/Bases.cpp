@@ -60,6 +60,16 @@ Base* Bases::getClosestBase(BWAPI::Position position)
   return nullptr;
 }
 
+Base* Bases::getEnemyBaseClosestTo(BWAPI::Position position)
+{
+  Base* candidate = nullptr;
+  for (Base* base: this->bases)
+    if (base->status == Base::Status::OwnedByEnemy &&
+        (candidate == nullptr || candidate->getCenter().getDistance(position) > base->getCenter().getDistance(position)))
+      candidate = base;
+  return candidate;
+}
+
 void Bases::onFrame()
 {
   for (Base* base: this->bases)
