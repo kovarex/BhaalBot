@@ -80,7 +80,7 @@ void AttackTaskForceController::onFrame()
   //--------------------------------------------- MUTAS
   for (Group* group: this->mutaGroups)
   {
-    if (group->getAttackTarget() == nullptr)
+    if (group->getTarget() == nullptr)
     {
       BWAPI::Position groupPosition = group->getPosition();
       BWAPI::Unit bestCandidate = nullptr;
@@ -108,7 +108,7 @@ void AttackTaskForceController::onFrame()
       LOG_NOTICE("Switching ling reinforcements to combat");
       this->lingCombatGroups.push_back((*it));
       (*it)->getController()->setTargetPosition({2300, 200});
-      (*it)->getController()->setObjective(GroupObjective::ATTACK);
+      (*it)->getController()->setObjective(GroupObjective::ATTACK_MOVE);
       lingReinforementGroups.erase(it);
     }
   }

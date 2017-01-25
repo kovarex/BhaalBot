@@ -41,13 +41,13 @@ void Group::assignController(GroupController* groupController)
 void Group::setAttackTarget(BWAPI::Unit target)
 {
   if (this->controller)
-    this->controller->setAttackTarget(target);
+    this->controller->setTarget(target);
 }
 
-UnitMemoryInfo* Group::getAttackTarget()
+const Target* Group::getTarget()
 {
   if (this->controller)
-    return this->controller->getAttackTarget();
+    return &this->controller->getTarget();
   return nullptr;
 }
 

@@ -106,6 +106,7 @@
     <ClCompile Include="src\StringReadStream.cpp" />
     <ClCompile Include="src\BroodwarWriteStream.cpp" />
     <ClCompile Include="src\BaseInDangerDetector.cpp" />
+    <ClCompile Include="src\Target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="src\StringReadStream.hpp" />
     <ClInclude Include="src\BroodwarWriteStream.hpp" />
     <ClInclude Include="src\BaseInDangerDetector.hpp" />
+    <ClInclude Include="src\Target.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

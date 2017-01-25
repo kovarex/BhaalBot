@@ -10,8 +10,6 @@ class MutaGroupController : public GroupController
 {
 public:
   MutaGroupController(Group& owner);
-  void setAttackTarget(BWAPI::Unit target) override;
-  UnitMemoryInfo* getAttackTarget() override { return this->unitTarget.getUnitData(); }
   void onAdded(Unit* muta) override;
   void onRemoved(Unit* unit) override;
 
@@ -24,7 +22,6 @@ public:
   BWAPI::Position getCenter();
   void sendJoiningMutas();
   void transferJoiningMutasToStackMutas();
-  void attackTarget(BWAPI::Unit unit);
   void chooseClosestTarget();
   void logic();
   void moveStackedMutasWithOverlord(BWAPI::Position position);
@@ -52,8 +49,6 @@ public:
 
   std::vector<Unit*> joiningMutas;
   std::vector<Unit*> stackMutas;
-  EnemyUnitTarget unitTarget;
-  BWAPI::Position target;
   double angle = 0;
   OverallPhase overalLPhase = OverallPhase::StackingPhase1;
   AttackPhase attackPhase = AttackPhase::Nothing;
