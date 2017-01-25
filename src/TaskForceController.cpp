@@ -64,7 +64,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
       group->add(unit);
       LingGroupController* controller = new LingGroupController(*group);
       group->assignController(controller);
-      controller->setTargetPos(enemyBasePos);
+      controller->setTargetPosition(enemyBasePos);
       controller->setObjective(GroupObjective::MOVE);
     }
   }
@@ -103,7 +103,7 @@ void AttackTaskForceController::onFrame()
     if (enemyBasePos.getDistance((*it)->getPosition()) > DISTANCE_FROM_ENEMY_TO_START_COMBAT)
     {
       this->lingCombatGroups.push_back((*it));
-      (*it)->getController()->setTargetPos({2300, 200});
+      (*it)->getController()->setTargetPosition({2300, 200});
       (*it)->getController()->setObjective(GroupObjective::ATTACK);
       lingReinforementGroups.erase(it);
     }

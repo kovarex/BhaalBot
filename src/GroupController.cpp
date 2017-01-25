@@ -5,64 +5,58 @@
 
 void GroupController::onFrame()
 {
-  preAction();
+  this->preAction();
 
   switch (this->objective)
   {
     case GroupObjective::NONE: 
-      actionNone();
+      this->actionNone();
       break;
     case GroupObjective:: MOVE:
-      actionMove();
+      this->actionMove();
       break;
     case GroupObjective::ATTACK:
-      actionAttack();
+      this->actionAttack();
       break;
     case GroupObjective::HOLD:
-      actionHold();
+      this->actionHold();
       break;
     case GroupObjective::DEFEND:
-      actionDefend();
+      this->actionDefend();
       break;
     case GroupObjective::KITE:
-      actionKite();
+      this->actionKite();
       break;
     case GroupObjective::FLEE:
-      actionFlee();
+      this->actionFlee();
       break;
     case GroupObjective::GROUP:
-      actionGroup();
+      this->actionGroup();
       break;
     default:
-      actionNone();
+      this->actionNone();
   }
 
-  postAction();
+  this->postAction();
 }
 
 void GroupController::actionMove(void)
 {
   for (Unit* unit : this->owner.getUnits())
-  {
-    unit->move(this->targetPos);
-  }
+    unit->move(this->targetPosition);
 }
 
 void GroupController::actionAttack(void)
 {
   for (Unit* unit : this->owner.getUnits())
-  {
-    unit->attack(this->targetPos);
-  }
+    unit->attack(this->targetPosition);
 }
 
 void GroupController::actionGroup(void)
 {
   BWAPI::Position center = this->getGroupCenter();
   for (Unit* unit : this->owner.getUnits())
-  {
     unit->move(center);
-  }
 }
 
 BWAPI::Position GroupController::getGroupCenter(void) const
