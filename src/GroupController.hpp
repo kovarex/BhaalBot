@@ -1,5 +1,6 @@
 #pragma once
 #include <BWAPI.h>
+#include <Target.hpp>
 class Group;
 class Unit;
 class UnitMemoryInfo;
@@ -8,7 +9,8 @@ enum class GroupObjective
 {
   NONE,   // no objective set 
   MOVE,   // move to the target
-  ATTACK, // attack the target
+  ATTACK_MOVE, // attack move the target
+  ATTACK_TARGET, // attack the target
   HOLD,   // hold ground
   DEFEND, // defend the target
   KITE,   // kite the target
@@ -24,9 +26,9 @@ public:
   virtual void onAdded(Unit* unit) {}
   virtual void onRemoved(Unit* unit) {}
   virtual void onFrame();
-  virtual void setAttackTarget(BWAPI::Unit target) {} // TODO rename to setTarget as the group does not need to attack it.
-  virtual void setTargetPosition(BWAPI::Position position) { this->targetPosition = position; }
-  virtual UnitMemoryInfo* getAttackTarget() { return nullptr; }
+  virtual void setTarget(BWAPI::Unit target) { this->target = target; }
+  virtual void setTargetPosition(BWAPI::Position position) { this->target = position; }
+  const Target& getTarget() { return this->target; }
   virtual void setObjective(GroupObjective objective) { this->objective = objective; }
   virtual GroupObjective getObjective(void) const { return this->objective; }
   virtual BWAPI::Position getPosition(void) const { return this->getGroupCenter(); }
@@ -39,7 +41,8 @@ public:
   // TODO implement the remaining behaviours within this class
   virtual void actionNone() {}
   virtual void actionMove();
-  virtual void actionAttack();
+  virtual void actionAttackMove();
+  virtual void actionAttackTarget();
   virtual void actionHold() {}
   virtual void actionDefend() {}
   virtual void actionKite() {}
@@ -48,5 +51,5 @@ public:
 
   Group& owner;
   GroupObjective objective; // this, in combination with target, is the basic command given to the group by it's TaskForce.
-  BWAPI::Position targetPosition;
+  Target target;
 };

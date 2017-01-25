@@ -2,6 +2,7 @@
 #include <Assignment.hpp>
 #include <BWAPI.h>
 #include <set>
+#include <Target.hpp>
 class Group;
 class GroupController;
 class Unit;
@@ -28,7 +29,7 @@ public:
   void assignController(GroupController* groupController);
   GroupController* getController(void) { return this->controller;  }
   void setAttackTarget(BWAPI::Unit target); // TODO this should not be needed - orders should be given to controller.
-  UnitMemoryInfo* getAttackTarget();
+  const Target* getTarget();
   BWAPI::Position getPosition() const;
   int getSize(void) { return this->units.size(); }
 

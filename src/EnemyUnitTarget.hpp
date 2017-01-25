@@ -19,6 +19,8 @@ public:
   bool isZero() const { return this->data == nullptr; }
   void clear();
   UnitMemoryInfo* getUnitData() { return this->data; }
+  BWAPI::Position getPosition() const;
+  BWAPI::Unit getUnit() const;
 
 private:
   friend class UnitMemoryInfo;

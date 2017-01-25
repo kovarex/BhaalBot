@@ -158,6 +158,7 @@
     <ClCompile Include="src\StackWalker.cpp" />
     <ClCompile Include="src\StringReadStream.cpp" />
     <ClCompile Include="src\StringUtil.cpp" />
+    <ClCompile Include="src\Target.cpp" />
     <ClCompile Include="src\TaskForce.cpp" />
     <ClCompile Include="src\TaskForceController.cpp" />
     <ClCompile Include="src\Unit.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="src\StringReadStream.hpp" />
     <ClInclude Include="src\StringUtil.hpp" />
     <ClInclude Include="src\StringWriteStream.hpp" />
+    <ClInclude Include="src\Target.hpp" />
     <ClInclude Include="src\TaskForce.hpp" />
     <ClInclude Include="src\TaskForceController.hpp" />
     <ClInclude Include="src\Unit.hpp" />

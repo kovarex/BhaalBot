@@ -6,14 +6,7 @@
 
 MutaGroupController::MutaGroupController(Group& owner)
  : GroupController(owner)
- , target(BWAPI::Positions::None)
 {}
-
-void MutaGroupController::setAttackTarget(BWAPI::Unit target)
-{
-  this->unitTarget = target;
-  this->target = target->getPosition();
-}
 
 void MutaGroupController::onAdded(Unit* muta)
 {
@@ -41,7 +34,7 @@ void MutaGroupController::onRemoved(Unit* unit)
 
 void MutaGroupController::onFrame()
 {
-  if (this->target == BWAPI::Positions::None)
+  if (this->target.isZero())
     return;
   /*
   HarvestingManager& harvestingManager = KovarexAIModule::instance->harvestingManager;
@@ -95,9 +88,9 @@ void MutaGroupController::logic()
         this->overalLPhase = OverallPhase::StackingPhase1;
         return;
       }
-      if (this->unitTarget.isZero())
+      if (this->target.isZero())
         this->chooseClosestTarget();
-      if (!this->unitTarget.isZero())
+      if (!this->target.isZero())
       {
         this->attackPhase = AttackPhase::MovingTowardsTarget;
         this->logic();
@@ -105,15 +98,15 @@ void MutaGroupController::logic()
       break;
     case AttackPhase::MovingTowardsTarget:
       {
-        if (this->unitTarget.isZero())
+        if (this->target.isZero())
         {
-          this->unitTarget = nullptr;
+          this->target.clear();
           this->attackPhase = AttackPhase::Nothing;
           this->logic();
           return;
         }
         BWAPI::Position center = this->getCenter();
-        BWAPI::Position unitPosition = this->unitTarget.getUnitData()->position;
+        BWAPI::Position unitPosition = this->target.getPosition();
         Vector originalVector(center, unitPosition);
         Vector targetVector(originalVector);
         targetVector.extendToLength(250);
@@ -122,7 +115,7 @@ void MutaGroupController::logic()
 
         if (originalVector.getLength() < 170 && this->maxCooldownValue() == 0)
         {
-          this->attackStackedMutasWithOverlord(this->unitTarget.getUnitData()->unit, BWAPI::Positions::None);
+          this->attackStackedMutasWithOverlord(this->target.getUnit(), BWAPI::Positions::None);
           BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Red);
           this->attackPhase = AttackPhase::MovingAway;
           this->ticksSinceAttack = 0;
@@ -147,7 +140,7 @@ void MutaGroupController::logic()
       this->moveStackedMutasWithOverlord(target);
       BWAPI::Broodwar->drawCircleMap(target, 10, BWAPI::Colors::Blue);
       if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2 &&
-          (this->unitTarget.isZero() || this->unitTarget.getUnitData()->position.getDistance(center) > 150))
+          (this->target.isZero() || this->target.getPosition().getDistance(center) > 150))
         this->attackPhase = AttackPhase::Nothing;
     }
       break;
@@ -294,11 +287,6 @@ void MutaGroupController::stackFast()
   overlord->stop();*/
 }
 
-void MutaGroupController::attackTarget(BWAPI::Unit unit)
-{
-  this->unitTarget = unit;
-}
-
 void MutaGroupController::chooseClosestTarget()
 {
   BWAPI::Position center = this->getCenter();
@@ -314,7 +302,7 @@ void MutaGroupController::chooseClosestTarget()
         candidateDistance = unitDistance;
       }
     }
-  this->unitTarget = candidate;
+  this->target = candidate;
 }
 
 double MutaGroupController::getAverageVelocity()

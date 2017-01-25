@@ -28,3 +28,15 @@ void EnemyUnitTarget::clear()
   this->data->removeTarget(this);
   this->data = nullptr;
 }
+
+BWAPI::Position EnemyUnitTarget::getPosition() const
+{
+  return this->data ? this->data->position : BWAPI::Positions::None;
+}
+
+BWAPI::Unit EnemyUnitTarget::getUnit() const
+{
+  if (this->data == nullptr)
+    return nullptr;
+  return this->data->unit;
+}

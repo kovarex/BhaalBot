@@ -15,8 +15,11 @@ void GroupController::onFrame()
     case GroupObjective:: MOVE:
       this->actionMove();
       break;
-    case GroupObjective::ATTACK:
-      this->actionAttack();
+    case GroupObjective::ATTACK_MOVE:
+      this->actionAttackMove();
+      break;
+    case GroupObjective::ATTACK_TARGET:
+      this->actionAttackTarget();
       break;
     case GroupObjective::HOLD:
       this->actionHold();
@@ -43,13 +46,22 @@ void GroupController::onFrame()
 void GroupController::actionMove(void)
 {
   for (Unit* unit : this->owner.getUnits())
-    unit->move(this->targetPosition);
+    unit->move(this->target.getPosition());
 }
 
-void GroupController::actionAttack(void)
+void GroupController::actionAttackTarget(void)
 {
   for (Unit* unit : this->owner.getUnits())
-    unit->attack(this->targetPosition);
+    if (BWAPI::Unit unit = this->target.getUnit())
+      unit->attack(unit);
+    else
+      unit->attack(this->target.getPosition());
+}
+
+void GroupController::actionAttackMove(void)
+{
+  for (Unit* unit : this->owner.getUnits())
+    unit->attack(this->target.getPosition());
 }
 
 void GroupController::actionGroup(void)

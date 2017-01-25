@@ -10,8 +10,7 @@ class LingGroupController : public GroupController
 {
 public:
   LingGroupController(Group& owner);
-  virtual void setAttackTarget(BWAPI::Unit target) override;
-  UnitMemoryInfo* getAttackTarget() override { return nullptr; }
+  virtual void setTarget(BWAPI::Unit target) override;
 
   void onAdded(Unit* ling);
   //void onFrame();

@@ -10,7 +10,7 @@ LingGroupController::LingGroupController(Group& owner)
   , targetUnit(nullptr)
 {}
 
-void LingGroupController::setAttackTarget(BWAPI::Unit target)
+void LingGroupController::setTarget(BWAPI::Unit target)
 {
   this->setTargetUnit(target);
 }
