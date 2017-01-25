@@ -20,6 +20,7 @@ public:
   virtual void onStart() {}
   virtual void onUnitDestroy(Unit*) {}
   virtual void onForeignUnitDestroy(BWAPI::Unit) {}
+  virtual void onUnitIdle(Unit* unit) {}
 
   ModuleContainer& owner;
 };

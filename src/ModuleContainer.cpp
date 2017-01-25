@@ -52,6 +52,12 @@ void ModuleContainer::onForeignUnitDestroy(BWAPI::Unit unit)
     module->onForeignUnitDestroy(unit);
 }
 
+void ModuleContainer::onUnitIdle(Unit* unit)
+{
+  for (Module* module: this->modules)
+    module->onUnitIdle(unit);
+}
+
 void ModuleContainer::onUnitDestroy(Unit* unit)
 {
   for (Module* module: this->modules)

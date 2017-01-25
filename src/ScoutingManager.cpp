@@ -53,8 +53,9 @@ void ScoutingManager::onFrame()
     task.onFrame();
     if (task.finished)
     {
-      this->unassignedGroundScouters.push_back(task.scout);
-      this->scoutTasks.erase(this->scoutTasks.begin() + i);
+      Unit* unit = task.scout;
+      unit->assign(nullptr);
+      bhaalBot->moduleContainer.onUnitIdle(unit);
     }
     else
     {
@@ -63,14 +64,16 @@ void ScoutingManager::onFrame()
       ++i;
     }
   }
+
   for (auto it = this->baseCheckTasks.begin(); it != this->baseCheckTasks.end();)
   {
     it->onFrame();
     if (it->finished)
     {
-      if (it->scout != nullptr)
-        this->unassignedGroundScouters.push_back(it->scout);
-      it = this->baseCheckTasks.erase(it);
+      Unit* unit = it->scout;
+      ++it;
+      unit->assign(nullptr);
+      bhaalBot->moduleContainer.onUnitIdle(unit);
     }
     else
     {
