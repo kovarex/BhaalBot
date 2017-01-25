@@ -14,13 +14,11 @@ public:
   UnitMemoryInfo* getAttackTarget() override { return nullptr; }
 
   void onAdded(Unit* ling);
-  void onFrame();
+  //void onFrame();
   void setTargetUnit(BWAPI::Unit targetUnit) { this->targetUnit = targetUnit;  }
   void setTargetPosition(BWAPI::Position targetPosition) { this->targetPosition = targetPosition; }
 
   //void attackTarget(BWAPI::Unit unit);
-  //void move(); // moves to target position or unit
-  //void attack();  // attacks target position or unit
   void chooseTarget(); // TODO maybe give Unit* parameter
 
   BWAPI::Position targetPosition;

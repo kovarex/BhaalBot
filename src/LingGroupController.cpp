@@ -21,8 +21,8 @@ void LingGroupController::onAdded(Unit* muta)
 }
 
 
-void LingGroupController::onFrame()
-{
+//void LingGroupController::onFrame()
+//{
   // TODO
   // if attack frame, let it be
   // - update target of the group
@@ -30,7 +30,7 @@ void LingGroupController::onFrame()
   // -- either attak unit or move to unit or move away
 
   // the attack target may actually be assigned by taskforce. But perhaps just on the level of pool/drones/...
-}
+//}
 
 
 //void LingGroupController::attackTarget(BWAPI::Unit unit)

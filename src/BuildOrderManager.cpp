@@ -25,6 +25,9 @@ void BuildOrderManager::onStart()
     BuildOrder* pool4 = new BuildOrder("4 pool");
     pool4->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool4->add(6, BWAPI::UnitTypes::Zerg_Zergling);
+    pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
+    pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
+    pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool4);
   }
   {

@@ -11,27 +11,30 @@ void GroupController::onFrame()
   {
     case GroupObjective::NONE: 
       actionNone();
-    break;
+      break;
     case GroupObjective:: MOVE:
       actionMove();
-    break;
+      break;
     case GroupObjective::ATTACK:
       actionAttack();
-    break;
+      break;
     case GroupObjective::HOLD:
       actionHold();
-    break;
+      break;
     case GroupObjective::DEFEND:
       actionDefend();
-    break;
+      break;
     case GroupObjective::KITE:
       actionKite();
-    break;
+      break;
     case GroupObjective::FLEE:
       actionFlee();
-    break;
+      break;
     case GroupObjective::GROUP:
       actionGroup();
+      break;
+    default:
+      actionNone();
   }
 
   postAction();
@@ -64,7 +67,7 @@ void GroupController::actionGroup(void)
 
 BWAPI::Position GroupController::getGroupCenter(void) const
 {
-  if (this->owner.getUnits().empty())
+  if (!this->owner.getSize())
     return BWAPI::Positions::None;
   BWAPI::Position center;
   for (Unit* unit : this->owner.getUnits())
