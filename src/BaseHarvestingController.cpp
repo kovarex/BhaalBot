@@ -232,3 +232,15 @@ GasHarvestingAssignment::~GasHarvestingAssignment()
 {
   this->base->unassignFromGas(this->unit);
 }
+
+BaseHarvestingController::Mineral::~Mineral()
+{
+  for (Unit* unit: this->miners)
+    unit->assign(nullptr);
+}
+
+BaseHarvestingController::Geyser::~Geyser()
+{
+  for (Unit* unit: this->miners)
+    unit->assign(nullptr);
+}

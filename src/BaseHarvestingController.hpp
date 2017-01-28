@@ -33,6 +33,7 @@ class BaseHarvestingController
 public:
   struct Mineral
   {
+    ~Mineral();
     Mineral(BWAPI::Unit mineral) : mineral(mineral) {}
     BWAPI::Unit mineral;
     std::vector<Unit*> miners;
@@ -56,6 +57,7 @@ public:
   struct Geyser
   {
     Geyser(BWAPI::Unit geyser) : geyser(geyser) {}
+    ~Geyser();
 
     enum class State
     {

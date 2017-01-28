@@ -44,8 +44,9 @@ void BhaalBot::onStart()
   BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
 
   // Set the command optimization level so that common commands can be grouped
-  // and reduce the bot's APM (Actions Per Minute).
+  // and reduce the bots APM (Actions Per Minute).
   BWAPI::Broodwar->setCommandOptimizationLevel(0);
+  BWAPI::Broodwar->setLatCom(false);
 
   // Retrieve you and your enemy's races. enemy() will just return the first enemy.
   // If you wish to deal with multiple enemies then you must use enemies().
