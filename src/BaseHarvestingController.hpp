@@ -53,7 +53,7 @@ public:
   BWAPI::Position againstMinerals();
   
   Unit* baseUnit;
-  std::vector<Mineral> minerals;
+  std::vector<Mineral*> minerals;
   struct Geyser
   {
     Geyser(BWAPI::Unit geyser) : geyser(geyser) {}
@@ -70,7 +70,7 @@ public:
     State state = State::Free;
     std::vector<Unit*> miners;
   };
-  std::vector<Geyser> geysers;
+  std::vector<Geyser*> geysers;
   Base* base;
 private:
   friend class MineralHarvestingAssignment;

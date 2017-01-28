@@ -8,6 +8,7 @@ class Bases : public Module
 {
 public:
   Bases(ModuleContainer& moduleContainer);
+  ~Bases();
   void init(); /**< it has to be done later than in the constructor so it can use the initialised BWEM */
   Base* enemyMainBase();
   Base* getClosestBase(BWAPI::Position position);

@@ -17,6 +17,7 @@ class ScoutingManager : public Module
 {
 public:
   ScoutingManager(ModuleContainer& moduleContainer);
+  ~ScoutingManager();
   void assignGroundScout(Unit* unit);
   void onFrame() override;
   Base* baseToScout();

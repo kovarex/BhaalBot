@@ -44,10 +44,10 @@ Unit* HarvestingManager::getClosestWorker(BWAPI::Position position)
   Unit* closestUnit = nullptr;
 
   for (BaseHarvestingController* base: this->bases)
-    for (BaseHarvestingController::Mineral& mineral: base->minerals)
-      for (uint32_t i = 0; i < mineral.miners.size(); ++i)
+    for (BaseHarvestingController::Mineral* mineral: base->minerals)
+      for (uint32_t i = 0; i < mineral->miners.size(); ++i)
       {
-        Unit* worker = mineral.miners[i];
+        Unit* worker = mineral->miners[i];
         if (closestUnit == nullptr ||
             closestUnit->getDistance(position) > worker->getDistance(position))
           closestUnit = worker;
@@ -78,9 +78,9 @@ float HarvestingManager::averageDistanceToBases(BWAPI::Position position) const
 BaseHarvestingController::Geyser* HarvestingManager::getFreeGeyser()
 {
   for (BaseHarvestingController* base: this->bases)
-    for (BaseHarvestingController::Geyser& geyser: base->geysers)
-      if (geyser.state == BaseHarvestingController::Geyser::State::Free)
-        return &geyser;
+    for (BaseHarvestingController::Geyser* geyser: base->geysers)
+      if (geyser->state == BaseHarvestingController::Geyser::State::Free)
+        return geyser;
   return nullptr;
 }
 
@@ -88,8 +88,8 @@ void HarvestingManager::balanceGasMining()
 {
   uint32_t gasMiners = 0;
   for (BaseHarvestingController* base: this->bases)
-    for (BaseHarvestingController::Geyser& geyser: base->geysers)
-      gasMiners += geyser.miners.size();
+    for (BaseHarvestingController::Geyser* geyser: base->geysers)
+      gasMiners += geyser->miners.size();
   if (gasMiners == this->geyserMinersWanted)
     return;
   if (gasMiners < this->geyserMinersWanted)
@@ -97,21 +97,21 @@ void HarvestingManager::balanceGasMining()
     BaseHarvestingController::Geyser* bestGeyser = nullptr;
     BaseHarvestingController* theBase = nullptr;
     for (BaseHarvestingController* base: this->bases)
-      for (BaseHarvestingController::Geyser& geyser: base->geysers)
+      for (BaseHarvestingController::Geyser* geyser: base->geysers)
       {
-        if (geyser.state != BaseHarvestingController::Geyser::State::Ready)
+        if (geyser->state != BaseHarvestingController::Geyser::State::Ready)
           continue;
-        if (geyser.miners.size() >= 3)
+        if (geyser->miners.size() >= 3)
           continue;
         if (bestGeyser == nullptr)
         {
-          bestGeyser = &geyser;
+          bestGeyser = geyser;
           theBase = base;
           continue;
         }
-        if (bestGeyser->miners.size() > geyser.miners.size())
+        if (bestGeyser->miners.size() > geyser->miners.size())
         {
-          bestGeyser = &geyser;
+          bestGeyser = geyser;
           theBase = base;
         }
       }

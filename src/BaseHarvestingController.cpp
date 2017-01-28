@@ -11,9 +11,9 @@ BaseHarvestingController::BaseHarvestingController(Unit* baseUnit, Base* base)
     LOG_AND_ABORT("base->harvestingController != nullptr");
   base->harvestingController = this;
   for (BWEM::Mineral* mineral: this->base->getBWEMBase()->Minerals())
-    this->minerals.push_back(Mineral(mineral->Unit()));
+    this->minerals.push_back(new Mineral(mineral->Unit()));
   for (BWEM::Geyser* geyser: this->base->getBWEMBase()->Geysers())
-    this->geysers.push_back(Geyser(geyser->Unit()));
+    this->geysers.push_back(new Geyser(geyser->Unit()));
 }
 
 BaseHarvestingController::~BaseHarvestingController()
@@ -21,6 +21,19 @@ BaseHarvestingController::~BaseHarvestingController()
   if (base->harvestingController != this)
     LOG_AND_ABORT("base->harvestingController != this");
   this->base->harvestingController = nullptr;
+  while (!this->minerals.empty())
+  {
+    Mineral* mineral = this->minerals.back();
+    delete mineral;
+    this->minerals.pop_back();
+  }
+  
+  while (!this->geysers.empty())
+  {
+    Geyser* geyser = this->geysers.back();
+    delete geyser;
+    this->geysers.pop_back();
+  }
 }
 
 void BaseHarvestingController::assignMiner(Unit* unit)
@@ -36,35 +49,35 @@ void BaseHarvestingController::assignMiner(Unit* unit)
 void BaseHarvestingController::update()
 {
   //this->drawDebug();
-  for (Mineral& mineral: this->minerals)
-    for (Unit* miner: mineral.miners)
+  for (Mineral* mineral: this->minerals)
+    for (Unit* miner: mineral->miners)
     {
       if (miner->isCarryingMinerals())
       {
         if (!this->baseUnit->equals(miner->getOrderTarget()))
           miner->rightClick(this->baseUnit->getBWAPIUnit());
       }
-      else if (miner->getOrderTarget() != mineral.mineral)
-          miner->gather(mineral.mineral);
+      else if (miner->getOrderTarget() != mineral->mineral)
+          miner->gather(mineral->mineral);
     }
-  for (Geyser& geyser: this->geysers)
-    for (Unit* miner: geyser.miners)
+  for (Geyser* geyser: this->geysers)
+    for (Unit* miner: geyser->miners)
     {
       if (miner->isIdle() ||
           !miner->isGatheringGas() ||
-          (miner->getTarget() != geyser.geyser && !this->baseUnit->equals(miner->getTarget())))
-        miner->gather(geyser.geyser);
+          (miner->getTarget() != geyser->geyser && !this->baseUnit->equals(miner->getTarget())))
+        miner->gather(geyser->geyser);
     }
 }
 
 void BaseHarvestingController::drawDebug()
 {
   uint32_t index = 0;
-  for (Mineral& mineral: this->minerals)
+  for (Mineral* mineral: this->minerals)
   {
     BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Map,
-                              mineral.mineral->getPosition().x,
-                              mineral.mineral->getPosition().y,
+                              mineral->mineral->getPosition().x,
+                              mineral->mineral->getPosition().y,
                               "%d", index++);
   }
   BWAPI::Position against = this->againstMinerals();
@@ -75,10 +88,10 @@ void BaseHarvestingController::drawDebug()
 void BaseHarvestingController::onUnitComplete(Unit* unit)
 {
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Extractor)
-    for (Geyser& geyser: this->geysers)
-      if (geyser.geyser->getPosition() == unit->getPosition())
+    for (Geyser* geyser: this->geysers)
+      if (geyser->geyser->getPosition() == unit->getPosition())
       {
-        geyser.state = Geyser::State::Ready;
+        geyser->state = Geyser::State::Ready;
         return;
       }
 }
@@ -86,22 +99,22 @@ void BaseHarvestingController::onUnitComplete(Unit* unit)
 void BaseHarvestingController::onUnitDestroy(Unit* unit)
 {
    if (unit->getType() == BWAPI::UnitTypes::Zerg_Extractor)
-    for (Geyser& geyser: this->geysers)
-      if (geyser.geyser == unit->getBWAPIUnit())
+    for (Geyser* geyser: this->geysers)
+      if (geyser->geyser == unit->getBWAPIUnit())
       {
-        geyser.state = Geyser::State::Free;
+        geyser->state = Geyser::State::Free;
         return;
       }
 }
 
 void BaseHarvestingController::unassignFromMinerals(Unit* unit)
 {
-  for (Mineral& mineral: this->minerals)
-    for (auto it = mineral.miners.begin(); it != mineral.miners.end();)
+  for (Mineral* mineral: this->minerals)
+    for (auto it = mineral->miners.begin(); it != mineral->miners.end();)
     {
       if (*it == unit)
       {
-        mineral.miners.erase(it);
+        mineral->miners.erase(it);
         return;
       }
       else
@@ -112,12 +125,12 @@ void BaseHarvestingController::unassignFromMinerals(Unit* unit)
 
 void BaseHarvestingController::unassignFromGas(Unit* unit)
 {
-  for (Geyser& geyser: this->geysers)
-    for (auto it = geyser.miners.begin(); it != geyser.miners.end();)
+  for (Geyser* geyser: this->geysers)
+    for (auto it = geyser->miners.begin(); it != geyser->miners.end();)
     {
       if (*it == unit)
       {
-        geyser.miners.erase(it);
+        geyser->miners.erase(it);
         return;
       }
       else
@@ -131,22 +144,22 @@ BaseHarvestingController::Mineral* BaseHarvestingController::getBestMineral()
   if (this->minerals.empty())
     return nullptr;
   Mineral* bestMineral = nullptr;
-  for (Mineral& mineral: this->minerals)
+  for (Mineral* mineral: this->minerals)
   {
     if (bestMineral == nullptr)
     {
-      bestMineral = &mineral;
+      bestMineral = mineral;
       continue;
     }
-    if (bestMineral->miners.size() != mineral.miners.size())
+    if (bestMineral->miners.size() != mineral->miners.size())
     {
-      if (bestMineral->miners.size() > mineral.miners.size())
-        bestMineral = &mineral;
+      if (bestMineral->miners.size() > mineral->miners.size())
+        bestMineral = mineral;
       continue;
     }
-    if (this->baseUnit->getDistance(bestMineral->mineral) > this->baseUnit->getDistance(mineral.mineral))
+    if (this->baseUnit->getDistance(bestMineral->mineral) > this->baseUnit->getDistance(mineral->mineral))
     {
-      bestMineral = &mineral;
+      bestMineral = mineral;
       continue;
     }
   }
@@ -156,28 +169,28 @@ BaseHarvestingController::Mineral* BaseHarvestingController::getBestMineral()
 uint32_t BaseHarvestingController::smallestMineralSaturation() const
 {
   uint32_t result = uint32_t(-1);
-  for (const Mineral& mineral: this->minerals)
-    if (mineral.miners.size() < result)
-      result = mineral.miners.size();
+  for (const Mineral* mineral: this->minerals)
+    if (mineral->miners.size() < result)
+      result = mineral->miners.size();
   return result;
 }
 
 uint32_t BaseHarvestingController::biggestMineralSaturation() const
 {
   uint32_t result = 0;
-  for (const Mineral& mineral: this->minerals)
-    if (mineral.miners.size() > result)
-      result = mineral.miners.size();
+  for (const Mineral* mineral: this->minerals)
+    if (mineral->miners.size() > result)
+      result = mineral->miners.size();
   return result;
 }
 
 Unit* BaseHarvestingController::freeLeastNeededWorker()
 {
   Mineral* mostSatisfiedMineral = nullptr;
-  for (Mineral& mineral: this->minerals)
+  for (Mineral* mineral: this->minerals)
     if (mostSatisfiedMineral == nullptr ||
-        mineral.miners.size() > mostSatisfiedMineral->miners.size())
-      mostSatisfiedMineral = &mineral;
+        mineral->miners.size() > mostSatisfiedMineral->miners.size())
+      mostSatisfiedMineral = mineral;
   if (mostSatisfiedMineral == nullptr)
     return nullptr;
   Unit* bestWorkerToFree = nullptr;
@@ -205,9 +218,9 @@ BWAPI::Position BaseHarvestingController::againstMinerals()
   std::vector<BWAPI::Position> oppositePositions;
   int xSum = 0, ySum = 0;
   int count = 0;
-  for (const Mineral& mineral: this->minerals)
+  for (const Mineral* mineral: this->minerals)
   {
-    BWAPI::Position mineralPosition = mineral.mineral->getPosition();
+    BWAPI::Position mineralPosition = mineral->mineral->getPosition();
     if (mineralPosition == BWAPI::Positions::Unknown)
       continue;
     BWAPI::Position vector = basePosition - mineralPosition;
@@ -235,12 +248,12 @@ GasHarvestingAssignment::~GasHarvestingAssignment()
 
 BaseHarvestingController::Mineral::~Mineral()
 {
-  for (Unit* unit: this->miners)
-    unit->assign(nullptr);
+  while (!this->miners.empty())
+    this->miners[0]->assign(nullptr);
 }
 
 BaseHarvestingController::Geyser::~Geyser()
 {
-  for (Unit* unit: this->miners)
-    unit->assign(nullptr);
+  while (!this->miners.empty())
+    this->miners[0]->assign(nullptr);
 }
