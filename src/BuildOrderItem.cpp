@@ -38,7 +38,7 @@ bool BuildBuildOrderItem::execute()
   {
     if (unitType.supplyRequired() + BWAPI::Broodwar->self()->supplyUsed() > BWAPI::Broodwar->self()->supplyTotal())
       return false;
-    return  bhaalBot->buildOrderManager.executor.train(unitType);
+    return bhaalBot->buildOrderManager.executor.train(unitType);
   }
 }
 

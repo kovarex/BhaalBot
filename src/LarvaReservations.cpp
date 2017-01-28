@@ -2,11 +2,12 @@
 #include <StringUtil.hpp>
 #include <Unit.hpp>
 #include <BhaalBot.hpp>
+#include <Log.hpp>
 
 LarvaReservations::MorphTaskInProgress::MorphTaskInProgress(Unit* larva, BWAPI::UnitType targetUnit)
   : CostReservationItem(Cost(targetUnit.mineralPrice(),
                              targetUnit.gasPrice()))
-  , larvaeToBeUsed(larva)
+  , larvaToBeUsed(larva)
   , targetUnit(targetUnit)
   , parentHatchery(bhaalBot->units.find(larva->getHatchery()))
 {}
@@ -18,7 +19,7 @@ std::string LarvaReservations::MorphTaskInProgress::str() const
 
 bool LarvaReservations::MorphTaskInProgress::morhphingStarted() const
 {
-  return this->larvaeToBeUsed->getType() != BWAPI::UnitTypes::Zerg_Larva;
+  return this->larvaToBeUsed->getType() != BWAPI::UnitTypes::Zerg_Larva;
 }
 
 LarvaReservations::LarvaReservations(ModuleContainer& moduleContainer)
@@ -38,7 +39,7 @@ bool LarvaReservations::tryToTrain(Unit* hatchery, BWAPI::UnitType targetUnit)
     Unit* larva = bhaalBot->units.find(bwLarva);
     if (!this->isResrved(larva))
     {
-      this->registerTask(hatchery, targetUnit);
+      this->registerTask(larva, targetUnit);
       larva->train(targetUnit);
       return true;
     }
@@ -46,12 +47,13 @@ bool LarvaReservations::tryToTrain(Unit* hatchery, BWAPI::UnitType targetUnit)
   return false;
 }
 
-void LarvaReservations::registerTask(Unit* larvae, BWAPI::UnitType targetUnit)
+void LarvaReservations::registerTask(Unit* larva, BWAPI::UnitType targetUnit)
 {
-  this->morphTasks.push_back(new MorphTaskInProgress(larvae, targetUnit));
+  LOG_INFO("Training %s from larva id %u", targetUnit.getName().c_str(), larva->getBWAPIUnit()->getID());
+  this->morphTasks.push_back(new MorphTaskInProgress(larva, targetUnit));
   this->reservedByProducers[this->morphTasks.back()->parentHatchery]++;
   this->plannedUnits[targetUnit]++;
-  this->larvaesRegistered.insert(larvae);
+  this->larvasRegistered.insert(larva);
 }
 
 void LarvaReservations::onFrame()
@@ -62,7 +64,7 @@ void LarvaReservations::onFrame()
     {
       MorphTaskInProgress* morphTask = this->morphTasks[i];
       this->reservedByProducers[morphTask->parentHatchery]--;
-      this->larvaesRegistered.erase(morphTask->larvaeToBeUsed);
+      this->larvasRegistered.erase(morphTask->larvaToBeUsed);
       this->plannedUnits[morphTask->targetUnit]--;
       delete this->morphTasks[i];
       this->morphTasks.erase(this->morphTasks.begin() + i);
@@ -82,5 +84,5 @@ int32_t LarvaReservations::reservedLarvas(Unit* hatch)
 
 bool LarvaReservations::isResrved(Unit* larva)
 {
-  return this->larvaesRegistered.count(larva) != 0;
+  return this->larvasRegistered.count(larva) != 0;
 }
