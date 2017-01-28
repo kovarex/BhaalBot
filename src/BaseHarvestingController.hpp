@@ -33,6 +33,7 @@ class BaseHarvestingController
 public:
   struct Mineral
   {
+    ~Mineral();
     Mineral(BWAPI::Unit mineral) : mineral(mineral) {}
     BWAPI::Unit mineral;
     std::vector<Unit*> miners;
@@ -44,6 +45,7 @@ public:
   void update();
   void drawDebug();
   void onUnitComplete(Unit* unit);
+  void onUnitDestroy(Unit* unit);
   Mineral* getBestMineral();
   uint32_t smallestMineralSaturation() const;
   uint32_t biggestMineralSaturation() const;
@@ -51,10 +53,11 @@ public:
   BWAPI::Position againstMinerals();
   
   Unit* baseUnit;
-  std::vector<Mineral> minerals;
+  std::vector<Mineral*> minerals;
   struct Geyser
   {
     Geyser(BWAPI::Unit geyser) : geyser(geyser) {}
+    ~Geyser();
 
     enum class State
     {
@@ -67,7 +70,7 @@ public:
     State state = State::Free;
     std::vector<Unit*> miners;
   };
-  std::vector<Geyser> geysers;
+  std::vector<Geyser*> geysers;
   Base* base;
 private:
   friend class MineralHarvestingAssignment;

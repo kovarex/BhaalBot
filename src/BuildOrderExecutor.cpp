@@ -25,8 +25,8 @@ void BuildOrderExecutor::update()
   if (this->automaticOverlordBuilding)
   {
     int32_t reserve = BWAPI::Broodwar->self()->supplyTotal() - BWAPI::Broodwar->self()->supplyUsed();
-    reserve +=  bhaalBot->morphingUnits.getMorphingCount(BWAPI::UnitTypes::Zerg_Overlord) * 8;
-    if (reserve <= int32_t( bhaalBot->produceManager.producers.size()))
+    reserve +=  bhaalBot->morphingUnits.getPlannedCount(BWAPI::UnitTypes::Zerg_Overlord) * 16;
+    if (reserve <= int32_t(bhaalBot->produceManager.producers.size()) * 3)
     {
       this->train(BWAPI::UnitTypes::Zerg_Overlord);
       return;

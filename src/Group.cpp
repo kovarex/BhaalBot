@@ -2,6 +2,12 @@
 #include <GroupController.hpp>
 #include <Unit.hpp>
 
+Group::~Group()
+{
+  while (!this->units.empty())
+    (*this->units.begin())->assign(nullptr);
+}
+
 void Group::add(Unit* unit)
 {
   this->units.insert(unit);
@@ -53,6 +59,8 @@ const Target* Group::getTarget()
 
 BWAPI::Position Group::getPosition() const
 {
+  if (this->units.empty())
+    return BWAPI::Positions::None;
   int xSum = 0, ySum = 0;
   for (Unit* unit: this->units)
   {

@@ -7,6 +7,12 @@ Bases::Bases(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
 {}
 
+Bases::~Bases()
+{
+  for (Base* base: this->bases)
+    delete base;
+}
+
 void Bases::init()
 {
   BWAPI::Position myStartingLocationPosition = BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation());

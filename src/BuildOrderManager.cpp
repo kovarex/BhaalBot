@@ -23,12 +23,12 @@ void BuildOrderManager::onStart()
 {
   {
     BuildOrder* pool4 = new BuildOrder("4 pool");
+    pool4->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Overlord));
     pool4->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool4->add(1, BWAPI::UnitTypes::Zerg_Drone);
+    pool4->add(5, BWAPI::UnitTypes::Zerg_Zergling);
+    pool4->add(new SwitchToAutomaticOverlordBuilding());
     pool4->add(6, BWAPI::UnitTypes::Zerg_Zergling);
-    pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
-    pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
-    pool4->add(2, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool4);
   }
 
@@ -49,16 +49,21 @@ void BuildOrderManager::onStart()
   }
   {
     BuildOrder* pool9 = new BuildOrder("9 pool");
+    pool9->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Overlord));
     pool9->add(5, BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool9->add(BWAPI::UnitTypes::Zerg_Drone);
+    pool9->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Drone));
     pool9->add(BWAPI::UnitTypes::Zerg_Overlord);
     pool9->add(BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(6, BWAPI::UnitTypes::Zerg_Zergling);
+    pool9->add(new SwitchToAutomaticOverlordBuilding());
+    pool9->add(150, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool9);
   }
   {
     BuildOrder*  pool11Exp = new BuildOrder("11 pool exp");
+    pool11Exp->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Overlord));
     pool11Exp->add(5, BWAPI::UnitTypes::Zerg_Drone);
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Overlord);
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Drone);

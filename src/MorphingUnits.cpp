@@ -21,10 +21,23 @@ void MorphingUnits::onUnitMorph(Unit* unit)
   }
 }
 
+uint32_t MorphingUnits::getPlannedCount(BWAPI::UnitType unitType)
+{
+  return this->getMorphingCount(unitType) + this->getPlannedMorphsCount(unitType);
+}
+
 uint32_t MorphingUnits::getMorphingCount(BWAPI::UnitType unitType)
 {
   auto position = this->counts.find(unitType);
   if (position == this->counts.end())
+    return 0;
+  return position->second;
+}
+
+uint32_t MorphingUnits::getPlannedMorphsCount(BWAPI::UnitType unitType)
+{
+    auto position = this->plannedMorphs.find(unitType);
+  if (position == this->plannedMorphs.end())
     return 0;
   return position->second;
 }

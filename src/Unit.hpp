@@ -47,6 +47,7 @@ public:
   bool attack(BWAPI::Unit unit) { return this->bwapiUnit->attack(unit); }
   bool attack(BWAPI::Position position) { return this->bwapiUnit->attack(position); }
   bool isAttackFrame() const { return this->bwapiUnit->isAttackFrame();  }
+  int getID() const { return this->bwapiUnit->getID(); }
 
   void printAssignment();
   int getDistance(Unit* unit) const { return this->bwapiUnit->getDistance(unit->bwapiUnit); }

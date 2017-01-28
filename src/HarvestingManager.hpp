@@ -21,6 +21,7 @@ public:
   void balanceWorkersAssignmentBetweenBases();
 
   virtual void onUnitComplete(Unit* unit) override;
+  virtual void onUnitDestroy(Unit* unit) override;
   virtual void onFrame() override;
 
   std::vector<Unit*> baseLessMiners;

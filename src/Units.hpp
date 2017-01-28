@@ -6,6 +6,7 @@ class Unit;
 class Units
 {
 public:
+  ~Units();
   Unit* onUnitComplete(BWAPI::Unit unit);
   void onUnitDestroy(BWAPI::Unit unit);
   Unit* findOrThrow(BWAPI::Unit unit);
