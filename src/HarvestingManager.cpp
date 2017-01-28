@@ -182,3 +182,17 @@ void HarvestingManager::onUnitComplete(Unit* unit)
     return;
   }
 }
+
+void HarvestingManager::onUnitDestroy(Unit* unit)
+{
+  for (BaseHarvestingController* base: this->bases)
+    base->onUnitDestroy(unit);
+  if (unit->getType().isResourceDepot()) // A resource depot is a Command Center, Nexus, or Hatchery
+    for (auto it = this->bases.begin(); it != this->bases.end(); ++it)
+      if ((*it)->baseUnit == unit)
+      {
+        delete *it;
+        this->bases.erase(it);
+        break;
+      }
+}

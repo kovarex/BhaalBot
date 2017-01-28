@@ -44,6 +44,7 @@ public:
   void update();
   void drawDebug();
   void onUnitComplete(Unit* unit);
+  void onUnitDestroy(Unit* unit);
   Mineral* getBestMineral();
   uint32_t smallestMineralSaturation() const;
   uint32_t biggestMineralSaturation() const;

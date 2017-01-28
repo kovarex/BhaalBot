@@ -83,6 +83,17 @@ void BaseHarvestingController::onUnitComplete(Unit* unit)
       }
 }
 
+void BaseHarvestingController::onUnitDestroy(Unit* unit)
+{
+   if (unit->getType() == BWAPI::UnitTypes::Zerg_Extractor)
+    for (Geyser& geyser: this->geysers)
+      if (geyser.geyser == unit->getBWAPIUnit())
+      {
+        geyser.state = Geyser::State::Free;
+        return;
+      }
+}
+
 void BaseHarvestingController::unassignFromMinerals(Unit* unit)
 {
   for (Mineral& mineral: this->minerals)
