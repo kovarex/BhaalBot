@@ -32,7 +32,7 @@ void Overmind::onFrame()
       {
         if (base->defenseState == Base::DefenseState::None)
         {
-          BWAPI::Broodwar->setLocalSpeed(200);
+          //BWAPI::Broodwar->setLocalSpeed(200);
           base->defenseState = Base::DefenseState::Defending;
           LOG_NOTICE("Switching base to defense mode.");
           while (Unit* worker = base->harvestingController->getLeastNeededWorker())

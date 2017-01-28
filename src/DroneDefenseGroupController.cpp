@@ -41,23 +41,25 @@ void DroneDefenseGroupController::onFrame()
       ++it;
   for (Unit* fightingWorker: this->stacked)
   {
-    if (fightingWorker->getGroundWeaponCooldown() > 0)
+    /*if (fightingWorker->getGroundWeaponCooldown() > 0)
     {
       fightingWorker->gather(this->defenseMineral);
       continue;
-    }
+    }*/
     if (fightingWorker->lastOrderGiven.type == Unit::Order::Type::Attack &&
         BWAPI::Broodwar->getFrameCount() - fightingWorker->frameOfLastOrder <= BWAPI::Broodwar->getLatencyFrames())
       continue;
-      BWAPI::Unitset closeEnemies = BWAPI::Broodwar->getUnitsInRadius(fightingWorker->getPosition(), 40);
-      for (BWAPI::Unit enemy: closeEnemies)
-        if (BWAPI::Broodwar->self()->isEnemy(enemy->getPlayer()) &&
-            enemy->canAttack(false))
-          if (fightingWorker->getBWAPIUnit()->isInWeaponRange(enemy))
-          {
-            fightingWorker->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
-            fightingWorker->lastOrderGiven = Unit::Order(Unit::Order::Type::Attack, enemy);
-            fightingWorker->attack(enemy);
-          }
+    if (fightingWorker->isAttackFrame())
+      continue;
+    BWAPI::Unitset closeEnemies = BWAPI::Broodwar->getUnitsInRadius(fightingWorker->getPosition(), 40);
+    for (BWAPI::Unit enemy: closeEnemies)
+      if (BWAPI::Broodwar->self()->isEnemy(enemy->getPlayer()) &&
+          enemy->canAttack(false))
+        if (fightingWorker->getBWAPIUnit()->isInWeaponRange(enemy))
+        {
+          fightingWorker->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
+          fightingWorker->lastOrderGiven = Unit::Order(Unit::Order::Type::Attack, enemy);
+          fightingWorker->attack(enemy);
+        }
   }
 }
