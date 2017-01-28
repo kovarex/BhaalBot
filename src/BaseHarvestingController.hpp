@@ -49,7 +49,7 @@ public:
   Mineral* getBestMineral();
   uint32_t smallestMineralSaturation() const;
   uint32_t biggestMineralSaturation() const;
-  Unit* freeLeastNeededWorker();
+  Unit* getLeastNeededWorker();
   BWAPI::Position againstMinerals();
   
   Unit* baseUnit;

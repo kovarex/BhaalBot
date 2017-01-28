@@ -34,6 +34,8 @@ void Overmind::onFrame()
         {
           base->defenseState = Base::DefenseState::Defending;
           LOG_NOTICE("Switching base to defense mode.");
+          while (Unit* worker = base->harvestingController->getLeastNeededWorker())
+            base->defendForce->addUnit(worker);
         }
       }
       else if (base->baseInDangerDetector->dangerLevel < 2)

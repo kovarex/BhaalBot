@@ -8,6 +8,7 @@
 #include <MutaGroupController.hpp>
 #include <LingGroupController.hpp>
 #include <log.hpp>
+#include <DroneDefenseGroupController.hpp>
 
 #define MAX_DISTANCE_TO_GROUP_NEW_LINGS 200 // currently in pixels
 #define MAX_LING_GROUP_ERROR 50
@@ -142,20 +143,6 @@ void AttackTaskForceController::onFrame()
   // if sunken exists, assign lings not under direct attack to kill it
   // if drones run too much, assign lings to kill pool
   // handle combat groups - maybe just let them do their do.
-}
-
-DefendTaskForceController::DefendTaskForceController(TaskForce& owner)
-  : TaskForceController(owner)
-{
-  std::vector<Unit*> units = owner.removeAllGroups();
-  owner.groups.insert(this->theGroup = new Group());
-  for (Unit* unit: units)
-    this->assignUnit(unit);
-}
-
-void DefendTaskForceController::assignUnit(Unit* unit)
-{
-  this->theGroup->add(unit);
 }
 
 TaskForceController::TaskForceController(TaskForce& owner)

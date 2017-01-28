@@ -2,6 +2,7 @@
 #include <BWEM/bwem.h>
 class BaseHarvestingController;
 class BaseInDangerDetector;
+class TaskForce;
 
 class Base
 {
@@ -46,6 +47,7 @@ public:
   Status status = Status::Unknown;
   BaseHarvestingController* harvestingController = nullptr;
   BaseInDangerDetector* baseInDangerDetector = nullptr;
+  TaskForce* defendForce = nullptr;
 private:
   const BWEM::Base* bwemBase;
 };

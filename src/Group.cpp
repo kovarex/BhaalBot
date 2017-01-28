@@ -11,6 +11,7 @@ Group::~Group()
 void Group::add(Unit* unit)
 {
   this->units.insert(unit);
+  unit->assign(nullptr);
   if (this->controller)
     this->controller->onAdded(unit);
   if (unit->getAssignment() == nullptr)

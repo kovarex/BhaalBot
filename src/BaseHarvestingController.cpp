@@ -41,6 +41,7 @@ void BaseHarvestingController::assignMiner(Unit* unit)
   Mineral* bestMineral = this->getBestMineral();
   if (bestMineral != nullptr)
   {
+    unit->assign(nullptr);
     bestMineral->miners.push_back(unit);
     unit->assign(new MineralHarvestingAssignment(this));
   }
@@ -184,7 +185,7 @@ uint32_t BaseHarvestingController::biggestMineralSaturation() const
   return result;
 }
 
-Unit* BaseHarvestingController::freeLeastNeededWorker()
+Unit* BaseHarvestingController::getLeastNeededWorker()
 {
   Mineral* mostSatisfiedMineral = nullptr;
   for (Mineral* mineral: this->minerals)
@@ -206,9 +207,6 @@ Unit* BaseHarvestingController::freeLeastNeededWorker()
       bestWorkerToFreeIndex = i;
     }
   }
-  
-  if (bestWorkerToFree != nullptr)
-    bestWorkerToFree->assign(nullptr);
   return bestWorkerToFree;
 }
 

@@ -127,9 +127,11 @@
     <ClCompile Include="src\Cost.cpp" />
     <ClCompile Include="src\CostReservation.cpp" />
     <ClCompile Include="src\DangerZones.cpp" />
+    <ClCompile Include="src\DefendTaskForceController.cpp" />
     <ClCompile Include="src\DeleyedExitChecker.cpp" />
     <ClCompile Include="src\DiscoveredMemory.cpp" />
     <ClCompile Include="src\Dll.cpp" />
+    <ClCompile Include="src\DroneDefenseGroupController.cpp" />
     <ClCompile Include="src\EnemyUnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
     <ClCompile Include="src\FileReadStream.cpp" />
@@ -207,8 +209,10 @@
     <ClInclude Include="src\CostReservation.hpp" />
     <ClInclude Include="src\CStringReadStream.hpp" />
     <ClInclude Include="src\DangerZones.hpp" />
+    <ClInclude Include="src\DefendTaskForceController.hpp" />
     <ClInclude Include="src\DeleyedExitChecker.hpp" />
     <ClInclude Include="src\DiscoveredMemory.hpp" />
+    <ClInclude Include="src\DroneDefenseGroupController.hpp" />
     <ClInclude Include="src\EnemyUnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
     <ClInclude Include="src\FileReadStream.hpp" />

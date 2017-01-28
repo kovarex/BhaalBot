@@ -13,6 +13,5 @@ public:
   Unit* getUnit(BWAPI::UnitType unitType);
 
   std::vector<TaskForce*> taskForces;
-  TaskForce* baseDefend;
   TaskForce* attack;
 };

@@ -1,6 +1,7 @@
 #include <BaseInDangerDetector.hpp>
 #include <Base.hpp>
 #include <BhaalBot.hpp>
+#include <DefendTaskForceController.hpp>
 #include <HarvestingManager.hpp>
 #include <BWEM/bwem.h>
 #include <Unit.hpp>
@@ -151,7 +152,7 @@ void HarvestingManager::balanceWorkersAssignmentBetweenBases()
   }
   if (biggestBaseSaturation > smallestBaseSaturation)
   {
-    Unit* worker = biggestBase->freeLeastNeededWorker();
+    Unit* worker = biggestBase->getLeastNeededWorker();
     if (worker != nullptr)
       smallestBase->assignMiner(worker);
   }
@@ -171,6 +172,9 @@ void HarvestingManager::onUnitComplete(Unit* unit)
         return; // I already have this base registered
     base->status = Base::Status::OwnedByMe;
     base->baseInDangerDetector = new BaseInDangerDetector(*base);
+    base->defendForce = new TaskForce();
+    bhaalBot->fightManager.taskForces.push_back(base->defendForce);
+    base->defendForce->assignTaskController(new DefendTaskForceController(*base->defendForce, base));
     std::vector<BWAPI::Unit> minerals;
     for (BWEM::Mineral* mineral: base->getBWEMBase()->Minerals())
       minerals.push_back(mineral->Unit());
@@ -191,6 +195,20 @@ void HarvestingManager::onUnitDestroy(Unit* unit)
     for (auto it = this->bases.begin(); it != this->bases.end(); ++it)
       if ((*it)->baseUnit == unit)
       {
+        Base* base = (*it)->base;
+        delete base->baseInDangerDetector;
+        base->baseInDangerDetector = nullptr;
+        if (base->defendForce)
+        {
+          for (auto it = bhaalBot->fightManager.taskForces.begin(); it != bhaalBot->fightManager.taskForces.end(); ++it)
+            if (*it == base->defendForce)
+            {
+              bhaalBot->fightManager.taskForces.erase(it);
+              break;
+            }
+          delete base->defendForce;
+          base->defendForce = nullptr;
+        }
         delete *it;
         this->bases.erase(it);
         break;

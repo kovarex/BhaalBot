@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 class Base;
 class Group;
 class TaskForce;
@@ -31,13 +32,4 @@ public:
 
   Group* groundGroup;
   Base* enemyBase = nullptr;
-};
-
-class DefendTaskForceController : public TaskForceController
-{
-public:
-  DefendTaskForceController(TaskForce& owner);
-  void assignUnit(Unit* unit) override;
-
-  Group* theGroup;
 };

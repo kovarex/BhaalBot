@@ -7,9 +7,6 @@
 FightManager::FightManager(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
 {
-  this->taskForces.push_back(this->baseDefend = new TaskForce());
-  this->baseDefend->assignTaskController(new DefendTaskForceController(*this->baseDefend));
-
   this->taskForces.push_back(this->attack = new TaskForce());
   this->attack->assignTaskController(new AttackTaskForceController(*this->attack));
 }
@@ -28,8 +25,8 @@ void FightManager::onUnitComplete(Unit* unit)
     this->attack->addUnit(unit);
   else if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
     this->attack->addUnit(unit);
-  else if (unit->canAttack() && !unit->canGather())
-    this->baseDefend->addUnit(unit);
+  //else if (unit->canAttack() && !unit->canGather())
+  //  this->baseDefend->addUnit(unit);
 }
 
 void FightManager::onFrame()

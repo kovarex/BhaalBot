@@ -12,6 +12,18 @@ void ProducerManager::onUnitComplete(Unit* unit)
     this->producers.push_back(unit);
 }
 
+void ProducerManager::onUnitDestroy(Unit* unit)
+{
+  if (unit->getType() != BWAPI::UnitTypes::Zerg_Hatchery)
+    return;
+  for (auto it = this->producers.begin(); it != this->producers.end(); ++it)
+    if (*it == unit)
+    {
+      this->producers.erase(it);
+      return;
+    }
+}
+
 Unit* ProducerManager::getBestProducer()
 {
   Unit* bestProducer = nullptr;
