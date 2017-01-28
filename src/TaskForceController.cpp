@@ -48,7 +48,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
       {
         if (unit->getPosition().getDistance(group->getPosition()) < MAX_DISTANCE_TO_GROUP_NEW_LINGS)
         {
-          LOG_NOTICE("Adding ling to reinforcements");
+          LOG_INFO("Adding ling to reinforcements");
           group->add(unit);
           if (!group->getController()->isGrouped(MAX_LING_GROUP_ERROR))
           {
@@ -62,7 +62,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
     // if ling still not handled, create a new group for him.
     if (this->lingReinforementGroups.empty() || !lingAdded)
     {
-      LOG_NOTICE("Starting new reinforecements group");
+      LOG_INFO("Starting new reinforecements group");
       this->lingReinforementGroups.push_back(this->owner.createGroup());
       Group* group = this->lingReinforementGroups.back();
       group->add(unit);
@@ -120,7 +120,7 @@ void AttackTaskForceController::onFrame()
     if (this->enemyBase != nullptr &&
         this->enemyBase->getCenter().getDistance((*it)->getPosition()) < DISTANCE_FROM_ENEMY_TO_START_COMBAT)
     {
-      LOG_NOTICE("Switching ling from reinforcements to combat, grouping");
+      LOG_INFO("Switching ling from reinforcements to combat, grouping");
       this->lingCombatGroups.push_back((*it));
       (*it)->getController()->setObjective(GroupObjective::GROUP);
       it = lingReinforementGroups.erase(it);
@@ -134,7 +134,7 @@ void AttackTaskForceController::onFrame()
     if (group->getController()->getObjective() == GroupObjective::GROUP &&
       group->getController()->isGrouped(MAX_LING_GROUP_ERROR))
     {
-      LOG_NOTICE("Grouped, attacking");
+      LOG_INFO("Grouped, attacking");
       group->getController()->setObjective(GroupObjective::ATTACK_MOVE);
     }
   }

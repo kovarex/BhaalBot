@@ -27,7 +27,8 @@ public:
   int getDistance(BWAPI::Unit unit) const { return this->bwapiUnit->getDistance(unit); }
   int getDistance(BWAPI::Position position) const { return this->bwapiUnit->getDistance(position); }
   BWAPI::Unitset getLarva() { return this->bwapiUnit->getLarva(); }
-  BWAPI::Unitset getUnitsInRadius(int radius) { return this->bwapiUnit->getUnitsInRadius(radius); }
+  BWAPI::Unitset getUnitsInRadius(int radius, const BWAPI::UnitFilter &pred = nullptr) const { return this->bwapiUnit->getUnitsInRadius(radius, pred); }
+  BWAPI::Unitset getUnitsInWeaponRange(BWAPI::WeaponType weapon, const BWAPI::UnitFilter &pred = nullptr) const { return this->bwapiUnit->getUnitsInWeaponRange(weapon, pred); }
   bool morph(BWAPI::UnitType unitType) { return this->bwapiUnit->morph(unitType); }
   bool canAttack() const { return this->bwapiUnit->canAttack(); }
   bool canMove() const { return this->bwapiUnit->canMove(); }
@@ -36,6 +37,7 @@ public:
   BWAPI::Unit getHatchery() { return this->bwapiUnit->getHatchery(); }
   double getVelocityX() const { return this->bwapiUnit->getVelocityX(); }
   double getVelocityY() const { return this->bwapiUnit->getVelocityY(); }
+  double getHitPoints() const { return this->bwapiUnit->getHitPoints(); }
   bool build(BWAPI::UnitType unitType, BWAPI::TilePosition position) { return this->bwapiUnit->build(unitType, position); }
   BWAPI::Order getOrder() { return this->bwapiUnit->getOrder(); }
   bool move(BWAPI::Position position) { return this->bwapiUnit->move(position); }
@@ -44,6 +46,7 @@ public:
   bool isConstructing() const { return this->bwapiUnit->isConstructing(); }
   bool attack(BWAPI::Unit unit) { return this->bwapiUnit->attack(unit); }
   bool attack(BWAPI::Position position) { return this->bwapiUnit->attack(position); }
+  bool isAttackFrame() const { return this->bwapiUnit->isAttackFrame();  }
 
   void printAssignment();
   int getDistance(Unit* unit) const { return this->bwapiUnit->getDistance(unit->bwapiUnit); }
