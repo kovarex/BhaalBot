@@ -167,6 +167,8 @@ void HarvestingManager::onUnitComplete(Unit* unit)
     Base* base = bhaalBot->bases.getClosestBase(unit->getPosition());
     if (base == nullptr)
       return;
+    if (base->getCenter().getDistance(unit->getPosition()) > 100)
+      return; // It is too far from mining location
     for (BaseHarvestingController* myBase: this->bases)
       if (myBase->base == base)
         return; // I already have this base registered

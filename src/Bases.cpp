@@ -60,10 +60,19 @@ void Bases::initStartingLocations()
 
 Base* Bases::getClosestBase(BWAPI::Position position)
 {
+  Base* bestCandidate = nullptr;
+  double bestCandidateDistance = 0;
   for (Base* base: this->bases)
-    if (base->getCenter().getDistance(position) < 150)
-      return base;
-  return nullptr;
+  {
+    double distance = base->getCenter().getDistance(position);
+    if (bestCandidate == nullptr ||
+        distance < bestCandidateDistance)
+    {
+      bestCandidateDistance = distance;
+      bestCandidate = base;
+    }
+  }
+  return bestCandidate;
 }
 
 Base* Bases::getEnemyBaseClosestTo(BWAPI::Position position)

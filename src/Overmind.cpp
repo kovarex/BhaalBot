@@ -56,6 +56,8 @@ void Overmind::assignUnit(Unit* unit)
   if (unit->canGather())
   {
     Base* base = bhaalBot->bases.getClosestBase(unit->getPosition());
+    if (!base)
+      return; // no base this is probably bad :)
     if (base->defenseState == Base::DefenseState::None)
     {
       LOG_INFO("Drone assigned to gather");
