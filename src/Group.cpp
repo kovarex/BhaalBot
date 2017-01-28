@@ -2,6 +2,12 @@
 #include <GroupController.hpp>
 #include <Unit.hpp>
 
+Group::~Group()
+{
+  while (!this->units.empty())
+    (*this->units.begin())->assign(nullptr);
+}
+
 void Group::add(Unit* unit)
 {
   this->units.insert(unit);

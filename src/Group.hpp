@@ -21,6 +21,7 @@ public:
 class Group
 {
 public:
+  ~Group();
   void add(Unit* unit);
   void remove(Unit* unit);
   const std::set<Unit*>& getUnits() const { return this->units; }
