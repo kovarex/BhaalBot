@@ -29,7 +29,6 @@ public:
 
 private:
   std::vector<MorphTaskInProgress*> morphTasks;
-  std::map<Unit*, uint32_t> reservedByProducers;
+  std::map<Unit*, uint32_t> reservedByProducers; /**< The amount of larva reserved for these hatcheries */
   std::set<Unit*> larvasRegistered;
-  std::map<BWAPI::UnitType, uint32_t> plannedUnits;
 };

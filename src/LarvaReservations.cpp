@@ -52,7 +52,7 @@ void LarvaReservations::registerTask(Unit* larva, BWAPI::UnitType targetUnit)
   LOG_INFO("Training %s from larva id %u", targetUnit.getName().c_str(), larva->getBWAPIUnit()->getID());
   this->morphTasks.push_back(new MorphTaskInProgress(larva, targetUnit));
   this->reservedByProducers[this->morphTasks.back()->parentHatchery]++;
-  this->plannedUnits[targetUnit]++;
+  bhaalBot->morphingUnits.addPlannedMorph(targetUnit);
   this->larvasRegistered.insert(larva);
 }
 
@@ -65,7 +65,7 @@ void LarvaReservations::onFrame()
       MorphTaskInProgress* morphTask = this->morphTasks[i];
       this->reservedByProducers[morphTask->parentHatchery]--;
       this->larvasRegistered.erase(morphTask->larvaToBeUsed);
-      this->plannedUnits[morphTask->targetUnit]--;
+      bhaalBot->morphingUnits.removePlannedMorph(morphTask->targetUnit);
       delete this->morphTasks[i];
       this->morphTasks.erase(this->morphTasks.begin() + i);
     }
