@@ -148,7 +148,7 @@ BestTarget LingGroupController::chooseLingTarget(Unit* ling)
   targets = ling->getUnitsInRadius(400, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker);
   for (BWAPI::Unit unitInRadius : targets)
   {
-    int currentDistance = unitInRadius->getPosition().getDistance(ling->getPosition());
+    double currentDistance = unitInRadius->getPosition().getDistance(ling->getPosition());
     if (currentDistance < distance)
     {
       bestTarget.target = unitInRadius;
@@ -161,7 +161,7 @@ BestTarget LingGroupController::chooseLingTarget(Unit* ling)
   targets = ling->getUnitsInRadius(600, BWAPI::Filter::IsEnemy);
   for (BWAPI::Unit unitInRadius : targets)
   {
-    int currentDistance = unitInRadius->getPosition().getDistance(ling->getPosition());
+    double currentDistance = unitInRadius->getPosition().getDistance(ling->getPosition());
     if (currentDistance < distance)
     {
       bestTarget.target = unitInRadius;
@@ -223,15 +223,15 @@ void LingGroupController::updateLingAttackMoveAction(Unit *ling)
     return;
   }
 
-  // flee when low health and owerpowered - units in weapon range + 10%
-  BWAPI::Unitset attackers = ling->getUnitsInRadius(1.1, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack);
+  // flee when low health and overpowered - units in weapon range + 10%
+  BWAPI::Unitset attackers = ling->getUnitsInRadius(1, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack);
   if (ling->getHitPoints() <= 15 && attackers.size() >= 2)
   {
     // flee(ling); TODO
     return;
   }
 
-  // flee when owerpowered - units in weapon range + 10%
+  // flee when overpowered - units in weapon range + 10%
   if (attackers.size() >= 3)
   {
     // flee(ling); TODO

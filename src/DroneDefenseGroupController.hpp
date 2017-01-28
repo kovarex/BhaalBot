@@ -8,6 +8,7 @@ class DroneDefenseGroupController : public GroupController
 public:
   DroneDefenseGroupController(Group& owner, Base* base);
   void onAdded(Unit* unit);
+  virtual void onRemoved(Unit* unit);
   virtual void onFrame();
 
   Base* base;

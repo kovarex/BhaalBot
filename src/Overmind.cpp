@@ -32,6 +32,7 @@ void Overmind::onFrame()
       {
         if (base->defenseState == Base::DefenseState::None)
         {
+          BWAPI::Broodwar->setLocalSpeed(200);
           base->defenseState = Base::DefenseState::Defending;
           LOG_NOTICE("Switching base to defense mode.");
           while (Unit* worker = base->harvestingController->getLeastNeededWorker())
@@ -43,6 +44,8 @@ void Overmind::onFrame()
         if (base->defenseState == Base::DefenseState::Defending)
         {
           base->defenseState = Base::DefenseState::None;
+          while (Unit* drone = base->defendForce->getUnit(BWAPI::UnitTypes::Zerg_Drone))
+            bhaalBot->harvestingManager.add(drone);
           LOG_NOTICE("Switching base to normal mode.");
         }
       }
@@ -52,7 +55,16 @@ void Overmind::assignUnit(Unit* unit)
 {
   if (unit->canGather())
   {
-    LOG_INFO("Drone assigned to gather");
-    bhaalBot->harvestingManager.add(unit);
+    Base* base = bhaalBot->bases.getClosestBase(unit->getPosition());
+    if (base->defenseState == Base::DefenseState::None)
+    {
+      LOG_INFO("Drone assigned to gather");
+      bhaalBot->harvestingManager.add(unit);
+    }
+    else
+    {
+      LOG_INFO("Drone assigned to defend");
+      base->defendForce->addUnit(unit);
+    }
   }
 }

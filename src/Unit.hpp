@@ -1,5 +1,6 @@
 #pragma once
 #include <BWAPI.h>
+#include <Target.hpp>
 class Assignment;
 
 /**< Wrapper of the BWAPI::Unit with our additional info.
@@ -29,6 +30,7 @@ public:
   BWAPI::Unitset getLarva() { return this->bwapiUnit->getLarva(); }
   BWAPI::Unitset getUnitsInRadius(int radius, const BWAPI::UnitFilter &pred = nullptr) const { return this->bwapiUnit->getUnitsInRadius(radius, pred); }
   BWAPI::Unitset getUnitsInWeaponRange(BWAPI::WeaponType weapon, const BWAPI::UnitFilter &pred = nullptr) const { return this->bwapiUnit->getUnitsInWeaponRange(weapon, pred); }
+  bool isInWeaponRange(BWAPI::Unit unit) const { return this->bwapiUnit->isInWeaponRange(unit); }
   bool morph(BWAPI::UnitType unitType) { return this->bwapiUnit->morph(unitType); }
   bool canAttack() const { return this->bwapiUnit->canAttack(); }
   bool canMove() const { return this->bwapiUnit->canMove(); }
@@ -62,4 +64,24 @@ public:
 private:
   BWAPI::Unit bwapiUnit;
   Assignment* assignment = nullptr;
+public:
+  class Order
+  {
+  public:
+    enum class Type
+    {
+      None,
+      Attack
+    };
+    Order() {}
+    Order(Type type) : type(type) {}
+    Order(Type type, BWAPI::Unit target) : type(type), target(target) {}
+    Order(const Order& other) = default;
+    void operator=(const Order& other) { this->type = other.type; this->target = other.target; }
+
+    Type type = Type::None;
+    Target target;
+  };
+  Order lastOrderGiven;
+  int frameOfLastOrder = 0;
 };

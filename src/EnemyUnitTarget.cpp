@@ -3,9 +3,17 @@
 
 EnemyUnitTarget::EnemyUnitTarget(BWAPI::Unit unit)
 {
-  UnitMemoryInfo* unitMemoryInfo = bhaalBot->discoveredMemory.getUnit(unit);
-  if (unitMemoryInfo)
-    unitMemoryInfo->addTarget(this);
+  this->data = bhaalBot->discoveredMemory.getUnit(unit);
+  if (this->data)
+    this->data->addTarget(this);
+}
+
+void EnemyUnitTarget::operator=(const EnemyUnitTarget& other)
+{
+  this->clear();
+  this->data = other.getUnitData();
+  if (this->data)
+    this->data->addTarget(this);
 }
 
 void EnemyUnitTarget::operator=(BWAPI::Unit unit)

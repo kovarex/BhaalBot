@@ -10,6 +10,7 @@ public:
   Target(BWAPI::Unit unit) : unit(unit) {}
   void operator=(BWAPI::Position position);
   void operator=(BWAPI::Unit unit);
+  void operator=(const Target& other) { this->position = other.position; this->unit = other.unit; }
 
   bool isZero() const;
   BWAPI::Position getPosition() const;

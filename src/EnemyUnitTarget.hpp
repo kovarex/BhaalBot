@@ -12,13 +12,13 @@ public:
   // these can be done later;
   EnemyUnitTarget(EnemyUnitTarget& other)  = delete;
   EnemyUnitTarget(EnemyUnitTarget&& other)  = delete;
-  void operator=(EnemyUnitTarget& other) = delete;
+  void operator=(const EnemyUnitTarget& other);
   void operator=(BWAPI::Unit unit);
 
 
   bool isZero() const { return this->data == nullptr; }
   void clear();
-  UnitMemoryInfo* getUnitData() { return this->data; }
+  UnitMemoryInfo* getUnitData() const { return this->data; }
   BWAPI::Position getPosition() const;
   BWAPI::Unit getUnit() const;
 
