@@ -2,6 +2,12 @@
 #include <Unit.hpp>
 #include <Log.hpp>
 
+Units::~Units()
+{
+  for (auto& item: this->units)
+    delete item.second;
+}
+
 Unit* Units::onUnitComplete(BWAPI::Unit unit)
 {
   Unit* ourUnit = new Unit(unit);
