@@ -12,7 +12,7 @@
 
 #define MAX_DISTANCE_TO_GROUP_NEW_LINGS 200 // currently in pixels
 #define MAX_LING_GROUP_ERROR 50
-#define DISTANCE_FROM_ENEMY_TO_START_COMBAT 500
+#define DISTANCE_FROM_ENEMY_TO_START_COMBAT 300
 
 AttackTaskForceController::AttackTaskForceController(TaskForce& owner)
   : TaskForceController(owner)
@@ -136,6 +136,7 @@ void AttackTaskForceController::onFrame()
       group->getController()->isGrouped(MAX_LING_GROUP_ERROR))
     {
       LOG_INFO("Grouped, attacking");
+      group->getController()->setTargetPosition(this->enemyBase->getCenter());
       group->getController()->setObjective(GroupObjective::ATTACK_MOVE);
     }
   }

@@ -224,7 +224,7 @@ void LingGroupController::updateLingAttackMoveAction(Unit *ling)
   }
 
   // flee when low health and overpowered - units in weapon range + 10%
-  BWAPI::Unitset attackers = ling->getUnitsInRadius(1, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack);
+  BWAPI::Unitset attackers = ling->getUnitsInWeaponRange(BWAPI::WeaponTypes::Claws, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack);
   if (ling->getHitPoints() <= 15 && attackers.size() >= 2)
   {
     // flee(ling); TODO
