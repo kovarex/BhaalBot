@@ -109,6 +109,7 @@
     <ClCompile Include="src\DroneDefenseGroupController.cpp" />
     <ClCompile Include="src\DefendTaskForceController.cpp" />
     <ClCompile Include="src\Target.cpp" />
+    <ClCompile Include="src\BWAPIUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />
     <ClInclude Include="src\DefendTaskForceController.hpp" />
     <ClInclude Include="src\Target.hpp" />
+    <ClInclude Include="src\BWAPIUtil.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

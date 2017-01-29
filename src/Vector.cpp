@@ -1,5 +1,7 @@
 #include <Vector.hpp>
 
+std::vector<Vector> Vector::basicOneTileDirections = {Vector(0, -32), Vector(32, 0), Vector(0, 32), Vector(-32, 0) };
+
 Vector::Vector(double dx, double dy)
   : dx(dx)
   , dy(dy)

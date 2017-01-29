@@ -10,7 +10,10 @@ public:
   void onAdded(Unit* unit);
   virtual void onRemoved(Unit* unit);
   virtual void onFrame();
-
+private:
+  bool isOccupiedByMineral(BWAPI::Position position);
+  BWAPI::Unit getBestMineralForDefense(bool drawDebugInfo = false);
+public:
   Base* base;
   std::set<Unit*> stacked;
   std::set<Unit*> goingToMineral;

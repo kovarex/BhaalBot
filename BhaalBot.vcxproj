@@ -107,6 +107,7 @@
     <ClCompile Include="src\BuildOrderManager.cpp" />
     <ClCompile Include="src\BuildTaskInProgress.cpp" />
     <ClCompile Include="src\BuildTasks.cpp" />
+    <ClCompile Include="src\BWAPIUtil.cpp" />
     <ClCompile Include="src\BWEM\area.cpp" />
     <ClCompile Include="src\BWEM\bwemBase.cpp" />
     <ClCompile Include="src\BWEM\bwapiExt.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\BuildOrderManager.hpp" />
     <ClInclude Include="src\BuildTaskInProgress.hpp" />
     <ClInclude Include="src\BuildTasks.hpp" />
+    <ClInclude Include="src\BWAPIUtil.hpp" />
     <ClInclude Include="src\BWEM\area.h" />
     <ClInclude Include="src\BWEM\bwemBase.h" />
     <ClInclude Include="src\BWEM\bwapiExt.h" />
