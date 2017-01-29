@@ -77,7 +77,7 @@ public:
     Order() {}
     Order(Type type) : type(type) {}
     Order(Type type, BWAPI::Unit target) : type(type), target(target) {}
-    Order(const Order& other) = default;
+    Order(Order& other) = default;
     void operator=(const Order& other) { this->type = other.type; this->target = other.target; }
 
     Type type = Type::None;

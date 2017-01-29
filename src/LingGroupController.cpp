@@ -5,6 +5,8 @@
 #include <Vector.hpp>
 #include <Log.hpp>
 
+#define FRAMES_TO_FLEE 50
+
 LingGroupController::LingGroupController(Group& owner)
   : GroupController(owner)
 {}
@@ -71,67 +73,69 @@ BestTarget LingGroupController::chooseLingTarget(Unit* ling)
   BWAPI::Unitset targets;
 
   // Get units in range and find the best one to attack
-  targets = ling->getUnitsInWeaponRange(BWAPI::WeaponTypes::Claws, BWAPI::Filter::IsEnemy);
+  //targets = ling->getUnitsInWeaponRange(BWAPI::WeaponTypes::Claws, BWAPI::Filter::IsEnemy);
+  targets = ling->getUnitsInRadius(120, BWAPI::Filter::IsEnemy); // hack, cos above does not work. Large range so that it catches hatchery.
   for (BWAPI::Unit unitInRange : targets)
-  {
-    // one hit kill
-    if (unitInRange->getHitPoints() <= BWAPI::UnitTypes::Zerg_Zergling.groundWeapon().damageAmount())
+    if (ling->isInWeaponRange(unitInRange))
     {
-      if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Drone)
+      // one hit kill
+      if (unitInRange->getHitPoints() <= BWAPI::UnitTypes::Zerg_Zergling.groundWeapon().damageAmount())
       {
-        // best option of all
-        bestTarget.target = unitInRange;
-        bestTarget.type = LingTargetType::DRONE_1_HIT;
-        break;
+        if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Drone)
+        {
+          // best option of all
+          bestTarget.target = unitInRange;
+          bestTarget.type = LingTargetType::DRONE_1_HIT;
+          break;
+        }
+        if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Zergling)
+        {
+          // second to best option
+          bestTarget.target = unitInRange;
+          bestTarget.type = LingTargetType::LING_1_HIT;
+        }
+        if (bestTarget.type > LingTargetType::OTHER_1_HIT)
+        {
+          bestTarget.target = unitInRange;
+          bestTarget.type = LingTargetType::OTHER_1_HIT;
+        }
       }
-      if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Zergling)
-      {
-        // second to best option
-        bestTarget.target = unitInRange;
-        bestTarget.type = LingTargetType::LING_1_HIT;
-      }
-      if (bestTarget.type > LingTargetType::OTHER_1_HIT)
-      {
-        bestTarget.target = unitInRange;
-        bestTarget.type = LingTargetType::OTHER_1_HIT;
-      }
-    }
-    if (bestTarget.type <= LingTargetType::OTHER_1_HIT)
-      continue;
+      if (bestTarget.type <= LingTargetType::OTHER_1_HIT)
+        continue;
 
-    // two hit kill - we know there is no 1 hit found yet.
-    if (unitInRange->getHitPoints() <= 2 * BWAPI::UnitTypes::Zerg_Zergling.groundWeapon().damageAmount())
-    {
-      if (bestTarget.type > LingTargetType::DRONE_2_HIT &&
+      // two hit kill - we know there is no 1 hit found yet.
+      if (unitInRange->getHitPoints() <= 2 * BWAPI::UnitTypes::Zerg_Zergling.groundWeapon().damageAmount())
+      {
+        if (bestTarget.type > LingTargetType::DRONE_2_HIT &&
           unitInRange->getType() == BWAPI::UnitTypes::Zerg_Drone)
-      {
-        bestTarget.target = unitInRange;
-        bestTarget.type = LingTargetType::DRONE_2_HIT;
+        {
+          bestTarget.target = unitInRange;
+          bestTarget.type = LingTargetType::DRONE_2_HIT;
+        }
+        else if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Zergling)
+        {
+          bestTarget.target = unitInRange;
+          bestTarget.type = LingTargetType::LING_2_HIT;
+        }
+        // we don't care about other 2 hit units for now
+        continue;
       }
-      else if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Zergling)
-      {
-        bestTarget.target = unitInRange;
-        bestTarget.type = LingTargetType::LING_2_HIT;
-      }
-      // we don't care about other 2 hit units for now
-      continue;
-    }
-    if (bestTarget.type <= LingTargetType::LING_2_HIT)
-      continue;
+      if (bestTarget.type <= LingTargetType::LING_2_HIT)
+        continue;
 
-    // Unit in range regardless health
-    if (bestTarget.type > LingTargetType::LING_IN_RANGE &&
+      // Unit in range regardless health
+      if (bestTarget.type > LingTargetType::LING_IN_RANGE &&
         unitInRange->getType() == BWAPI::UnitTypes::Zerg_Zergling)
-    {
-      bestTarget.target = unitInRange;
-      bestTarget.type = LingTargetType::LING_IN_RANGE;
+      {
+        bestTarget.target = unitInRange;
+        bestTarget.type = LingTargetType::LING_IN_RANGE;
+      }
+      else if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Drone)
+      {
+        bestTarget.target = unitInRange;
+        bestTarget.type = LingTargetType::DRONE_IN_RANGE;
+      }
     }
-    else if (unitInRange->getType() == BWAPI::UnitTypes::Zerg_Drone)
-    {
-      bestTarget.target = unitInRange;
-      bestTarget.type = LingTargetType::DRONE_IN_RANGE;
-    }
-  }
 
   if (bestTarget.type <= LingTargetType::DRONE_IN_RANGE) // nothing better can be found
     return bestTarget;
@@ -166,38 +170,31 @@ BestTarget LingGroupController::chooseLingTarget(Unit* ling)
 
 void LingGroupController::flee(Unit* ling, int radiusToConsider, double howFar)
 {
-  // TODO
+  BWAPI::Unitset enemies = ling->getUnitsInRadius(radiusToConsider, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack);
+  BWAPI::Position enemyCenter = {0, 0};
+  for (BWAPI::Unit enemy : enemies)
+  {
+    enemyCenter += enemy->getPosition();
+  }
+  enemyCenter /= enemies.size();
+  Vector vector(enemyCenter, ling->getPosition());
+  vector.extendToLength(howFar);
+  ling->move({(int)(enemyCenter.x + vector.dx), (int)(enemyCenter.y + vector.dy)});
+  ling->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
 }
 
 void LingGroupController::updateLingAttackMoveAction(Unit *ling)
 {
   // if unit is performing an attack, do not interrupt it.
-  // TODO following code is for debugging the attack distance.
-  bool attackFrame = ling->isAttackFrame();
-  char option = 'a';
-  BWAPI::Unit target = ling->getTarget();
-  if (!target)
-  {
-    target = ling->getOrderTarget();
-    option = 'b';
-  }
-  if (!target)
-  {
-    target = ling->getClosestUnit(BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack, 60);
-    option = 'c';
-  }
+  if (ling->isAttackFrame())
+    return;
 
-  double x;
-  if (attackFrame && target)
+  // if fleeing, do not interrupt it.
+  if (ling->getOrder() == BWAPI::Orders::Move && (BWAPI::Broodwar->getFrameCount() - ling->frameOfLastOrder < FRAMES_TO_FLEE))
   {
-    x = target->getPosition().getDistance(ling->getPosition());
-    max = (x < max) ? max : x;
-    min = (x > min) ? min : x;
-    x = 0;
+    LOG_INFO("continue fleeing");
     return;
   }
-  else if (ling->isAttackFrame())
-    return;
   
   // if under cooldown, use the time to move to a useful target. - i think this case does not need special handling, just attack as if we can.
   
