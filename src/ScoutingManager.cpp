@@ -173,13 +173,8 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
     this->scout->move(this->target->getCenter());
   if (this->scout->getPosition().getDistance(this->target->getCenter()) < 200)
   {
-    BWAPI::Unitset nearbyUnits = this->scout->getUnitsInRadius(200);
-    bool containsBuilding = false;
-    for (BWAPI::Unit nearbyUnit: nearbyUnits)
-      if (nearbyUnit->getType().isBuilding() &&
-          BWAPI::Broodwar->self()->isEnemy(nearbyUnit->getPlayer()))
-        containsBuilding = true;
-    if (containsBuilding)
+    BWAPI::Unitset nearbyEnemyBuildings = this->scout->getUnitsInRadius(200, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsBuilding);
+    if (!nearbyEnemyBuildings.empty())
     {
       this->target->startingBaseStatus = Base::StartingBaseStatus::Enemy;
       this->target->status = Base::Status::OwnedByEnemy;

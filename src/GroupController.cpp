@@ -30,12 +30,15 @@ void GroupController::updateAction()
       this->actionNone();
       break;
     case GroupObjective:: MOVE:
+      //LOG_INFO("Group MOVE - update action");
       this->actionMove();
       break;
     case GroupObjective::ATTACK_MOVE:
+      //LOG_INFO("Group ATTACK MOVE - update action");
       this->actionAttackMove();
       break;
     case GroupObjective::ATTACK_TARGET:
+      //LOG_INFO("Group ATTACK TARGET - update action");
       this->actionAttackTarget();
       break;
     case GroupObjective::HOLD:

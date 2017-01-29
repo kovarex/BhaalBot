@@ -29,6 +29,7 @@ public:
   int getDistance(BWAPI::Position position) const { return this->bwapiUnit->getDistance(position); }
   BWAPI::Unitset getLarva() { return this->bwapiUnit->getLarva(); }
   BWAPI::Unitset getUnitsInRadius(int radius, const BWAPI::UnitFilter &pred = nullptr) const { return this->bwapiUnit->getUnitsInRadius(radius, pred); }
+  BWAPI::Unit getClosestUnit(const BWAPI::UnitFilter &pred = nullptr, int radius = 999999) const { return this->bwapiUnit->getClosestUnit(pred, radius); }
   BWAPI::Unitset getUnitsInWeaponRange(BWAPI::WeaponType weapon, const BWAPI::UnitFilter &pred = nullptr) const { return this->bwapiUnit->getUnitsInWeaponRange(weapon, pred); }
   bool isInWeaponRange(BWAPI::Unit unit) const { return this->bwapiUnit->isInWeaponRange(unit); }
   bool morph(BWAPI::UnitType unitType) { return this->bwapiUnit->morph(unitType); }

@@ -39,12 +39,13 @@ void BuildOrderManager::onStart()
     pool5->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool5->add(1, BWAPI::UnitTypes::Zerg_Drone);
     pool5->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Drone));
+    //pool5->add(1, BWAPI::UnitTypes::Zerg_Zergling);
     pool5->add(4, BWAPI::UnitTypes::Zerg_Zergling);
     pool5->add(new SwitchToAutomaticOverlordBuilding());
-    pool5->add(10, BWAPI::UnitTypes::Zerg_Zergling);
-    pool5->add(1, BWAPI::UnitTypes::Zerg_Hatchery);
-    pool5->add(3, BWAPI::UnitTypes::Zerg_Drone);
-    pool5->add(150, BWAPI::UnitTypes::Zerg_Zergling);
+    //pool5->add(10, BWAPI::UnitTypes::Zerg_Zergling);
+    //pool5->add(1, BWAPI::UnitTypes::Zerg_Hatchery);
+    //pool5->add(3, BWAPI::UnitTypes::Zerg_Drone);
+    //pool5->add(150, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool5);
   }
   {

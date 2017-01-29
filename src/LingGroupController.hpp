@@ -32,6 +32,9 @@ class LingGroupController : public GroupController
 {
 private:
   static BestTarget chooseLingTarget(Unit* ling); // finds best available target of a ling
+  void flee(Unit* ling, int radiusToConsider, double howFar);
+
+  double min = DBL_MAX, max = 0; // TODO delete
 
 public:
   LingGroupController(Group& owner);
