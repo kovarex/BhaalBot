@@ -10,6 +10,7 @@ LarvaReservations::MorphTaskInProgress::MorphTaskInProgress(Unit* larva, BWAPI::
   , larvaToBeUsed(larva)
   , targetUnit(targetUnit)
   , parentHatchery(bhaalBot->units.find(larva->getHatchery()))
+  , tickOfLastOrder(BWAPI::Broodwar->getFrameCount())
 {}
 
 std::string LarvaReservations::MorphTaskInProgress::str() const
@@ -20,6 +21,12 @@ std::string LarvaReservations::MorphTaskInProgress::str() const
 bool LarvaReservations::MorphTaskInProgress::morhphingStarted() const
 {
   return this->larvaToBeUsed->getType() != BWAPI::UnitTypes::Zerg_Larva;
+}
+
+void LarvaReservations::MorphTaskInProgress::onFrame() const
+{
+  if (BWAPI::Broodwar->getFrameCount() - this->tickOfLastOrder > BWAPI::Broodwar->getLatencyFrames())
+    this->larvaToBeUsed->train(this->targetUnit);
 }
 
 LarvaReservations::LarvaReservations(ModuleContainer& moduleContainer)
@@ -37,10 +44,9 @@ bool LarvaReservations::tryToTrain(Unit* hatchery, BWAPI::UnitType targetUnit)
   for (BWAPI::Unit bwLarva: hatchery->getLarva())
   {
     Unit* larva = bhaalBot->units.find(bwLarva);
-    if (!this->isResrved(larva))
+    if (!this->isResrved(larva) && larva->train(targetUnit))
     {
       this->registerTask(larva, targetUnit);
-      larva->train(targetUnit);
       return true;
     }
   }
@@ -82,7 +88,10 @@ void LarvaReservations::onFrame()
       this->morphTasks.erase(this->morphTasks.begin() + i);
     }
     else
+    {
+      this->morphTasks[i]->onFrame();
       ++i;
+    }
   }
 }
 

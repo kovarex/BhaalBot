@@ -22,10 +22,12 @@ public:
     MorphTaskInProgress(Unit* larva, BWAPI::UnitType targetUnit);
     std::string str() const override;
     bool morhphingStarted() const;
+    void onFrame() const;
 
     Unit* larvaToBeUsed;
     BWAPI::UnitType targetUnit;
     Unit* parentHatchery;
+    int tickOfLastOrder;
   };
 
 private:

@@ -32,7 +32,7 @@ bool BuildBuildOrderItem::execute()
         if (unit->morph(unitType))
         {
           LOG_INFO("Morphing %s %d to %s", unit->getType().getName().c_str(), unit->getID(), unitType.getName().c_str());
-          bhaalBot->morphingUnits.planMorphOf(unit);
+          bhaalBot->morphingUnits.planMorphOf(unit, unitType);
           return true;
         }
         return false;

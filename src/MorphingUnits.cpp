@@ -29,6 +29,18 @@ uint32_t MorphingUnits::getPlannedCount(BWAPI::UnitType unitType)
   return this->getMorphingCount(unitType) + this->getPlannedMorphsCount(unitType);
 }
 
+void MorphingUnits::onFrame()
+{
+  for (auto& item: this->thingsToBeMorphed)
+    if (BWAPI::Broodwar->getFrameCount() - item.second.frameOfLastOrder > BWAPI::Broodwar->getLatencyFrames())
+      item.first->train(item.second.targetType);
+}
+
+void MorphingUnits::planMorphOf(Unit* unit, BWAPI::UnitType targetType)
+{
+  this->thingsToBeMorphed[unit] = UnitToBeMorphedData(targetType);
+}
+
 uint32_t MorphingUnits::getMorphingCount(BWAPI::UnitType unitType)
 {
   auto position = this->counts.find(unitType);
@@ -44,3 +56,8 @@ uint32_t MorphingUnits::getPlannedMorphsCount(BWAPI::UnitType unitType)
     return 0;
   return position->second;
 }
+
+MorphingUnits::UnitToBeMorphedData::UnitToBeMorphedData(BWAPI::UnitType targeType)
+  : targetType(targeType)
+  , frameOfLastOrder(BWAPI::Broodwar->getFrameCount())
+{}
