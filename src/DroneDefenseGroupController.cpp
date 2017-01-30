@@ -116,14 +116,19 @@ void DroneDefenseGroupController::onFrame()
     if (fightingWorker->isAttackFrame())
       continue;
     BWAPI::Unitset closeEnemies = BWAPI::Broodwar->getUnitsInRadius(fightingWorker->getPosition(), 40);
+    BWAPI::Unit bestEnemyToAttack = nullptr;;
     for (BWAPI::Unit enemy: closeEnemies)
       if (BWAPI::Broodwar->self()->isEnemy(enemy->getPlayer()) &&
-          enemy->canAttack(false))
-        if (fightingWorker->getBWAPIUnit()->isInWeaponRange(enemy))
-        {
-          fightingWorker->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
-          fightingWorker->lastOrderGiven = Unit::Order(Unit::Order::Type::Attack, enemy);
-          fightingWorker->attack(enemy);
-        }
+          enemy->canAttack(false) &&
+          (bestEnemyToAttack == nullptr ||
+           bestEnemyToAttack->getHitPoints() > enemy->getHitPoints()))
+        bestEnemyToAttack = enemy;
+    if (bestEnemyToAttack)
+      if (fightingWorker->getBWAPIUnit()->isInWeaponRange(bestEnemyToAttack))
+      {
+        fightingWorker->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
+        fightingWorker->lastOrderGiven = Unit::Order(Unit::Order::Type::Attack, bestEnemyToAttack);
+        fightingWorker->attack(bestEnemyToAttack);
+      }
   }
 }
