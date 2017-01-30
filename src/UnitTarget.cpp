@@ -40,6 +40,11 @@ void UnitTarget::clear()
 
 BWAPI::Position UnitTarget::getPosition() const
 {
-  return this->unit ? this->unit->getPosition() : BWAPI::Positions::None;
+  if (this->unit == nullptr)
+    return BWAPI::Positions::None;
+  if (this->unit->isVisible())
+    return this->unit->getPosition();
+  if (this->unit->memoryInfo)
+    return this->unit->memoryInfo->position;
+  return BWAPI::Positions::None;
 }
-
