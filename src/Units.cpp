@@ -15,9 +15,19 @@ Unit* Units::onUnitComplete(BWAPI::Unit unit)
   if (position != this->units.end())
   {
     // I assume that our unit just morphed into different unit here
-    if (position->second->player->bwapiPlayer == unit->getPlayer())
+    if (position->second->player->bwapiPlayer == unit->getPlayer() ||
+        position->second->lastSeenUnitType == BWAPI::UnitTypes::Resource_Vespene_Geyser)
       return position->second;
+    delete this->units[unit];
+    this->units.erase(unit);
   }
+#ifdef DEBUG
+  for (auto& item: this->units)
+    if (item.second->getID() == unit->getID())
+    {
+      LOG_AND_ABORT("Adding unit %s %d that is already there as different instance.", unit->getType().getName().c_str(), unit->getID());
+    }
+#endif
   Unit* ourUnit = new Unit(unit);
   this->units[unit] = ourUnit;
   this->unitSet.insert(ourUnit);
