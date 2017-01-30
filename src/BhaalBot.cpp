@@ -172,10 +172,13 @@ void BhaalBot::onUnitDestroy(BWAPI::Unit unit)
 
 void BhaalBot::onUnitMorph(BWAPI::Unit unit)
 {
-  Unit* ourUnit = this->units.findOrThrow(unit);
-  BWAPI::UnitType lastSeenType = ourUnit->lastSeenUnitType;
-  ourUnit->lastSeenUnitType = ourUnit->getType();
-  this->moduleContainer.onUnitMorph(ourUnit, lastSeenType);
+  Unit* ourUnit = this->units.find(unit);
+  if (ourUnit)
+  {
+    BWAPI::UnitType lastSeenType = ourUnit->lastSeenUnitType;
+    ourUnit->lastSeenUnitType = ourUnit->getType();
+    this->moduleContainer.onUnitMorph(ourUnit, lastSeenType);
+  }
 }
 
 void BhaalBot::onUnitRenegade(BWAPI::Unit unit)

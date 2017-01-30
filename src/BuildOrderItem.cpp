@@ -3,8 +3,10 @@
 #include <BaseHarvestingController.hpp>
 #include <BhaalBot.hpp>
 #include <StringUtil.hpp>
+#include <Player.hpp>
 #include <BuildTaskInProgress.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
 bool BuildBuildOrderItem::execute()
 {
@@ -22,10 +24,19 @@ bool BuildBuildOrderItem::execute()
   if (unitType == BWAPI::UnitTypes::Zerg_Sunken_Colony ||
       unitType == BWAPI::UnitTypes::Zerg_Spore_Colony)
   {
-    for (BWAPI::Unit unit: BWAPI::Broodwar->self()->getUnits())
+    for (Unit* unit: bhaalBot->players.self->units)
       if (unit->getType() == BWAPI::UnitTypes::Zerg_Creep_Colony &&
-          unit->getRemainingBuildTime() == 0)
-        return unit->morph(unitType);
+          unit->getRemainingBuildTime() == 0 &&
+          !bhaalBot->morphingUnits.isScheduledToBeMorphed(unit))
+      {
+        if (unit->morph(unitType))
+        {
+          LOG_INFO("Morphing %s %d to %s", unit->getType().getName().c_str(), unit->getID(), unitType.getName().c_str());
+          bhaalBot->morphingUnits.planMorphOf(unit);
+          return true;
+        }
+        return false;
+      }
     return false;
   }
 

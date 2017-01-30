@@ -27,7 +27,7 @@ void LingGroupController::onFrame()
     case GroupObjective::MOVE:
       break;
     case GroupObjective::ATTACK_MOVE:
-      LOG_INFO("Updating lings");
+      //LOG_INFO("Updating lings");
       for (Unit *ling : owner.getUnits())
       {
         updateLingAttackMoveAction(ling);

@@ -54,6 +54,7 @@ public:
   bool attack(BWAPI::Position position) { return this->bwapiUnit->attack(position); }
   bool isAttackFrame() const { return this->bwapiUnit->isAttackFrame();  }
   int getID() const { return this->bwapiUnit->getID(); }
+  int getRemainingBuildTime() const { return this->bwapiUnit->getRemainingBuildTime(); }
 
   bool attack(Unit* unit) { return this->bwapiUnit->attack(unit->getBWAPIUnit()); }
   void printAssignment();

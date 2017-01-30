@@ -1,6 +1,7 @@
 #include <Units.hpp>
 #include <Unit.hpp>
 #include <Log.hpp>
+#include <Player.hpp>
 
 Units::~Units()
 {
@@ -10,6 +11,13 @@ Units::~Units()
 
 Unit* Units::onUnitComplete(BWAPI::Unit unit)
 {
+  auto position = this->units.find(unit);
+  if (position != this->units.end())
+  {
+    // I assume that our unit just morphed into different unit here
+    if (position->second->player->bwapiPlayer == unit->getPlayer())
+      return position->second;
+  }
   Unit* ourUnit = new Unit(unit);
   this->units[unit] = ourUnit;
   this->unitSet.insert(ourUnit);

@@ -7,7 +7,7 @@ MorphingUnits::MorphingUnits(ModuleContainer& moduleContainer)
  : Module(moduleContainer)
 {}
 
-void MorphingUnits::onUnitMorph(Unit* unit, BWAPI::UnitType)
+void MorphingUnits::onUnitMorph(Unit* unit, BWAPI::UnitType from)
 {
   if (unit->getPlayer() != bhaalBot->players.self)
     return;
@@ -20,6 +20,8 @@ void MorphingUnits::onUnitMorph(Unit* unit, BWAPI::UnitType)
       LOG_AND_ABORT("Morph count of something would go under 0");
     this->counts[unit->getType()]--;
   }
+  LOG_INFO("%s %d morphed from %s", unit->getType().getName().c_str(), unit->getID(), from.getName().c_str());
+  this->thingsToBeMorphed.erase(unit);
 }
 
 uint32_t MorphingUnits::getPlannedCount(BWAPI::UnitType unitType)

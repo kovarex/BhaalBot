@@ -14,8 +14,8 @@ void Target::operator=(Unit* unit)
 
 bool Target::isZero() const
 {
-  return !this->unit.isZero() ||
-    this->position != BWAPI::Positions::None;
+  return this->unit.isZero() &&
+    this->position == BWAPI::Positions::None;
 }
 
 BWAPI::Position Target::getPosition() const
