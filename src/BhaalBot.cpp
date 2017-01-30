@@ -2,6 +2,7 @@
 #include <iostream>
 #include <BWEM/bwem.h>
 #include <PropertyTreeIni.hpp>
+#include <Unit.hpp>
 
 BhaalBot* bhaalBot = nullptr;
 namespace { auto & theMap = BWEM::Map::Instance(); }
@@ -14,6 +15,7 @@ BhaalBot::BhaalBot()
   : logger(myFolder)
   , overmind(this->moduleContainer)
   , bases(this->moduleContainer)
+  , players(this->moduleContainer)
   , buildOrderManager(this->moduleContainer)
   , harvestingManager(this->moduleContainer)
   , morphingUnits(this->moduleContainer)
@@ -97,7 +99,7 @@ void BhaalBot::onFrame()
   }
 
   BWAPI::Broodwar->drawTextScreen(380, 0, "APM: %u", BWAPI::Broodwar->getAPM());
-  BWAPI::Broodwar->drawTextScreen(380, 20, "Latency: %u", BWAPI::Broodwar->getLatencyFrames());
+  BWAPI::Broodwar->drawTextScreen(380, 15, "Latency: %u", BWAPI::Broodwar->getLatencyFrames());
 
   /*
   // Prevent spamming by only running our onFrame once every number of latency frames.
@@ -154,13 +156,8 @@ void BhaalBot::onUnitDestroy(BWAPI::Unit unit)
 {
   try
   {
-    if (unit->getPlayer() == BWAPI::Broodwar->self())
-    {
-      this->moduleContainer.onUnitDestroy(this->units.findOrThrow(unit));
-      this->units.onUnitDestroy(unit);
-    }
-    else
-      this->moduleContainer.onForeignUnitDestroy(unit);
+    this->moduleContainer.onUnitDestroy(this->units.findOrThrow(unit));
+    this->units.onUnitDestroy(unit);
 
     if (unit->getType().isMineralField())
       theMap.OnMineralDestroyed(unit);
@@ -175,20 +172,10 @@ void BhaalBot::onUnitDestroy(BWAPI::Unit unit)
 
 void BhaalBot::onUnitMorph(BWAPI::Unit unit)
 {
-  try
-  {
-    if (unit->getPlayer() == BWAPI::Broodwar->self())
-    {
-      Unit* ourUnit = this->units.find(unit);
-      if (ourUnit == nullptr)
-        ourUnit = this->units.onUnitComplete(unit);
-      this->moduleContainer.onUnitMorph(ourUnit);
-    }
-  }
-  catch (const std::exception & e)
-  {
-    BWAPI::Broodwar << "EXCEPTION: " << e.what() << std::endl;
-  }
+  Unit* ourUnit = this->units.findOrThrow(unit);
+  BWAPI::UnitType lastSeenType = ourUnit->lastSeenUnitType;
+  ourUnit->lastSeenUnitType = ourUnit->getType();
+  this->moduleContainer.onUnitMorph(ourUnit, lastSeenType);
 }
 
 void BhaalBot::onUnitRenegade(BWAPI::Unit unit)
@@ -196,13 +183,8 @@ void BhaalBot::onUnitRenegade(BWAPI::Unit unit)
 
 void BhaalBot::onUnitComplete(BWAPI::Unit unit)
 {
-  if (unit->getPlayer() == BWAPI::Broodwar->self())
-  {
-    Unit* ourUnit = this->units.onUnitComplete(unit);
-    this->moduleContainer.onUnitComplete(ourUnit);
-  }
-  else
-    this->moduleContainer.onForeignUnitComplete(unit);
+  Unit* ourUnit = this->units.onUnitComplete(unit);
+  this->moduleContainer.onUnitComplete(ourUnit);
 }
 
 bool BhaalBot::isUMSMap()

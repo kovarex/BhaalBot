@@ -6,7 +6,7 @@ void Target::operator=(BWAPI::Position position)
   this->position = position;
 }
 
-void Target::operator=(BWAPI::Unit unit)
+void Target::operator=(Unit* unit)
 {
   this->position = BWAPI::Positions::None;
   this->unit = unit;
@@ -25,9 +25,9 @@ BWAPI::Position Target::getPosition() const
   return this->position;
 }
 
-BWAPI::Unit Target::getUnit() const
+Unit* Target::getUnit()
 {
-  return this->unit.getUnit();
+  return *this->unit;
 }
 
 void Target::clear()

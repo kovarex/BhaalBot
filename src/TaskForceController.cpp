@@ -9,6 +9,7 @@
 #include <LingGroupController.hpp>
 #include <log.hpp>
 #include <DroneDefenseGroupController.hpp>
+#include <Player.hpp>
 
 #define MAX_DISTANCE_TO_GROUP_NEW_LINGS 200 // currently in pixels
 #define MAX_LING_GROUP_ERROR 50
@@ -98,18 +99,19 @@ void AttackTaskForceController::onFrame()
     if (group->getTarget() == nullptr)
     {
       BWAPI::Position groupPosition = group->getPosition();
-      BWAPI::Unit bestCandidate = nullptr;
+      Unit* bestCandidate = nullptr;
       double bestCandidateDistance = 0;
-      for (auto& item: bhaalBot->discoveredMemory.units)
-      {
-        double distance = item.first->getDistance(groupPosition);
-        if (bestCandidate == nullptr ||
-            distance < bestCandidateDistance)
+      for (Player* player: bhaalBot->players.enemies)
+        for (Unit* unit: player->units)
         {
-          bestCandidate = item.first;
-          bestCandidateDistance = distance;
+          double distance = unit->getDistance(groupPosition);
+          if (bestCandidate == nullptr ||
+              distance < bestCandidateDistance)
+          {
+            bestCandidate = unit;
+            bestCandidateDistance = distance;
+          }
         }
-      }
       if (bestCandidate)
         group->setAttackTarget(bestCandidate);
     }

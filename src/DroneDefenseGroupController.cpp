@@ -1,4 +1,5 @@
 #include <BWAPIUtil.hpp>
+#include <BhaalBot.hpp>
 #include <Base.hpp>
 #include <BaseHarvestingController.hpp>
 #include <DroneDefenseGroupController.hpp>
@@ -120,15 +121,18 @@ void DroneDefenseGroupController::onFrame()
     for (BWAPI::Unit enemy: closeEnemies)
       if (BWAPI::Broodwar->self()->isEnemy(enemy->getPlayer()) &&
           enemy->canAttack(false) &&
+          fightingWorker->getBWAPIUnit()->isInWeaponRange(bestEnemyToAttack) &&
           (bestEnemyToAttack == nullptr ||
            bestEnemyToAttack->getHitPoints() > enemy->getHitPoints()))
         bestEnemyToAttack = enemy;
     if (bestEnemyToAttack)
-      if (fightingWorker->getBWAPIUnit()->isInWeaponRange(bestEnemyToAttack))
-      {
-        fightingWorker->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
-        fightingWorker->lastOrderGiven = Unit::Order(Unit::Order::Type::Attack, bestEnemyToAttack);
-        fightingWorker->attack(bestEnemyToAttack);
-      }
+    {
+      fightingWorker->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
+      fightingWorker->lastOrderGiven = Unit::Order(Unit::Order::Type::Attack, bhaalBot->units.findOrThrow(bestEnemyToAttack));
+      fightingWorker->attack(bestEnemyToAttack);
+    }
+    else
+      if (fightingWorker->getDistance(this->defenseMineral) > 80)
+        fightingWorker->gather(this->defenseMineral);
   }
 }

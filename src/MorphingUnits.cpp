@@ -1,3 +1,4 @@
+#include <BhaalBot.hpp>
 #include <MorphingUnits.hpp>
 #include <Unit.hpp>
 #include <Log.hpp>
@@ -6,9 +7,9 @@ MorphingUnits::MorphingUnits(ModuleContainer& moduleContainer)
  : Module(moduleContainer)
 {}
 
-void MorphingUnits::onUnitMorph(Unit* unit)
+void MorphingUnits::onUnitMorph(Unit* unit, BWAPI::UnitType)
 {
-  if (unit->getPlayer() != BWAPI::Broodwar->self())
+  if (unit->getPlayer() != bhaalBot->players.self)
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Egg)
     this->counts[unit->getBuildType()]++;

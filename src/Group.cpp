@@ -45,7 +45,7 @@ void Group::assignController(GroupController* groupController)
   this->controller = groupController;
 }
 
-void Group::setAttackTarget(BWAPI::Unit target)
+void Group::setAttackTarget(Unit* target)
 {
   if (this->controller)
     this->controller->setTarget(target);

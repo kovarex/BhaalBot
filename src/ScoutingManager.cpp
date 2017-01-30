@@ -24,15 +24,14 @@ void ScoutingManager::assignGroundScout(Unit* unit)
 
 Unit* ScoutingManager::getScoutCandidate(BWAPI::UnitType unitType)
 {
-  for (auto& item: bhaalBot->units.getUnits())
-    if (item.second->getType() == unitType &&
-        item.second->canMove() &&
-        (item.second->getAssignment() == nullptr ||
-         item.second->getAssignment()->getPriority() == Assignment::Priority::Low))
-      return item.second;
+  for (Unit* unit: bhaalBot->units.getUnits())
+    if (unit->getType() == unitType &&
+        unit->canMove() &&
+        (unit->getAssignment() == nullptr ||
+         unit->getAssignment()->getPriority() == Assignment::Priority::Low))
+      return unit;
   return nullptr;
 }
-
 
 void ScoutingManager::onFrame()
 {
@@ -56,6 +55,7 @@ void ScoutingManager::onFrame()
     this->scoutTasks.push_back(DiscoverScoutingLocationsScoutTask(base, this->unassignedGroundScouters.back()));
     this->unassignedGroundScouters.pop_back();
   }
+
   for (uint32_t i = 0; i < this->scoutTasks.size();)
   {
     DiscoverScoutingLocationsScoutTask& task = this->scoutTasks[i];
@@ -74,21 +74,21 @@ void ScoutingManager::onFrame()
     }
   }
 
-  for (auto it = this->baseCheckTasks.begin(); it != this->baseCheckTasks.end();)
+  for (uint32_t i = 0; i < this->baseCheckTasks.size(); ++i)
   {
-    it->onFrame();
-    if (it->finished)
+    CheckBaseTask& task = this->baseCheckTasks[i]; 
+    task.onFrame();
+    if (task.finished)
     {
-      Unit* unit = it->scout;
-      ++it;
+      Unit* unit = task.scout;
       unit->assign(nullptr);
       bhaalBot->moduleContainer.onUnitIdle(unit);
     }
     else
     {
-      BWAPI::Broodwar->drawTextMap(it->scout->getPosition(), "Scout of base");
-      BWAPI::Broodwar->drawLineMap(it->scout->getPosition(), it->target->getCenter(), BWAPI::Colors::White);
-      ++it;
+      BWAPI::Broodwar->drawTextMap(task.scout->getPosition(), "Scout of base");
+      BWAPI::Broodwar->drawLineMap(task.scout->getPosition(), task.target->getCenter(), BWAPI::Colors::White);
+      ++i;
     }
   }
 

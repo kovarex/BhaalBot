@@ -135,8 +135,6 @@ void BuildOrderManager::onStart()
   this->executor.startBuildOrder(buildOrder);
 }
 
-void BuildOrderManager::onUnitComplete(BWAPI::Unit)
-{}
 
 void BuildOrderManager::add(BuildOrder* buildOrder)
 {

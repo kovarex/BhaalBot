@@ -6,7 +6,7 @@ class MorphingUnits : Module
 {
 public:
   MorphingUnits(ModuleContainer& moduleContainer);
-  void onUnitMorph(Unit* unit) override;
+  void onUnitMorph(Unit* unit, BWAPI::UnitType from) override;
   uint32_t getPlannedCount(BWAPI::UnitType unitType);
   void addPlannedMorph(BWAPI::UnitType unitType) { this->plannedMorphs[unitType]++; }
   void removePlannedMorph(BWAPI::UnitType unitType) { this->plannedMorphs[unitType]--; }

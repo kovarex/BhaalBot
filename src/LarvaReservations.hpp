@@ -11,6 +11,7 @@ public:
   ~LarvaReservations();
   bool tryToTrain(Unit* hatchery, BWAPI::UnitType targetUnit);
   void registerTask(Unit* larva, BWAPI::UnitType targetUnit);
+  void onUnitDestroy(Unit* unit);
   void onFrame() override;
   int32_t reservedLarvas(Unit* hatch);
   bool isResrved(Unit* larva);

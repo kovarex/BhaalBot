@@ -11,12 +11,10 @@ public:
   void remove(Module* module);
 
   void onUnitComplete(Unit* unit);
-  void onForeignUnitComplete(BWAPI::Unit unit);
-  void onUnitMorph(Unit* unit);
+  void onUnitMorph(Unit* unit, BWAPI::UnitType from);
   void onFrame();
   void onStart();
   void onUnitDestroy(Unit* unit);
-  void onForeignUnitDestroy(BWAPI::Unit unit);
   void onUnitIdle(Unit* unit);
 private:
   std::vector<Module*> modules;

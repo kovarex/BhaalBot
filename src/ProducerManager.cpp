@@ -1,5 +1,6 @@
 #include <ProducerManager.hpp>
 #include <BhaalBot.hpp>
+#include <Player.hpp>
 #include <Unit.hpp>
 
 ProducerManager::ProducerManager(ModuleContainer& moduleContainer)
@@ -8,6 +9,8 @@ ProducerManager::ProducerManager(ModuleContainer& moduleContainer)
 
 void ProducerManager::onUnitComplete(Unit* unit)
 {
+  if (!unit->getPlayer()->myself)
+    return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery)
     this->producers.push_back(unit);
 }

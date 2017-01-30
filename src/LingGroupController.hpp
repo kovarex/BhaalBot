@@ -1,5 +1,5 @@
 #pragma once
-#include <EnemyUnitTarget.hpp>
+#include <UnitTarget.hpp>
 #include <GroupController.hpp>
 #include <BWAPI.h>
 #include <vector>

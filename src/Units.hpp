@@ -1,5 +1,6 @@
 #pragma once
 #include <Module.hpp>
+#include <set>
 class Unit;
 
 /** Manages the (our) Unit objects. Provides mapping from the BWAPI::Unit pointer to our unit wrapper. */
@@ -12,8 +13,9 @@ public:
   Unit* findOrThrow(BWAPI::Unit unit);
   Unit* find(BWAPI::Unit unit);
   void printAssignments();
-  const std::map<BWAPI::Unit, Unit*>& getUnits() const { return this->units; }
+  const std::set<Unit*>& getUnits() const { return this->unitSet; }
 
 private:
   std::map<BWAPI::Unit, Unit*> units;
+  std::set<Unit*> unitSet;
 };

@@ -56,6 +56,18 @@ void LarvaReservations::registerTask(Unit* larva, BWAPI::UnitType targetUnit)
   this->larvasRegistered.insert(larva);
 }
 
+void LarvaReservations::onUnitDestroy(Unit* unit)
+{
+  if (unit->getType() == BWAPI::UnitTypes::Zerg_Larva)
+    for (uint32_t i = 0; i < this->morphTasks.size();++i)
+      if (this->morphTasks[i]->larvaToBeUsed == unit)
+      {
+        delete this->morphTasks[i];
+        this->morphTasks.erase(this->morphTasks.begin() + i);
+        return;
+      }
+}
+
 void LarvaReservations::onFrame()
 {
   for (uint32_t i = 0; i < this->morphTasks.size();)

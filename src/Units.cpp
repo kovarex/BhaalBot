@@ -12,6 +12,7 @@ Unit* Units::onUnitComplete(BWAPI::Unit unit)
 {
   Unit* ourUnit = new Unit(unit);
   this->units[unit] = ourUnit;
+  this->unitSet.insert(ourUnit);
   return ourUnit;
 }
 
@@ -20,6 +21,7 @@ void Units::onUnitDestroy(BWAPI::Unit unit)
   auto position = this->units.find(unit);
   if (position == this->units.end())
     return;
+  this->unitSet.erase(position->second);
   delete position->second;
   this->units.erase(position);
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include <EnemyUnitTarget.hpp>
+#include <UnitTarget.hpp>
 #include <GroupController.hpp>
 #include <BWAPI.h>
 #include <vector>
@@ -25,7 +25,7 @@ public:
   void chooseClosestTarget();
   void logic();
   void moveStackedMutasWithOverlord(BWAPI::Position position);
-  void attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::Position position);
+  void attackStackedMutasWithOverlord(Unit* unit, BWAPI::Position position);
   double averageCooldownValue();
   int maxCooldownValue();
   int countOfMutasWith0Cooldown();

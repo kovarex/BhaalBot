@@ -133,7 +133,7 @@
     <ClCompile Include="src\DiscoveredMemory.cpp" />
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\DroneDefenseGroupController.cpp" />
-    <ClCompile Include="src\EnemyUnitTarget.cpp" />
+    <ClCompile Include="src\UnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
     <ClCompile Include="src\FileReadStream.cpp" />
     <ClCompile Include="src\Filesystem.cpp" />
@@ -152,6 +152,8 @@
     <ClCompile Include="src\MutaGroupController.cpp" />
     <ClCompile Include="src\Overmind.cpp" />
     <ClCompile Include="src\ParseReadState.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Players.cpp" />
     <ClCompile Include="src\ProducerManager.cpp" />
     <ClCompile Include="src\PropertyTree.cpp" />
     <ClCompile Include="src\PropertyTreeIni.cpp" />
@@ -215,7 +217,7 @@
     <ClInclude Include="src\DeleyedExitChecker.hpp" />
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />
-    <ClInclude Include="src\EnemyUnitTarget.hpp" />
+    <ClInclude Include="src\UnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
     <ClInclude Include="src\FileReadStream.hpp" />
     <ClInclude Include="src\Filesystem.hpp" />
@@ -236,6 +238,8 @@
     <ClInclude Include="src\MutaGroupController.hpp" />
     <ClInclude Include="src\Overmind.hpp" />
     <ClInclude Include="src\ParseReadState.hpp" />
+    <ClInclude Include="src\Player.hpp" />
+    <ClInclude Include="src\Players.hpp" />
     <ClInclude Include="src\ProducerManager.hpp" />
     <ClInclude Include="src\PropertyTree.hpp" />
     <ClInclude Include="src\PropertyTreeIni.hpp" />

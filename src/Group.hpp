@@ -29,7 +29,7 @@ public:
   Unit* getUnit(BWAPI::UnitType unitType);
   void assignController(GroupController* groupController);
   GroupController* getController(void) { return this->controller;  }
-  void setAttackTarget(BWAPI::Unit target); // TODO this should not be needed - orders should be given to controller.
+  void setAttackTarget(Unit* target); // TODO this should not be needed - orders should be given to controller.
   const Target* getTarget();
   BWAPI::Position getPosition() const;
   int getSize(void) { return this->units.size(); }

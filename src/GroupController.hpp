@@ -26,7 +26,7 @@ public:
   virtual void onAdded(Unit* unit) { this->updateAction();  }
   virtual void onRemoved(Unit* unit) {}
   virtual void onFrame() {}
-  virtual void setTarget(BWAPI::Unit target);
+  virtual void setTarget(Unit* target);
   virtual void setTargetPosition(BWAPI::Position position);
   const Target& getTarget() { return this->target; }
   virtual void setObjective(GroupObjective objective);

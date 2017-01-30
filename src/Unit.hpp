@@ -2,17 +2,19 @@
 #include <BWAPI.h>
 #include <Target.hpp>
 class Assignment;
+class Player;
 
 /**< Wrapper of the BWAPI::Unit with our additional info.
  * It is currently used only for our units. */
 class Unit
 {
 public:
-  Unit(BWAPI::Unit bwapiUnit) : bwapiUnit(bwapiUnit) {}
+  Unit(BWAPI::Unit bwapiUnit);
   ~Unit();
 
   /* The BWAPI::Unit interface is re-routed to the BWAPI::Unit in these methods. */
-  BWAPI::Player getPlayer() { return this->bwapiUnit->getPlayer(); }
+  BWAPI::Player getBWAPIPlayer() { return this->bwapiUnit->getPlayer(); }
+  Player* getPlayer() { return this->player; }
   BWAPI::UnitType getType() { return this->bwapiUnit->getType(); }
   BWAPI::UnitType getBuildType() { return this->bwapiUnit->getBuildType(); }
   BWAPI::Position getPosition() { return this->bwapiUnit->getPosition(); }
@@ -24,6 +26,7 @@ public:
   void gather(BWAPI::Unit unit) { this->bwapiUnit->gather(unit); }
   bool isIdle() { return this->bwapiUnit->isIdle(); }
   bool isGatheringGas() { return this->bwapiUnit->isGatheringGas(); }
+  bool isVisible() { return this->bwapiUnit->isVisible(); }
   BWAPI::Unit getTarget() { return this->bwapiUnit->getTarget(); }
   int getDistance(BWAPI::Unit unit) const { return this->bwapiUnit->getDistance(unit); }
   int getDistance(BWAPI::Position position) const { return this->bwapiUnit->getDistance(position); }
@@ -52,10 +55,14 @@ public:
   bool isAttackFrame() const { return this->bwapiUnit->isAttackFrame();  }
   int getID() const { return this->bwapiUnit->getID(); }
 
+  bool attack(Unit* unit) { return this->bwapiUnit->attack(unit->getBWAPIUnit()); }
   void printAssignment();
   int getDistance(Unit* unit) const { return this->bwapiUnit->getDistance(unit->bwapiUnit); }
   bool equals(BWAPI::Unit unit) { return this->bwapiUnit == unit; }
   BWAPI::Unit getBWAPIUnit() { return this->bwapiUnit; }
+
+  void addTarget(UnitTarget* target);
+  void removeTarget(UnitTarget* target);
 
   /** Connects the assignment with this unit. If there is some assignment already it is properly removed.
    * @param assignment nullptr only unassigns the current assignment. */
@@ -76,7 +83,7 @@ public:
     };
     Order() {}
     Order(Type type) : type(type) {}
-    Order(Type type, BWAPI::Unit target) : type(type), target(target) {}
+    Order(Type type, Unit* target) : type(type), target(target) {}
     Order(Order& other) = default;
     void operator=(const Order& other) { this->type = other.type; this->target = other.target; }
 
@@ -85,4 +92,8 @@ public:
   };
   Order lastOrderGiven;
   int frameOfLastOrder = 0;
+  std::vector<UnitTarget*> targetingMe;
+  UnitMemoryInfo* memoryInfo = nullptr; // only used for foreign units
+  BWAPI::UnitType lastSeenUnitType;
+  Player* player = nullptr;
 };

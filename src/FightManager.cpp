@@ -3,6 +3,7 @@
 #include <DiscoveredMemory.hpp>
 #include <Unit.hpp>
 #include <TaskForceController.hpp>
+#include <Player.hpp>
 
 FightManager::FightManager(ModuleContainer& moduleContainer)
   : Module(moduleContainer)
@@ -19,7 +20,7 @@ FightManager::~FightManager()
 
 void FightManager::onUnitComplete(Unit* unit)
 {
-  if (unit->getPlayer() != BWAPI::Broodwar->self())
+  if (!unit->getPlayer()->myself)
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Mutalisk)
     this->attack->addUnit(unit);

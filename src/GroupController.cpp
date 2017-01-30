@@ -4,7 +4,7 @@
 #include "Unit.hpp"
 #include <Log.hpp>
 
-void GroupController::setTarget(BWAPI::Unit target)
+void GroupController::setTarget(Unit* target)
 { 
   this->target = target; 
   this->updateAction();
@@ -61,7 +61,7 @@ void GroupController::updateAction()
   }
 }
 
-void GroupController::actionMove(void)
+void GroupController::actionMove()
 {
   BWAPI::Position position;
   for (Unit* unit : this->owner.getUnits())
@@ -72,17 +72,17 @@ void GroupController::actionMove(void)
   LOG_INFO("moving to position %u, %u", position.x, position.y);
 }
 
-void GroupController::actionAttackTarget(void)
+void GroupController::actionAttackTarget()
 {
   for (Unit* unit : this->owner.getUnits())
-    if (BWAPI::Unit unit = this->target.getUnit())
+    if (Unit* unit = this->target.getUnit())
       unit->attack(unit);
     else
       unit->attack(this->target.getPosition());
   LOG_INFO("attack target");
 }
 
-void GroupController::actionAttackMove(void)
+void GroupController::actionAttackMove()
 {
   BWAPI::Position position = this->target.getPosition();
   for (Unit* unit : this->owner.getUnits())
@@ -98,7 +98,7 @@ void GroupController::actionGroup(void)
   LOG_DEBUG("grouping up");
 }
 
-BWAPI::Position GroupController::getGroupCenter(void) const
+BWAPI::Position GroupController::getGroupCenter() const
 {
   if (!this->owner.getSize())
     return BWAPI::Positions::None;

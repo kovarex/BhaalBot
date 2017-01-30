@@ -1,6 +1,7 @@
 #include <MutaGroupController.hpp>
 #include <HarvestingManager.hpp>
 #include <BhaalBot.hpp>
+#include <Player.hpp>
 #include <Unit.hpp>
 #include <Vector.hpp>
 
@@ -175,7 +176,7 @@ void MutaGroupController::moveStackedMutasWithOverlord(BWAPI::Position position)
   overlord->stop();
 }
 
-void MutaGroupController::attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI::Position position)
+void MutaGroupController::attackStackedMutasWithOverlord(Unit* unit, BWAPI::Position position)
 {
     BWAPI::Unitset mutaSet;
   for (Unit* muta: this->stackMutas)
@@ -195,7 +196,7 @@ void MutaGroupController::attackStackedMutasWithOverlord(BWAPI::Unit unit, BWAPI
     return;
   mutaSet.insert(overlord);
 
-  BWAPI::Broodwar->issueCommand(mutaSet, BWAPI::UnitCommand::attack(unit, position));
+  BWAPI::Broodwar->issueCommand(mutaSet, BWAPI::UnitCommand::attack(unit->getBWAPIUnit(), position));
   overlord->stop();
 }
 
@@ -290,18 +291,18 @@ void MutaGroupController::stackFast()
 void MutaGroupController::chooseClosestTarget()
 {
   BWAPI::Position center = this->getCenter();
-  BWAPI::Unit candidate = nullptr;
+  Unit* candidate = nullptr;
   uint32_t candidateDistance = 0;
-  for (BWAPI::Unit unit: BWAPI::Broodwar->getAllUnits())
-    if (BWAPI::Broodwar->self()->isEnemy(unit->getPlayer()))
-    {
-      uint32_t unitDistance = unit->getDistance(center);
-      if (candidate == nullptr || unitDistance < candidateDistance)
+  for (Player* player: bhaalBot->players.enemies)
+    for (Unit* unit: player->units)
       {
-        candidate = unit;
-        candidateDistance = unitDistance;
+        uint32_t unitDistance = unit->getDistance(center);
+        if (candidate == nullptr || unitDistance < candidateDistance)
+        {
+          candidate = unit;
+          candidateDistance = unitDistance;
+        }
       }
-    }
   this->target = candidate;
 }
 

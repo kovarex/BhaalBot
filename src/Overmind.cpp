@@ -11,7 +11,8 @@ Overmind::Overmind(ModuleContainer& moduleContainer)
 
 void Overmind::onUnitComplete(Unit* unit)
 {
-  this->assignUnit(unit);
+  if (unit->getPlayer() == bhaalBot->players.self)
+    this->assignUnit(unit);
 }
 
 void Overmind::onUnitIdle(Unit* unit)

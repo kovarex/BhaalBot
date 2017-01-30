@@ -13,7 +13,6 @@ public:
 
   virtual void onFrame() override;
   virtual void onStart() override;
-  void onUnitComplete(BWAPI::Unit unit);
   void add(BuildOrder* buildOrder);
 
   std::map<std::string, BuildOrder*> buildOrders;

@@ -22,16 +22,10 @@ void ModuleContainer::onUnitComplete(Unit* unit)
     module->onUnitComplete(unit);
 }
 
-void ModuleContainer::onForeignUnitComplete(BWAPI::Unit unit)
+void ModuleContainer::onUnitMorph(Unit* unit, BWAPI::UnitType from)
 {
   for (Module* module: this->modules)
-    module->onForeignUnitComplete(unit);
-}
-
-void ModuleContainer::onUnitMorph(Unit* unit)
-{
-  for (Module* module: this->modules)
-    module->onUnitMorph(unit);
+    module->onUnitMorph(unit, from);
 }
 
 void ModuleContainer::onFrame()
@@ -44,12 +38,6 @@ void ModuleContainer::onStart()
 {
   for (Module* module: this->modules)
     module->onStart();
-}
-
-void ModuleContainer::onForeignUnitDestroy(BWAPI::Unit unit)
-{
-  for (Module* module: this->modules)
-    module->onForeignUnitDestroy(unit);
 }
 
 void ModuleContainer::onUnitIdle(Unit* unit)

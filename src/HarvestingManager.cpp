@@ -160,6 +160,8 @@ void HarvestingManager::balanceWorkersAssignmentBetweenBases()
 
 void HarvestingManager::onUnitComplete(Unit* unit)
 {
+  if (unit->getPlayer() != bhaalBot->players.self)
+    return;
   for (BaseHarvestingController* base: this->bases)
     base->onUnitComplete(unit);
   if (unit->getType().isResourceDepot()) // A resource depot is a Command Center, Nexus, or Hatchery

@@ -20,6 +20,7 @@
 #include <Units.hpp>
 #include <Logger.hpp>
 #include <PropertyTree.hpp>
+#include <Players.hpp>
 
 class BhaalBot : public BWAPI::AIModule
 {
@@ -51,6 +52,7 @@ public:
   Overmind overmind;
   Bases bases;
   Units units;
+  Players players;
   HarvestingManager harvestingManager;
   BuildOrderManager buildOrderManager;
   MorphingUnits morphingUnits;
