@@ -96,7 +96,7 @@ void AttackTaskForceController::onFrame()
   //--------------------------------------------- MUTAS
   for (Group* group: this->mutaGroups)
   {
-    if (group->getTarget() == nullptr)
+    if (group->getTarget()->isZero())
     {
       BWAPI::Position groupPosition = group->getPosition();
       Unit* bestCandidate = nullptr;
