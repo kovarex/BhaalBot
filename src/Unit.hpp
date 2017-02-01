@@ -97,4 +97,7 @@ public:
   UnitMemoryInfo* memoryInfo = nullptr; // only used for foreign units
   BWAPI::UnitType lastSeenUnitType;
   Player* player = nullptr;
+#ifdef DEBUG
+  std::string name; /** For easy unit evaulation while debugging. */
+#endif
 };
