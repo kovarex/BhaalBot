@@ -10,6 +10,8 @@ ScoutingManager::ScoutingManager(ModuleContainer& moduleContainer)\
 
 ScoutingManager::~ScoutingManager()
 {
+  while (!this->unassignedGroundScouters.empty())
+    this->unassignedGroundScouters.front()->assign(nullptr);
   while (!this->scoutTasks.empty())
     this->scoutTasks.front().scout->assign(nullptr);
   while (!this->baseCheckTasks.empty())
