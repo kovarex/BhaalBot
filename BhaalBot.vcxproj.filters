@@ -112,6 +112,8 @@
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Players.cpp" />
     <ClCompile Include="src\UnitTarget.cpp" />
+    <ClCompile Include="src\Direction.cpp" />
+    <ClCompile Include="src\RealOrientation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -243,6 +245,8 @@
     <ClInclude Include="src\Player.hpp" />
     <ClInclude Include="src\Players.hpp" />
     <ClInclude Include="src\UnitTarget.hpp" />
+    <ClInclude Include="src\Direction.hpp" />
+    <ClInclude Include="src\RealOrientation.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

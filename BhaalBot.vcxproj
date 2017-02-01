@@ -46,7 +46,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>src/;bwapi/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;WIN32;INLINE_CPP=;_DEBUG;DEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;INLINE_CPP=;_USE_MATH_DEFINES;_DEBUG;DEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -71,7 +71,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>src/;bwapi/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;WIN32;INLINE_CPP=;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;INLINE_CPP=;_USE_MATH_DEFINES;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
@@ -130,9 +130,11 @@
     <ClCompile Include="src\DangerZones.cpp" />
     <ClCompile Include="src\DefendTaskForceController.cpp" />
     <ClCompile Include="src\DeleyedExitChecker.cpp" />
+    <ClCompile Include="src\Direction.cpp" />
     <ClCompile Include="src\DiscoveredMemory.cpp" />
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\DroneDefenseGroupController.cpp" />
+    <ClCompile Include="src\RealOrientation.cpp" />
     <ClCompile Include="src\UnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
     <ClCompile Include="src\FileReadStream.cpp" />
@@ -215,8 +217,10 @@
     <ClInclude Include="src\DangerZones.hpp" />
     <ClInclude Include="src\DefendTaskForceController.hpp" />
     <ClInclude Include="src\DeleyedExitChecker.hpp" />
+    <ClInclude Include="src\Direction.hpp" />
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />
+    <ClInclude Include="src\RealOrientation.hpp" />
     <ClInclude Include="src\UnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
     <ClInclude Include="src\FileReadStream.hpp" />
