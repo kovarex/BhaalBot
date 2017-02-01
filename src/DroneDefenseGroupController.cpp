@@ -121,7 +121,7 @@ void DroneDefenseGroupController::onFrame()
     for (BWAPI::Unit enemy: closeEnemies)
       if (BWAPI::Broodwar->self()->isEnemy(enemy->getPlayer()) &&
           enemy->canAttack(false) &&
-          fightingWorker->getBWAPIUnit()->isInWeaponRange(bestEnemyToAttack) &&
+          fightingWorker->getBWAPIUnit()->isInWeaponRange(enemy) &&
           (bestEnemyToAttack == nullptr ||
            bestEnemyToAttack->getHitPoints() > enemy->getHitPoints()))
         bestEnemyToAttack = enemy;
