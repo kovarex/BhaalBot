@@ -37,5 +37,4 @@ public:
   void addUnit(Unit* unit);
   void onAdd(Unit* unit);
   void onRemove(Unit* unit);
-  UnitMemoryInfo* getUnit(Unit*);
 };

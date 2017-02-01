@@ -44,6 +44,7 @@ public:
   double getVelocityX() const { return this->bwapiUnit->getVelocityX(); }
   double getVelocityY() const { return this->bwapiUnit->getVelocityY(); }
   double getHitPoints() const { return this->bwapiUnit->getHitPoints(); }
+  double getShields() const { return this->bwapiUnit->getShields(); }
   bool build(BWAPI::UnitType unitType, BWAPI::TilePosition position) { return this->bwapiUnit->build(unitType, position); }
   BWAPI::Order getOrder() { return this->bwapiUnit->getOrder(); }
   bool move(BWAPI::Position position) { return this->bwapiUnit->move(position); }
