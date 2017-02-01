@@ -32,7 +32,7 @@ void DiscoveredMemory::onFrame()
 
 void DiscoveredMemory::onUnitComplete(Unit* unit)
 {
-  if (unit->getPlayer()->isEnemy)
+  if (!unit->getPlayer()->isEnemy)
     return;
   this->addUnit(unit);
 }
