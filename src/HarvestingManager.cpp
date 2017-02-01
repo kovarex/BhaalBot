@@ -136,20 +136,21 @@ void HarvestingManager::balanceWorkersAssignmentBetweenBases()
   uint32_t biggestBaseSaturation = 0;
   BaseHarvestingController* biggestBase = nullptr;
   for (BaseHarvestingController* base: this->bases)
-  {
-    uint32_t smallestMineralSaturation = base->smallestMineralSaturation();
-    if (smallestMineralSaturation < smallestBaseSaturation)
+    if (base->base->defenseState == Base::DefenseState::None)
     {
-      smallestBase = base;
-      smallestBaseSaturation = smallestMineralSaturation;
+      uint32_t smallestMineralSaturation = base->smallestMineralSaturation();
+      if (smallestMineralSaturation < smallestBaseSaturation)
+      {
+        smallestBase = base;
+        smallestBaseSaturation = smallestMineralSaturation;
+      }
+      uint32_t biggestMineralSaturation = base->biggestMineralSaturation();
+      if (biggestMineralSaturation > biggestBaseSaturation)
+      {
+        biggestBase = base;
+        biggestBaseSaturation = biggestMineralSaturation;
+      }
     }
-    uint32_t biggestMineralSaturation = base->biggestMineralSaturation();
-    if (biggestMineralSaturation > biggestBaseSaturation)
-    {
-      biggestBase = base;
-      biggestBaseSaturation = biggestMineralSaturation;
-    }
-  }
   if (biggestBaseSaturation > smallestBaseSaturation)
   {
     Unit* worker = biggestBase->getLeastNeededWorker();
