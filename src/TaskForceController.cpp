@@ -84,12 +84,15 @@ void AttackTaskForceController::onFrame()
 {
   if (!this->enemyBase)
   {
-    this->enemyBase = bhaalBot->bases.getEnemyBaseClosestTo(bhaalBot->bases.startingBase->getCenter());
-    if (this->enemyBase)
+    if (bhaalBot->bases.startingBase)
     {
-      for (auto* theGroup: {&this->lingReinforementGroups, &this->lingCombatGroups})
-        for (Group* group: *theGroup)
-          group->getController()->setTargetPosition(this->enemyBase->getCenter());
+      this->enemyBase = bhaalBot->bases.getEnemyBaseClosestTo(bhaalBot->bases.startingBase->getCenter());
+      if (this->enemyBase)
+      {
+        for (auto* theGroup: {&this->lingReinforementGroups, &this->lingCombatGroups})
+          for (Group* group: *theGroup)
+            group->getController()->setTargetPosition(this->enemyBase->getCenter());
+      }
     }
   }
 
