@@ -15,11 +15,11 @@ public:
   /* The BWAPI::Unit interface is re-routed to the BWAPI::Unit in these methods. */
   BWAPI::Player getBWAPIPlayer() { return this->bwapiUnit->getPlayer(); }
   Player* getPlayer() { return this->player; }
-  BWAPI::UnitType getType() { return this->bwapiUnit->getType(); }
-  BWAPI::UnitType getBuildType() { return this->bwapiUnit->getBuildType(); }
-  BWAPI::Position getPosition() { return this->bwapiUnit->getPosition(); }
-  bool isCarryingMinerals() { return this->bwapiUnit->isCarryingMinerals(); }
-  bool isGatheringMinerals() { return this->bwapiUnit->isGatheringMinerals(); }
+  BWAPI::UnitType getType() const { return this->bwapiUnit->getType(); }
+  BWAPI::UnitType getBuildType() const { return this->bwapiUnit->getBuildType(); }
+  BWAPI::Position getPosition() const { return this->bwapiUnit->getPosition(); }
+  bool isCarryingMinerals() const { return this->bwapiUnit->isCarryingMinerals(); }
+  bool isGatheringMinerals() const { return this->bwapiUnit->isGatheringMinerals(); }
   BWAPI::Unit getOrderTarget() { return this->bwapiUnit->getOrderTarget(); }
   bool canGather() { return this->bwapiUnit->canGather(); }
   void rightClick(BWAPI::Unit unit) { this->bwapiUnit->rightClick(unit); }
@@ -61,6 +61,8 @@ public:
   int getDistance(Unit* unit) const { return this->bwapiUnit->getDistance(unit->bwapiUnit); }
   bool equals(BWAPI::Unit unit) { return this->bwapiUnit == unit; }
   BWAPI::Unit getBWAPIUnit() { return this->bwapiUnit; }
+  static std::string shortenUnitName(const std::string& name); /**< Removes the rdundant Zerg_, Protoss_, Terran_ prefixes. */
+  std::string getName() const; 
 
   void addTarget(UnitTarget* target);
   void removeTarget(UnitTarget* target);

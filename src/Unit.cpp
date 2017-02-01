@@ -33,6 +33,22 @@ void Unit::assign(Assignment* assignment)
     assignment->unit = this;
 }
 
+std::string Unit::shortenUnitName(const std::string& name)
+{
+  if (name.substr(0, 5) == "Zerg_")
+    return name.substr(5, name.size() - 5);
+  if (name.substr(0, 8) == "Protoss_")
+    return name.substr(8, name.size() - 8);
+  if (name.substr(0, 7) == "Terran_")
+    return name.substr(7, name.size() - 7);
+  return name;
+}
+
+std::string Unit::getName() const
+{
+  return Unit::shortenUnitName(this->getType().getName());
+}
+
 void Unit::addTarget(UnitTarget* target)
 {
   this->targetingMe.push_back(target);

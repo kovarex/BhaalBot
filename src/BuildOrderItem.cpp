@@ -31,7 +31,10 @@ bool BuildBuildOrderItem::execute()
       {
         if (unit->morph(unitType))
         {
-          LOG_INFO("Morphing %s %d to %s", unit->getType().getName().c_str(), unit->getID(), unitType.getName().c_str());
+          LOG_INFO("Morphing %s %d to %s",
+                   unit->getName().c_str(),
+                   unit->getID(),
+                   Unit::shortenUnitName(unitType.getName()).c_str());
           bhaalBot->morphingUnits.planMorphOf(unit, unitType);
           return true;
         }
@@ -55,7 +58,7 @@ bool BuildBuildOrderItem::execute()
 
 std::string BuildBuildOrderItem::str() const
 {
-  return ssprintf("%s for %u/%u", this->unit.getName().c_str(), this->unit.mineralPrice(), this->unit.gasPrice());
+  return ssprintf("%s", Unit::shortenUnitName(this->unit.getName()).c_str());
 }
 
 bool SendScoutBuildOrderItem::execute()

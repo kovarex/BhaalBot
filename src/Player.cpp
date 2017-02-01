@@ -34,7 +34,8 @@ void Player::drawDebug(BWAPI::Position position)
   for (auto& item: this->unitCounts)
     if (item.second != 0)
     {
-      BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen, position.x, yPosition, "%s", item.first.getName().c_str());
+      BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen, position.x, yPosition, "%s",
+                                Unit::shortenUnitName(item.first.getName()).c_str());
       BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen, position.x + 80, yPosition, "%d", item.second);
       yPosition += 15;
     }
