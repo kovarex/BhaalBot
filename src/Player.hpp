@@ -3,6 +3,7 @@
 #include <set>
 class Unit;
 
+/** Wraps BWAPI::Player with our additional helper data. */
 class Player
 {
 public:

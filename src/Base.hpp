@@ -4,6 +4,7 @@ class BaseHarvestingController;
 class BaseInDangerDetector;
 class TaskForce;
 
+/** Position where mining base can be built. */
 class Base
 {
 public:
@@ -14,13 +15,6 @@ public:
   const BWEM::Base* getBWEMBase() { return this->bwemBase; }
   void onFrame();
 
-  enum class StartingBaseStatus
-  {
-    None,
-    Empty,
-    Unknown,
-    Enemy
-  };
   enum class Status
   {
     Unknown,
@@ -43,7 +37,6 @@ public:
 
   DefenseState defenseState = DefenseState::None;
   DefenseStrategy defenseStrategy = DefenseStrategy::FightWithDrones;
-  StartingBaseStatus startingBaseStatus = StartingBaseStatus::None;
   Status status = Status::Unknown;
   BaseHarvestingController* harvestingController = nullptr;
   BaseInDangerDetector* baseInDangerDetector = nullptr;

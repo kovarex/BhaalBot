@@ -3,6 +3,7 @@
 class Unit;
 class UnitMemoryInfo;
 
+/** Pointer to unit that is automatically cleared once the unit object is destroyed. */
 class UnitTarget
 {
 public:

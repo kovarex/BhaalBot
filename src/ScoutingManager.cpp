@@ -118,14 +118,12 @@ Base* ScoutingManager::baseToScout()
 {
   Base* bestCandidate = nullptr;
   for (Base* base: bhaalBot->bases.startingLocations)
-  {
-    if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown &&
+    if (base->status == Base::Status::Unknown &&
         !this->scoutAssigned(base) &&
         (bestCandidate == nullptr ||
          bestCandidate->getCenter().getDistance(bhaalBot->bases.startingBase->getCenter()) >
          base->getCenter().getDistance(bhaalBot->bases.startingBase->getCenter())))
-        bestCandidate = base;
-  }
+      bestCandidate = base;
   return bestCandidate;
 }
 
@@ -176,29 +174,22 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
     BWAPI::Unitset nearbyEnemyBuildings = this->scout->getUnitsInRadius(200, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsBuilding);
     if (!nearbyEnemyBuildings.empty())
     {
-      this->target->startingBaseStatus = Base::StartingBaseStatus::Enemy;
       this->target->status = Base::Status::OwnedByEnemy;
     }
     else
     {
-      this->target->startingBaseStatus = Base::StartingBaseStatus::Empty;
       this->target->status = Base::Status::Empty;
       bool enemyExists = false;
       uint32_t unknownCount = 0;
       for (Base* base: bhaalBot->bases.startingLocations)
-        if (base->startingBaseStatus == Base::StartingBaseStatus::Enemy)
+        if (base->status == Base::Status::OwnedByEnemy)
           enemyExists = true;
-        else if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown)
+        else if (base->status == Base::Status::Unknown)
           ++unknownCount;
       if (!enemyExists && unknownCount == 1)
-      {
         for (Base* base: bhaalBot->bases.bases)
-          if (base->startingBaseStatus == Base::StartingBaseStatus::Unknown)
-          {
-            base->startingBaseStatus = Base::StartingBaseStatus::Enemy;
+          if (base->status == Base::Status::Unknown)
             base->status = Base::Status::OwnedByEnemy;
-          }
-      }
     }
     this->finished = true;
   }

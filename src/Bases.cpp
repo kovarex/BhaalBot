@@ -54,7 +54,6 @@ void Bases::initStartingLocations()
     if (base == this->startingBase)
       continue;
     this->startingLocations.insert(base);
-    base->startingBaseStatus = Base::StartingBaseStatus::Unknown;
   }
 }
 
@@ -106,7 +105,7 @@ void Bases::onFrame()
 Base* Bases::enemyMainBase()
 {
   for (Base* base: this->startingLocations)
-    if (base->startingBaseStatus == Base::StartingBaseStatus::Enemy)
+    if (base->status == Base::Status::OwnedByEnemy)
       return base;
   return nullptr;
 }

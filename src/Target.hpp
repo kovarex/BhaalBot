@@ -2,6 +2,7 @@
 #include <BWAPI.h>
 #include <UnitTarget.hpp>
 
+/** Targets unit or position. */
 class Target
 {
 public:
@@ -13,7 +14,7 @@ public:
   void operator=(const Target& other) { this->position = other.position; this->unit = other.unit; }
 
   bool isZero() const;
-  BWAPI::Position getPosition() const;
+  BWAPI::Position getPosition() const; /**< If the unit is valid returns position of the unit, otherwise, it returns position. */
   Unit* getUnit();
   void clear();
 
