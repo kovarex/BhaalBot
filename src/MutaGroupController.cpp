@@ -168,13 +168,16 @@ void MutaGroupController::logic()
       if (this->ticksSinceAttack < 5)
         break;
       BWAPI::Position center = this->getCenter();
-      BWAPI::Position target;
-      if (ticksSinceAttack < 10)
-        target = BWAPI::Position(center.x - 100, center.y);
-      else
-        target = BWAPI::Position(center.x - 100, center.y - 100);
-      this->moveStackedMutasWithOverlord(target);
-      BWAPI::Broodwar->drawCircleMap(target, 10, BWAPI::Colors::Blue);
+      if (!this->target.target.isZero())
+      {
+        Vector awayFromTarget = Vector(this->target.target.getPosition(), center);
+        awayFromTarget.extendToLength(250);
+        BWAPI::Position target(center);
+        awayFromTarget.addTo(&target);
+        this->moveStackedMutasWithOverlord(target);
+        BWAPI::Broodwar->drawCircleMap(target, 10, BWAPI::Colors::Blue);
+      }
+      
       if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2 &&
           (this->target.isZero() || this->target.target.getPosition().getDistance(center) > 200))
         this->attackPhase = AttackPhase::Nothing;
