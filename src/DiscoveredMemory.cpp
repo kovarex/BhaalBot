@@ -25,7 +25,10 @@ void DiscoveredMemory::onFrame()
                                     BWAPI::Position(memoryInfo->position.x + unit->lastSeenUnitType.dimensionLeft(),
                                                     memoryInfo->position.y + unit->lastSeenUnitType.dimensionUp()),
                                     BWAPI::Colors::Grey);
-        BWAPI::Broodwar->drawTextMap(memoryInfo->position, "%s", unit->lastSeenUnitType.getName().c_str());
+        BWAPI::Broodwar->drawTextMap(BWAPI::Position(memoryInfo->position.x - unit->lastSeenUnitType.dimensionLeft() + 5,
+                                                     memoryInfo->position.y - unit->lastSeenUnitType.dimensionUp()),
+                                     "%s",
+                                     Unit::shortenUnitName(unit->lastSeenUnitType.getName()).c_str());
       }
     }
 }

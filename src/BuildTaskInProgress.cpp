@@ -167,5 +167,5 @@ BuildTaskAssignment::~BuildTaskAssignment()
 
 std::string BuildTaskAssignment::str() const
 {
-  return "Build " + this->buildTask->unitType.getName();
+  return "Build " + Unit::shortenUnitName(this->buildTask->unitType.getName());
 }
