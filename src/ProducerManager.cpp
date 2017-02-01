@@ -9,7 +9,7 @@ ProducerManager::ProducerManager(ModuleContainer& moduleContainer)
 
 void ProducerManager::onUnitComplete(Unit* unit)
 {
-  if (!unit->getPlayer()->myself)
+  if (!this->isProducer(unit))
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery)
     this->producers.push_back(unit);
@@ -17,7 +17,7 @@ void ProducerManager::onUnitComplete(Unit* unit)
 
 void ProducerManager::onUnitDestroy(Unit* unit)
 {
-  if (unit->getType() != BWAPI::UnitTypes::Zerg_Hatchery)
+  if (!this->isProducer(unit))
     return;
   for (auto it = this->producers.begin(); it != this->producers.end(); ++it)
     if (*it == unit)
@@ -25,6 +25,13 @@ void ProducerManager::onUnitDestroy(Unit* unit)
       this->producers.erase(it);
       return;
     }
+}
+
+bool ProducerManager::isProducer(Unit* unit)
+{
+  return unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery ||
+    unit->getType() == BWAPI::UnitTypes::Zerg_Lair ||
+    unit->getType() == BWAPI::UnitTypes::Zerg_Hive;
 }
 
 Unit* ProducerManager::getBestProducer()
