@@ -15,7 +15,7 @@ LarvaReservations::MorphTaskInProgress::MorphTaskInProgress(Unit* larva, BWAPI::
 
 std::string LarvaReservations::MorphTaskInProgress::str() const
 {
-  return ssprintf("Morphing %s", this->targetUnit.getName().c_str());
+  return ssprintf("Morphing %s", Unit::shortenUnitName(this->targetUnit.getName()).c_str());
 }
 
 bool LarvaReservations::MorphTaskInProgress::morhphingStarted() const
