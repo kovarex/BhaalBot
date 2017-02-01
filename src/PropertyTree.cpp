@@ -671,18 +671,6 @@ std::string PropertyTree::getPath() const
   return "ROOT" + ret;
 }
 
-void PropertyTree::logLayout()
-{
-  LOG_DEBUG_VALUE(sizeof(PropertyTree));
-  LOG_DEBUG_VALUE(alignof(PropertyTree));
-  LOG_DEBUG_VALUE(offsetof(PropertyTree, numberValue));
-  LOG_DEBUG_VALUE(offsetof(PropertyTree, stringValue));
-  LOG_DEBUG_VALUE(offsetof(PropertyTree, listValue));
-  LOG_DEBUG_VALUE(offsetof(PropertyTree, key));
-  //LOG_DEBUG_VALUE(offsetof(PropertyTree, type));
-  //LOG_DEBUG_VALUE(offsetof(PropertyTree, parent));
-}
-
 void PropertyTree::logData() const
 {
   StringWriteStream stream;

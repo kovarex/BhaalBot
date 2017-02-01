@@ -7,6 +7,7 @@ class Group;
 class GroupController;
 class Unit;
 class UnitMemoryInfo;
+class TargetWithPath;
 
 class SimpleGroupAssignment : public Assignment
 {

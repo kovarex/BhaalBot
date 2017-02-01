@@ -51,6 +51,7 @@ public:
   ModuleContainer moduleContainer;
   Overmind overmind;
   Bases bases;
+  DangerZones dangerZones;
   Units units;
   Players players;
   HarvestingManager harvestingManager;
@@ -65,7 +66,6 @@ public:
   ScoutingManager scoutingManager;
   DiscoveredMemory discoveredMemory;
   BuildTasks buildTasks;
-  DangerZones dangerZones;
   bool umsMap = false;
 };
 

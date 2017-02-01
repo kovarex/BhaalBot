@@ -135,7 +135,9 @@
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\DroneDefenseGroupController.cpp" />
     <ClCompile Include="src\RealOrientation.cpp" />
+    <ClCompile Include="src\TargetWithPath.cpp" />
     <ClCompile Include="src\UnitAsAttackTargetEvaulation.cpp" />
+    <ClCompile Include="src\UnitSearch.cpp" />
     <ClCompile Include="src\UnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
     <ClCompile Include="src\FileReadStream.cpp" />
@@ -222,7 +224,9 @@
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />
     <ClInclude Include="src\RealOrientation.hpp" />
+    <ClInclude Include="src\TargetWithPath.hpp" />
     <ClInclude Include="src\UnitAsAttackTargetEvaulation.hpp" />
+    <ClInclude Include="src\UnitSearch.hpp" />
     <ClInclude Include="src\UnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
     <ClInclude Include="src\FileReadStream.hpp" />

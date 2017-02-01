@@ -9,6 +9,20 @@ UnitTarget::UnitTarget(Unit* unit)
     this->unit->addTarget(this);
 }
 
+UnitTarget::UnitTarget(UnitTarget& other)
+  : unit(other.unit)
+{
+  if (this->unit)
+    this->unit->addTarget(this);
+}
+
+UnitTarget::UnitTarget(UnitTarget&& other)
+  : unit(other.unit)
+{
+  if (this->unit)
+    this->unit->addTarget(this);
+}
+
 void UnitTarget::operator=(const UnitTarget& other)
 {
   this->clear();

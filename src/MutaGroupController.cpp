@@ -1,3 +1,4 @@
+#include <BWAPIUtil.hpp>
 #include <MutaGroupController.hpp>
 #include <HarvestingManager.hpp>
 #include <BhaalBot.hpp>
@@ -63,7 +64,16 @@ void MutaGroupController::onFrame()
                                MutaGroupController::overallPhaseToString(this->overalLPhase).c_str(),
                                MutaGroupController::attackPhaseToString(this->attackPhase).c_str());
   BWAPI::Broodwar->drawTextMap(center.x + 40, center.y + 70, "Stack: %u Joining: %u", this->stackMutas.size(), this->joiningMutas.size());
-  
+
+  BWAPI::Position last = BWAPI::Positions::None;
+  for (BWAPI::TilePosition position: this->target.path)
+  {
+    BWAPI::Position center = BWAPIUtil::tileCenter(position);
+    BWAPI::Broodwar->drawCircleMap(center, 5, BWAPI::Colors::Red, true);
+    if (last != BWAPI::Positions::None)
+      BWAPI::Broodwar->drawLineMap(center, last, BWAPI::Colors::White);
+    last = center;
+  }
 }
 
 void MutaGroupController::logic()
@@ -90,7 +100,7 @@ void MutaGroupController::logic()
         return;
       }
       if (this->target.isZero())
-        this->chooseClosestTarget();
+        return;
       if (!this->target.isZero())
       {
         this->attackPhase = AttackPhase::MovingTowardsTarget;
@@ -101,36 +111,61 @@ void MutaGroupController::logic()
       {
         if (this->target.isZero())
         {
-          this->target.clear();
+          this->target.target.clear();
           this->attackPhase = AttackPhase::Nothing;
           this->logic();
           return;
         }
         BWAPI::Position center = this->getCenter();
-        BWAPI::Position unitPosition = this->target.getPosition();
+        BWAPI::Position unitPosition = this->target.target.getPosition();
         Vector originalVector(center, unitPosition);
         Vector targetVector(originalVector);
         targetVector.extendToLength(250);
         BWAPI::Position behindUnit = center;
         targetVector.addTo(&behindUnit);
 
+        if (originalVector.getLength() < 250 && this->maxCooldownValue() == 0)
+          this->target.path.clear();
+
         if (originalVector.getLength() < 170 && this->maxCooldownValue() == 0)
         {
-          this->attackStackedMutasWithOverlord(this->target.getUnit(), BWAPI::Positions::None);
+          this->target.path.clear();
+          this->attackStackedMutasWithOverlord(this->target.target.getUnit(), BWAPI::Positions::None);
           BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Red);
           this->attackPhase = AttackPhase::MovingAway;
           this->ticksSinceAttack = 0;
           return;
         }
+
+        if (!this->target.path.empty())
+        {
+          BWAPI::Position nextPoint = BWAPIUtil::tileCenter(this->target.path.back());
+          if (center.getDistance(nextPoint) < 20)
+            this->target.path.pop_back();
+        }
+
+        if (this->target.path.empty())
+        {
+          this->moveStackedMutasWithOverlord(behindUnit);
+          BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Blue);
+        }
+        else
+        {
+          Vector originalVector(center, BWAPIUtil::tileCenter(this->target.path.back()));
+          Vector targetVector(originalVector);
+          targetVector.extendToLength(250);
+          BWAPI::Position behindTarget = center;
+          targetVector.addTo(&behindTarget);
+          this->moveStackedMutasWithOverlord(behindTarget);
+          BWAPI::Broodwar->drawCircleMap(behindTarget, 10, BWAPI::Colors::Blue);
+        }
         
-        this->moveStackedMutasWithOverlord(behindUnit);
-        BWAPI::Broodwar->drawCircleMap(behindUnit, 10, BWAPI::Colors::Blue);
       }
       break;
     case AttackPhase::MovingAway:
     {
       ++this->ticksSinceAttack;
-      if (this->ticksSinceAttack < 2)
+      if (this->ticksSinceAttack < 5)
         break;
       BWAPI::Position center = this->getCenter();
       BWAPI::Position target;
@@ -141,7 +176,7 @@ void MutaGroupController::logic()
       this->moveStackedMutasWithOverlord(target);
       BWAPI::Broodwar->drawCircleMap(target, 10, BWAPI::Colors::Blue);
       if (this->maxCooldownValue() < BWAPI::UnitTypes::Zerg_Mutalisk.groundWeapon().damageCooldown() / 2 &&
-          (this->target.isZero() || this->target.getPosition().getDistance(center) > 150))
+          (this->target.isZero() || this->target.target.getPosition().getDistance(center) > 200))
         this->attackPhase = AttackPhase::Nothing;
     }
       break;
@@ -286,24 +321,6 @@ void MutaGroupController::stackFast()
     BWAPI::Broodwar->issueCommand(mutaSet, BWAPI::UnitCommand::move(nullptr, this->stackingCenter));
    }
   overlord->stop();*/
-}
-
-void MutaGroupController::chooseClosestTarget()
-{
-  BWAPI::Position center = this->getCenter();
-  Unit* candidate = nullptr;
-  uint32_t candidateDistance = 0;
-  for (Player* player: bhaalBot->players.enemies)
-    for (Unit* unit: player->units)
-      {
-        uint32_t unitDistance = unit->getDistance(center);
-        if (candidate == nullptr || unitDistance < candidateDistance)
-        {
-          candidate = unit;
-          candidateDistance = unitDistance;
-        }
-      }
-  this->target = candidate;
 }
 
 double MutaGroupController::getAverageVelocity()

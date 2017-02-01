@@ -22,7 +22,6 @@ public:
   BWAPI::Position getCenter();
   void sendJoiningMutas();
   void transferJoiningMutasToStackMutas();
-  void chooseClosestTarget();
   void logic();
   void moveStackedMutasWithOverlord(BWAPI::Position position);
   void attackStackedMutasWithOverlord(Unit* unit, BWAPI::Position position);

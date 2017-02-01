@@ -6,13 +6,15 @@
 
 void GroupController::setTarget(Unit* target)
 { 
-  this->target = target; 
+  this->target.path.clear();
+  this->target.target = target; 
   this->updateAction();
 }
 
 void GroupController::setTargetPosition(BWAPI::Position position)
 { 
-  this->target = position; 
+  this->target.path.clear();
+  this->target.target = position; 
   this->updateAction();
 }
 
@@ -66,7 +68,7 @@ void GroupController::actionMove()
   BWAPI::Position position;
   for (Unit* unit : this->owner.getUnits())
   {
-    position = this->target.getPosition();
+    position = this->target.target.getPosition();
     unit->move(position);
   }
   LOG_INFO("moving to position %u, %u", position.x, position.y);
@@ -75,16 +77,16 @@ void GroupController::actionMove()
 void GroupController::actionAttackTarget()
 {
   for (Unit* unit : this->owner.getUnits())
-    if (Unit* unit = this->target.getUnit())
+    if (Unit* unit = this->target.target.getUnit())
       unit->attack(unit);
     else
-      unit->attack(this->target.getPosition());
+      unit->attack(this->target.target.getPosition());
   LOG_INFO("attack target");
 }
 
 void GroupController::actionAttackMove()
 {
-  BWAPI::Position position = this->target.getPosition();
+  BWAPI::Position position = this->target.target.getPosition();
   for (Unit* unit : this->owner.getUnits())
     unit->attack(position);
   LOG_INFO("attack move %u, %u", position.x, position.y);

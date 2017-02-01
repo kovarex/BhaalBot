@@ -1,6 +1,7 @@
 #pragma once
 #include <Module.hpp>
 #include <Direction.hpp>
+#include <TargetWithPath.hpp>
 
 class DangerZones : public Module
 {
@@ -10,13 +11,14 @@ public:
   void onFrame() override;
   void addDanger(BWAPI::Position centerPosition, int32_t radius, int32_t value);
   void removeDanger(BWAPI::Position centerPosition, int32_t radius, int32_t value);
-  void findBestTarget();
+  TargetWithPath findBestTarget(BWAPI::Position position);
+  void clearCostFromStart();
 
   class Node
   {
   public:
     int32_t danger = 0;
-    int32_t distanceFromStart = 0;
+    double distanceFromStart = 0;
     Direction cameFrom;
   };
   std::vector<std::vector<Node>> data;

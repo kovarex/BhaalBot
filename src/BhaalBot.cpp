@@ -72,12 +72,12 @@ void BhaalBot::onStart()
       assert(startingLocationsOK);
 
       //BWEM::utils::MapPrinter::Initialize(&theMap);
-      this->units.initMap();
       this->bases.init();
 
       BWAPI::Broodwar->setLocalSpeed(10);
       //BWAPI::Broodwar->setFrameSkip(10);
     }
+    this->units.initMap();
     this->moduleContainer.onStart();
   }
   catch (const std::exception & e)

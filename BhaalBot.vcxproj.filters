@@ -115,6 +115,8 @@
     <ClCompile Include="src\Direction.cpp" />
     <ClCompile Include="src\RealOrientation.cpp" />
     <ClCompile Include="src\UnitAsAttackTargetEvaulation.cpp" />
+    <ClCompile Include="src\UnitSearch.cpp" />
+    <ClCompile Include="src\TargetWithPath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -249,6 +251,8 @@
     <ClInclude Include="src\Direction.hpp" />
     <ClInclude Include="src\RealOrientation.hpp" />
     <ClInclude Include="src\UnitAsAttackTargetEvaulation.hpp" />
+    <ClInclude Include="src\UnitSearch.hpp" />
+    <ClInclude Include="src\TargetWithPath.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

@@ -101,6 +101,7 @@ void AttackTaskForceController::onFrame()
   {
     if (group->getTarget()->isZero())
     {
+      /*
       BWAPI::Position groupPosition = group->getPosition();
       Unit* bestCandidate = nullptr;
       double bestCandidateDistance = 0;
@@ -116,7 +117,8 @@ void AttackTaskForceController::onFrame()
           }
         }
       if (bestCandidate)
-        group->setAttackTarget(bestCandidate);
+        group->setAttackTarget(bestCandidate);*/
+      group->getController()->setAttackTargetWithPath(bhaalBot->dangerZones.findBestTarget(group->getPosition()));
     }
   }
   //--------------------------------------------- LINGZ

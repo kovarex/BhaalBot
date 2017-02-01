@@ -86,12 +86,10 @@
 #include <stdlib.h>
 #pragma comment(lib, "version.lib")  // for "VerQueryValue"
 #pragma warning(disable:4826)
+#pragma warning(disable:4091)
 
 #include "StackWalker.h"
-
-
 #include <dbghelp.h>
-#pragma pack(pop)
 
 // Some missing defines (for VC5/6):
 #ifndef INVALID_FILE_ATTRIBUTES

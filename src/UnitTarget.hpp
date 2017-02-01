@@ -12,8 +12,8 @@ public:
   ~UnitTarget();
 
   // these can be done later;
-  UnitTarget(UnitTarget& other)  = delete;
-  UnitTarget(UnitTarget&& other)  = delete;
+  UnitTarget(UnitTarget& other);
+  UnitTarget(UnitTarget&& other);
   void operator=(const UnitTarget& other);
   void operator=(Unit* unit);
   Unit* operator->() { return this->unit; }

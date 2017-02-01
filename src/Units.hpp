@@ -7,6 +7,12 @@ class Unit;
 class Units : public Module
 {
 public:
+  class TileInfo
+  {
+  public:
+    Unit* units = nullptr;
+  };
+
   Units(ModuleContainer& moduleContainer);
   ~Units();
   void onFrame() override;
@@ -18,15 +24,11 @@ public:
   void printAssignments();
   void initMap();
   const std::set<Unit*>& getUnits() const { return this->unitSet; }
+  TileInfo& getTile(BWAPI::TilePosition position) { return this->map[position.x][position.y]; }
 
 private:
   std::map<BWAPI::Unit, Unit*> units;
   std::set<Unit*> unitSet;
   friend class Unit;
-  class TileInfo
-  {
-  public:
-    Unit* units = nullptr;
-  };
   std::vector<std::vector<TileInfo>> map;
 };

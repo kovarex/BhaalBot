@@ -183,9 +183,6 @@ public:
   /** Debugging function that logs , */
   void logData() const;
 
-  /** Debugging function that logs layout details of property tree nodes, */
-  static void logLayout();
-
   void forceDictionary();
   void forceList();
 private:

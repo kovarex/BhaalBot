@@ -3,8 +3,9 @@ class Unit;
 
 class UnitAsAttackTargetEvaluation
 {
+public:
   UnitAsAttackTargetEvaluation() = delete;
 
-  double valueWithoutTakingHealthIntoConsideration(Unit* unit);
-  double value(Unit* unit);
+  static double valueWithoutTakingHealthIntoConsideration(Unit* unit);
+  static double value(Unit* unit);
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include <BWAPI.h>
-#include <Target.hpp>
+#include <TargetWithPath.hpp>
 class Group;
 class Unit;
 class UnitMemoryInfo;
@@ -28,8 +28,9 @@ public:
   virtual void onFrame() {}
   virtual void setTarget(Unit* target);
   virtual void setTargetPosition(BWAPI::Position position);
-  const Target& getTarget() { return this->target; }
+  const Target& getTarget() { return this->target.target; }
   virtual void setObjective(GroupObjective objective);
+  void setAttackTargetWithPath(const TargetWithPath& target) { this->target = target; }
   virtual GroupObjective getObjective(void) const { return this->objective; }
   virtual BWAPI::Position getPosition(void) const { return this->getGroupCenter(); }
   virtual BWAPI::Position getGroupCenter(void) const;
@@ -52,5 +53,5 @@ public:
 
   Group& owner;
   GroupObjective objective; // this, in combination with target, is the basic command given to the group by it's TaskForce.
-  Target target;
+  TargetWithPath target;
 };
