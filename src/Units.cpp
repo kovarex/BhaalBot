@@ -3,10 +3,20 @@
 #include <Log.hpp>
 #include <Player.hpp>
 
+Units::Units(ModuleContainer& moduleContainer)
+  : Module(moduleContainer)
+{}
+
 Units::~Units()
 {
-  for (auto& item: this->units)
-    delete item.second;
+  for (Unit* unit: this->unitSet)
+    delete unit;
+}
+
+void Units::onFrame()
+{
+  for (Unit* unit: this->unitSet)
+    unit->updatePosition();
 }
 
 Unit* Units::onUnitComplete(BWAPI::Unit unit)
@@ -56,6 +66,15 @@ void Units::printAssignments()
 {
   for (auto& item: this->units)
     item.second->printAssignment();
+}
+
+void Units::initMap()
+{
+  int width = BWAPI::Broodwar->mapWidth();
+  int height = BWAPI::Broodwar->mapHeight();
+  this->map.resize(width);
+  for (int32_t x = 0; x < width; ++x)
+    this->map[x].resize(height);
 }
 
 Unit* Units::findOrThrow(BWAPI::Unit unit)

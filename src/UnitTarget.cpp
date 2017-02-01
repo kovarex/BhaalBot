@@ -45,6 +45,6 @@ BWAPI::Position UnitTarget::getPosition() const
   if (this->unit->isVisible())
     return this->unit->getPosition();
   if (this->unit->memoryInfo)
-    return this->unit->memoryInfo->position;
+    return this->unit->lastSeenPosition;
   return BWAPI::Positions::None;
 }

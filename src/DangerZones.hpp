@@ -10,7 +10,7 @@ public:
   void onFrame() override;
   void addDanger(BWAPI::Position centerPosition, int32_t radius, int32_t value);
   void removeDanger(BWAPI::Position centerPosition, int32_t radius, int32_t value);
-  
+  void findBestTarget();
 
   class Node
   {

@@ -72,8 +72,12 @@ public:
    * @param assignment nullptr only unassigns the current assignment. */
   void assign(Assignment* assignment);
   Assignment* getAssignment() { return this->assignment; }
+  void updatePosition();
 
 private:
+  void registerOnMap();
+  void unregsiterFromMap();
+
   BWAPI::Unit bwapiUnit;
   Assignment* assignment = nullptr;
 public:
@@ -99,7 +103,10 @@ public:
   std::vector<UnitTarget*> targetingMe;
   UnitMemoryInfo* memoryInfo = nullptr; // only used for foreign units
   BWAPI::UnitType lastSeenUnitType;
+  BWAPI::Position lastSeenPosition;
   Player* player = nullptr;
+  Unit* previousOnTile = nullptr;
+  Unit* nextOnTile = nullptr;
 #ifdef DEBUG
   std::string name; /** For easy unit evaulation while debugging. */
 #endif

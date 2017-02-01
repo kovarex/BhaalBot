@@ -5,14 +5,18 @@
 Unit::Unit(BWAPI::Unit bwapiUnit)
   : bwapiUnit(bwapiUnit)
   , lastSeenUnitType(this->getType())
+  , lastSeenPosition(this->bwapiUnit->getPosition())
   , player(bhaalBot->players.findPlayer(this->getBWAPIPlayer()))
 #ifdef DEBUG
   , name(this->getType().getName())
 #endif
-{}
+{
+  this->registerOnMap();
+}
 
 Unit::~Unit()
 {
+  this->unregsiterFromMap();
   delete this->assignment;
   for (UnitTarget* target: this->targetingMe)
     target->unit = nullptr;
@@ -31,6 +35,55 @@ void Unit::assign(Assignment* assignment)
   this->assignment = assignment;
   if (assignment)
     assignment->unit = this;
+}
+
+void Unit::updatePosition()
+{
+  if (this->bwapiUnit->isVisible())
+  {
+    BWAPI::Position currentPosition = this->bwapiUnit->getPosition();
+    if (BWAPI::TilePosition(this->lastSeenPosition) != BWAPI::TilePosition(currentPosition))
+    {
+      this->unregsiterFromMap();
+      this->lastSeenPosition = currentPosition;
+      this->registerOnMap();
+    }
+  }
+}
+
+void Unit::registerOnMap()
+{
+  BWAPI::TilePosition tilePosition(this->lastSeenPosition);
+  Units::TileInfo& tileInfo = bhaalBot->units.map[tilePosition.x][tilePosition.y];
+  this->nextOnTile = tileInfo.units;
+  if (this->nextOnTile)
+    this->nextOnTile->previousOnTile = this;
+  this->previousOnTile = nullptr;
+  tileInfo.units = this;
+  bhaalBot->discoveredMemory.onAdd(this);
+}
+
+void Unit::unregsiterFromMap()
+{
+  bhaalBot->discoveredMemory.onRemove(this);
+  if (this->previousOnTile)
+  {
+    this->previousOnTile->nextOnTile = this->nextOnTile;
+    if (this->nextOnTile)
+      this->nextOnTile->previousOnTile = this->previousOnTile;
+  }
+  else
+  {
+    BWAPI::TilePosition tilePosition(this->lastSeenPosition);
+    Units::TileInfo& tileInfo = bhaalBot->units.map[tilePosition.x][tilePosition.y];
+#ifdef DEBUG
+    if (tileInfo.units != this)
+      LOG_AND_ABORT("Map registration mismatch.");
+#endif
+    tileInfo.units = this->nextOnTile;
+    if (this->nextOnTile)
+      this->nextOnTile->previousOnTile = nullptr;
+  }
 }
 
 std::string Unit::shortenUnitName(const std::string& name)

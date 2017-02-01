@@ -15,6 +15,7 @@ BhaalBot::BhaalBot()
   : logger(myFolder)
   , overmind(this->moduleContainer)
   , bases(this->moduleContainer)
+  , units(this->moduleContainer)
   , players(this->moduleContainer)
   , buildOrderManager(this->moduleContainer)
   , harvestingManager(this->moduleContainer)
@@ -71,6 +72,7 @@ void BhaalBot::onStart()
       assert(startingLocationsOK);
 
       //BWEM::utils::MapPrinter::Initialize(&theMap);
+      this->units.initMap();
       this->bases.init();
 
       BWAPI::Broodwar->setLocalSpeed(10);
