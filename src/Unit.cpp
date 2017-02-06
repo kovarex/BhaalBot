@@ -39,7 +39,7 @@ void Unit::assign(Assignment* assignment)
 
 void Unit::updatePosition()
 {
-  if (this->bwapiUnit->isVisible())
+  if ((unsigned int)this->bwapiUnit != 0xDDDDDDDD && this->bwapiUnit->isVisible()) // TODO it crashes on this; quickfixed by the first condition. I don't remember what is the bwapi constant...
   {
     BWAPI::Position currentPosition = this->bwapiUnit->getPosition();
     if (BWAPI::TilePosition(this->lastSeenPosition) != BWAPI::TilePosition(currentPosition))

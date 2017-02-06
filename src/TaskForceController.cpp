@@ -14,6 +14,7 @@
 #define MAX_DISTANCE_TO_GROUP_NEW_LINGS 200 // currently in pixels
 #define MAX_LING_GROUP_ERROR 50
 #define DISTANCE_FROM_ENEMY_TO_START_COMBAT 300
+#define SPEED_IN_LING_COMBAT 50 // ms per frame
 
 AttackTaskForceController::AttackTaskForceController(TaskForce& owner)
   : TaskForceController(owner)
@@ -52,7 +53,7 @@ void AttackTaskForceController::assignUnit(Unit* unit)
         {
           LOG_INFO("Adding ling to reinforcements");
           group->add(unit);
-          if (!group->getController()->isGrouped(MAX_LING_GROUP_ERROR))
+          if (!group->getController()->isGrouped(4 * MAX_LING_GROUP_ERROR))
           {
             group->getController()->setObjective(GroupObjective::GROUP);
           }
@@ -125,13 +126,16 @@ void AttackTaskForceController::onFrame()
   // transform reinforcements into combat groups, if they are close enough to enemy base
   for (auto it = this->lingReinforementGroups.begin(); it < this->lingReinforementGroups.end();)
   {
-    if (this->enemyBase != nullptr &&
+    // if we are at the enemy base or we have spotted an enemy unit. The second happens when we meet counterrush.
+    if ((this->enemyBase != nullptr &&
         this->enemyBase->getCenter().getDistance((*it)->getPosition()) < DISTANCE_FROM_ENEMY_TO_START_COMBAT)
+      || !BWAPI::Broodwar->getUnitsInRadius((*it)->getPosition(), 300, BWAPI::Filter::IsEnemy && !BWAPI::Filter::IsFlying).empty())
     {
       LOG_INFO("Switching ling from reinforcements to combat, grouping");
       this->lingCombatGroups.push_back((*it));
       (*it)->getController()->setObjective(GroupObjective::GROUP);
       it = lingReinforementGroups.erase(it);
+      BWAPI::Broodwar->setLocalSpeed(SPEED_IN_LING_COMBAT); // slow it down to track the combat
     }
     else
       ++it;

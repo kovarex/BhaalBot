@@ -189,7 +189,7 @@ void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
         else if (base->status == Base::Status::Unknown)
           ++unknownCount;
       if (!enemyExists && unknownCount == 1)
-        for (Base* base: bhaalBot->bases.bases)
+        for (Base* base: bhaalBot->bases.startingLocations)
           if (base->status == Base::Status::Unknown)
             base->status = Base::Status::OwnedByEnemy;
     }

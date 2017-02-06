@@ -6,6 +6,7 @@
 #include <Log.hpp>
 
 #define FRAMES_TO_FLEE 50
+#define UNIT_ATTACKERS_LIMIT 3 // Max number of lings to attack one enemy
 
 LingGroupController::LingGroupController(Group& owner)
   : GroupController(owner)
@@ -65,6 +66,31 @@ void LingGroupController::actionAttackMove()
 }
 
 
+BWAPI::Unit LingGroupController::chooseTargetByDistance(Unit* ling, int radius, int maxAttackers, const BWAPI::UnitFilter &pred)
+{
+  BWAPI::Unitset targets = ling->getUnitsInRadius(radius, pred);
+  for (BWAPI::Unit target : targets)
+  {
+    // TODO change to automatic unit attacker counter. This is imperfect if there are more groups.
+    int attackerCount = 0;
+    for (Unit* groupLing : this->owner.getUnits())
+    {
+      if (groupLing->getOrderTarget() && groupLing->getOrderTarget() == target)
+      {
+        attackerCount++;
+        if (attackerCount == maxAttackers)
+          break;
+      }
+    }
+    if (attackerCount < maxAttackers)
+    {
+      return target;
+    }
+  }
+  return nullptr;
+}
+
+
 BestTarget LingGroupController::chooseLingTarget(Unit* ling)
 {
   BestTarget bestTarget;
@@ -74,7 +100,7 @@ BestTarget LingGroupController::chooseLingTarget(Unit* ling)
 
   // Get units in range and find the best one to attack
   //targets = ling->getUnitsInWeaponRange(BWAPI::WeaponTypes::Claws, BWAPI::Filter::IsEnemy);
-  targets = ling->getUnitsInRadius(120, BWAPI::Filter::IsEnemy); // hack, cos above does not work. Large range so that it catches hatchery.
+  targets = ling->getUnitsInRadius(120, BWAPI::Filter::IsEnemy && !BWAPI::Filter::IsFlying); // hack, cos above does not work. Large range so that it catches hatchery.
   for (BWAPI::Unit unitInRange : targets)
     if (ling->isInWeaponRange(unitInRange))
     {
@@ -140,22 +166,71 @@ BestTarget LingGroupController::chooseLingTarget(Unit* ling)
   if (bestTarget.type <= LingTargetType::DRONE_IN_RANGE) // nothing better can be found
     return bestTarget;
 
-  // if we have not found any target in range, we look furher.
-  // first find zerglings and pick the nearest
-  bestTarget.target = ling->getClosestUnit(BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack && !BWAPI::Filter::IsWorker, 200);
+  // if we have not found any target in melee range, we look furher.
+  // first find zerglings and pick the nearest that does not have too many attackers on yet. TODO make it so.
+  //bestTarget.target = ling->getClosestUnit(BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack && !BWAPI::Filter::IsWorker, 200);
+  bestTarget.target = this->chooseTargetByDistance(ling, 50, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack && !BWAPI::Filter::IsWorker);
   if (bestTarget.target != nullptr)
   {
     bestTarget.type = LingTargetType::LING;
     return bestTarget;
   }
+  else
+  {
+    bestTarget.target = this->chooseTargetByDistance(ling, 100, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack && !BWAPI::Filter::IsWorker);
+    if (bestTarget.target != nullptr)
+    {
+      bestTarget.type = LingTargetType::LING;
+      return bestTarget;
+    }
+    else
+    {
+      bestTarget.target = this->chooseTargetByDistance(ling, 200, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::CanAttack && !BWAPI::Filter::IsWorker);
+      if (bestTarget.target != nullptr)
+      {
+        bestTarget.type = LingTargetType::LING;
+        return bestTarget;
+      }
+    }
+  }
+
 
   // now find drones in range
-  bestTarget.target = ling->getClosestUnit(BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker, 400);
+  //bestTarget.target = ling->getClosestUnit(BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker, 400);
+  bestTarget.target = this->chooseTargetByDistance(ling, 50, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker);
   if (bestTarget.target != nullptr)
   {
     bestTarget.type = LingTargetType::DRONE;
     return bestTarget;
   }
+  else
+  {
+    bestTarget.target = this->chooseTargetByDistance(ling, 100, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker);
+    if (bestTarget.target != nullptr)
+    {
+      bestTarget.type = LingTargetType::DRONE;
+      return bestTarget;
+    }
+    else
+    {
+      bestTarget.target = this->chooseTargetByDistance(ling, 200, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker);
+      if (bestTarget.target != nullptr)
+      {
+        bestTarget.type = LingTargetType::DRONE;
+        return bestTarget;
+      }
+      else
+      {
+        bestTarget.target = this->chooseTargetByDistance(ling, 400, UNIT_ATTACKERS_LIMIT, BWAPI::Filter::IsEnemy && BWAPI::Filter::IsWorker);
+        if (bestTarget.target != nullptr)
+        {
+          bestTarget.type = LingTargetType::DRONE;
+          return bestTarget;
+        }
+      }
+    }
+  }
+
 
   // now anything at all
   bestTarget.target = ling->getClosestUnit(BWAPI::Filter::IsEnemy, 600);
@@ -214,7 +289,7 @@ void LingGroupController::updateLingAttackMoveAction(Unit *ling)
 
   BestTarget bestTarget = chooseLingTarget(ling);
 
-  if (bestTarget.type == LingTargetType::NONE)
+  if (bestTarget.type == LingTargetType::NONE || bestTarget.target == nullptr)
   {
     // TODO do something about it
     LOG_INFO("no target found");

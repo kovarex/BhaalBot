@@ -114,7 +114,7 @@ BWAPI::Position GroupController::getGroupCenter() const
 
 bool GroupController::isGrouped(double maxCenterDistance) const
 {
-  if (this->owner.getSize())
+  if (!this->owner.getSize())
     return true;
   BWAPI::Position center = this->getGroupCenter();
   double maxDistance = 0;

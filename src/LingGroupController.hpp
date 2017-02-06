@@ -31,7 +31,9 @@ struct BestTarget
 class LingGroupController : public GroupController
 {
 private:
-  static BestTarget chooseLingTarget(Unit* ling); // finds best available target of a ling
+  BestTarget chooseLingTarget(Unit* ling); //!< finds best available target of a ling
+  //!> returns first found target in radius that match the criteria and has < naxAttackers already on him.
+  BWAPI::Unit chooseTargetByDistance(Unit* ling, int radius, int maxAttackers, const BWAPI::UnitFilter &pred = nullptr);
   void flee(Unit* ling, int radiusToConsider, double howFar);
 
   double min = DBL_MAX, max = 0; // TODO delete

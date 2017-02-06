@@ -64,6 +64,7 @@ public:
   BWAPI::Unit getBWAPIUnit() { return this->bwapiUnit; }
   static std::string shortenUnitName(const std::string& name); /**< Removes the rdundant Zerg_, Protoss_, Terran_ prefixes. */
   std::string getName() const; 
+  int getAttackerCount() const { return targetingMe.size(); }
 
   void addTarget(UnitTarget* target);
   void removeTarget(UnitTarget* target);
