@@ -61,6 +61,11 @@ void Units::onUnitDestroy(BWAPI::Unit unit)
   this->units.erase(position);
 }
 
+void Units::onUnitDiscover(BWAPI::Unit unit)
+{
+  this->onUnitComplete(unit);
+}
+
 Unit* Units::find(BWAPI::Unit unit)
 {
   auto position = this->units.find(unit);

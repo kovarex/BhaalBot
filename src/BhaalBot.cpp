@@ -142,7 +142,10 @@ void BhaalBot::onNukeDetect(BWAPI::Position target)
 {}
 
 void BhaalBot::onUnitDiscover(BWAPI::Unit unit)
-{}
+{
+  Unit* ourUnit = this->units.onUnitComplete(unit);
+  this->moduleContainer.onUnitComplete(ourUnit);
+}
 
 void BhaalBot::onUnitEvade(BWAPI::Unit unit)
 {}

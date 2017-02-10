@@ -20,6 +20,7 @@ public:
 
   Unit* onUnitComplete(BWAPI::Unit unit);
   void onUnitDestroy(BWAPI::Unit unit);
+  void onUnitDiscover(BWAPI::Unit unit);
   Unit* findOrThrow(BWAPI::Unit unit);
   Unit* find(BWAPI::Unit unit);
   void printAssignments();

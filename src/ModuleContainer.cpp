@@ -22,6 +22,12 @@ void ModuleContainer::onUnitComplete(Unit* unit)
     module->onUnitComplete(unit);
 }
 
+void ModuleContainer::onUnitDiscover(Unit* unit)
+{
+  for (Module* module: this->modules)
+    module->onUnitDiscover(unit);
+}
+
 void ModuleContainer::onUnitMorph(Unit* unit, BWAPI::UnitType from)
 {
   for (Module* module: this->modules)
