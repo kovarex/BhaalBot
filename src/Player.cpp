@@ -54,3 +54,9 @@ int Player::getUnitCountWithPlannedCombined(BWAPI::UnitType unitType) const
 {
   return this->getUnitCount(unitType) + bhaalBot->morphingUnits.getPlannedCount(unitType) + bhaalBot->buildTasks.plannedCount(unitType);
 }
+
+int Player::getUnitCountWithPlannedAndBuildOrderCombined(BWAPI::UnitType unitType) const
+{
+  return this->getUnitCountWithPlannedCombined(unitType) +
+    bhaalBot->buildOrderManager.executor.getPlannedType(unitType);
+}

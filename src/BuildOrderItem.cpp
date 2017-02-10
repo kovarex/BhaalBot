@@ -61,6 +61,11 @@ std::string BuildBuildOrderItem::str() const
   return ssprintf("%s", Unit::shortenUnitName(this->unit.getName()).c_str());
 }
 
+Cost BuildBuildOrderItem::getCost() const
+{
+  return Cost(this->unit.mineralPrice(), this->unit.gasPrice());
+}
+
 bool SendScoutBuildOrderItem::execute()
 {
   bhaalBot->scoutingManager.orderToScout(this->unitType);

@@ -29,32 +29,31 @@ void HatchExpStrategy::onStart()
 
 void HatchExpStrategy::onFrame()
 {
-  int hatchCount = bhaalBot->players.self->getUnitCountWithPlannedCombined(BWAPI::UnitTypes::Zerg_Hatchery) +
-    bhaalBot->buildOrderManager.executor.getPlannedType(BWAPI::UnitTypes::Zerg_Hatchery);
+  int hatchCount = bhaalBot->players.self->getUnitCountWithPlannedAndBuildOrderCombined(BWAPI::UnitTypes::Zerg_Hatchery);
   if (hatchCount >= this->hatchCount)
     return;
-  if (bhaalBot->buildOrderManager.executor.isFinished())
+  int availableMinerals = BWAPI::Broodwar->self()->minerals() -
+                          bhaalBot->costReservation.getReseved().minerals -
+                          bhaalBot->buildOrderManager.executor.getPlannedCost().minerals;
+  int droneCount = bhaalBot->players.self->getUnitCountWithPlannedAndBuildOrderCombined(BWAPI::UnitTypes::Zerg_Drone);
+  if (availableMinerals >= 300 && droneCount > 5)
   {
-    int availableMinerals = BWAPI::Broodwar->self()->minerals() - bhaalBot->costReservation.getReseved().minerals;
-    int droneCount = bhaalBot->players.self->getUnitCountWithPlannedCombined(BWAPI::UnitTypes::Zerg_Drone);
-    if (availableMinerals >= 300 && droneCount > 5)
-    {
-      if (hatchCount < 2)
-        this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery, BuildLocationType::ClosestExpansion);
-      else
-        this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery);
-      return;
-    }
     if (hatchCount < 2)
-      if (droneCount >= 12)
-        this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery);
-      else
-        this->buildOrder->add(BWAPI::UnitTypes::Zerg_Drone);
-    else if (hatchCount < 3)
-      if (droneCount >= 13)
-        this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery);
-      else
-        this->buildOrder->add(BWAPI::UnitTypes::Zerg_Drone);
-    this->buildOrder->add(BWAPI::UnitTypes::Zerg_Drone);
+      this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery, BuildLocationType::ClosestExpansion);
+    else
+      this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery);
+    return;
   }
+  if (hatchCount < 2)
+    if (droneCount >= 12)
+      this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery);
+    else
+      this->buildOrder->add(BWAPI::UnitTypes::Zerg_Drone);
+  else if (hatchCount < 3)
+    if (droneCount >= 13)
+      this->buildOrder->add(BWAPI::UnitTypes::Zerg_Hatchery);
+    else
+      this->buildOrder->add(BWAPI::UnitTypes::Zerg_Drone);
+  else if (droneCount < 17 * 2)
+    this->buildOrder->add(BWAPI::UnitTypes::Zerg_Drone);
 }

@@ -14,6 +14,7 @@ public:
   void drawDebug(BWAPI::Position position);
   int getUnitCount(BWAPI::UnitType unitType) const;
   int getUnitCountWithPlannedCombined(BWAPI::UnitType unitType) const;
+  int getUnitCountWithPlannedAndBuildOrderCombined(BWAPI::UnitType unitType) const;
   
   std::map<BWAPI::UnitType, int> unitCounts;
   std::map<BWAPI::UnitType, int> overallLosses;

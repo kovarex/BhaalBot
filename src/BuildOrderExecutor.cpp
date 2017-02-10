@@ -61,6 +61,14 @@ int BuildOrderExecutor::getPlannedType(BWAPI::UnitType unitType)
   return result;
 }
 
+Cost BuildOrderExecutor::getPlannedCost()
+{
+  Cost result;
+  for (uint32_t i = this->stepToDo; i < this->currentBuildOrder->items.size(); ++i)
+    result += this->currentBuildOrder->items[i]->getCost();
+  return result;
+}
+
 std::string BuildTaskInProgress::str() const
 {
   return ssprintf("Build %s", this->unitType.getName().c_str());
