@@ -4,13 +4,14 @@
 #include <set>
 class Strategy;
 
+/** Contains all available strategies and sorts them out by the matchup type. */
 class Strategies
 {
   Strategies() {}
   ~Strategies();
 public:
-  void registerStrategy(Strategy* strategy);
-
+  void registerStrategy(Strategy* strategy); /**< Adds the strategy to the internal structure so it is available to be picked.
+                                              * Ensures that it is deleted at the end. */
   static Strategies& instance()
   {
     static Strategies instance;
