@@ -37,11 +37,7 @@ void BuildOrderExecutor::update()
   if (this->currentBuildOrder->items.size() <= this->stepToDo)
     return;
   if (this->currentBuildOrder->items[this->stepToDo]->execute())
-  {
     ++stepToDo;
-    if (this->currentBuildOrder->items.size() == this->stepToDo)
-    BWAPI::Broodwar->sendText("Finished build order");
-  }
 }
 
 bool BuildOrderExecutor::train(BWAPI::UnitType unitType)
@@ -50,6 +46,19 @@ bool BuildOrderExecutor::train(BWAPI::UnitType unitType)
   if (producer && producer->canTrain(unitType))
     return  bhaalBot->larvaReservations.tryToTrain(producer, unitType);
   return false;
+}
+
+bool BuildOrderExecutor::isFinished()
+{
+  return this->currentBuildOrder->items.size() <= this->stepToDo;
+}
+
+int BuildOrderExecutor::getPlannedType(BWAPI::UnitType unitType)
+{
+  int result = 0;
+  for (uint32_t i = this->stepToDo; i < this->currentBuildOrder->items.size(); ++i)
+    result += this->currentBuildOrder->items[i]->getPlannedType(unitType);
+  return result;
 }
 
 std::string BuildTaskInProgress::str() const

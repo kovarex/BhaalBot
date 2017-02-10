@@ -19,6 +19,13 @@ void Units::onFrame()
     unit->updatePosition();
 }
 
+void Units::onEnd(bool isWinner)
+{
+  for (Unit* unit: this->unitSet)
+    delete unit;
+  this->unitSet.clear();
+}
+
 Unit* Units::onUnitComplete(BWAPI::Unit unit)
 {
   auto position = this->units.find(unit);

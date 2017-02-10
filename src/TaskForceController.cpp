@@ -14,7 +14,7 @@
 #define MAX_DISTANCE_TO_GROUP_NEW_LINGS 200 // currently in pixels
 #define MAX_LING_GROUP_ERROR 50
 #define DISTANCE_FROM_ENEMY_TO_START_COMBAT 300
-#define SPEED_IN_LING_COMBAT 50 // ms per frame
+#define SPEED_IN_LING_COMBAT 10 // ms per frame
 
 AttackTaskForceController::AttackTaskForceController(TaskForce& owner)
   : TaskForceController(owner)

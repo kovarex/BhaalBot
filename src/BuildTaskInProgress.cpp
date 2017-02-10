@@ -25,8 +25,12 @@ bool BuildTaskInProgress::onFrame()
         // This is special case of geysers, as they become the building instead of the drone in that case
         this->target && this->target->getType() == this->unitType)
   {
-    bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);
-    return true;
+    if (this->worker->getRemainingBuildTime() == 0)
+    {
+      bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);
+      return true;
+    }
+    return false;
   }
 
   if (this->position == BWAPI::TilePositions::None)

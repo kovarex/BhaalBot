@@ -1,3 +1,4 @@
+#include <BhaalBot.hpp>
 #include <Player.hpp>
 #include <Unit.hpp>
 
@@ -39,4 +40,17 @@ void Player::drawDebug(BWAPI::Position position)
       BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen, position.x + 80, yPosition, "%d", item.second);
       yPosition += 15;
     }
+}
+
+int Player::getUnitCount(BWAPI::UnitType unitType) const
+{
+  auto position = this->unitCounts.find(unitType);
+  if (position == this->unitCounts.end())
+    return 0;
+  return position->second;
+}
+
+int Player::getUnitCountWithPlannedCombined(BWAPI::UnitType unitType) const
+{
+  return this->getUnitCount(unitType) + bhaalBot->morphingUnits.getPlannedCount(unitType) + bhaalBot->buildTasks.plannedCount(unitType);
 }

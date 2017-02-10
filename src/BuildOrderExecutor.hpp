@@ -15,8 +15,10 @@ public:
   void startBuildOrder(BuildOrder* buildOrder);
   void update();
   bool train(BWAPI::UnitType unitType);
+  bool isFinished();
+  int getPlannedType(BWAPI::UnitType unitType);
 
   BuildOrder* currentBuildOrder = nullptr;
-  uint32_t stepToDo;
+  uint32_t stepToDo = 0;
   bool automaticOverlordBuilding = false;
 };

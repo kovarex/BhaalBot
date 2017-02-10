@@ -12,6 +12,7 @@ public:
   std::string str() const override;
   bool onFrame(); /** @return @c true if the task was finished */
   BWAPI::TilePosition getBuildPosition(BWAPI::Unit* buildingTarget);
+  BWAPI::UnitType getUnitType() const { return this->unitType; }
 
 private:
   friend class BuildTaskAssignment;

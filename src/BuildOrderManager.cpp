@@ -39,13 +39,8 @@ void BuildOrderManager::onStart()
     pool5->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool5->add(1, BWAPI::UnitTypes::Zerg_Drone);
     pool5->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Drone));
-    //pool5->add(1, BWAPI::UnitTypes::Zerg_Zergling);
     pool5->add(4, BWAPI::UnitTypes::Zerg_Zergling);
     pool5->add(new SwitchToAutomaticOverlordBuilding());
-    //pool5->add(10, BWAPI::UnitTypes::Zerg_Zergling);
-    //pool5->add(1, BWAPI::UnitTypes::Zerg_Hatchery);
-    //pool5->add(3, BWAPI::UnitTypes::Zerg_Drone);
-    //pool5->add(150, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool5);
   }
   {
@@ -107,34 +102,7 @@ void BuildOrderManager::onStart()
     }
     this->add(pool11Exp);
   }
-
-  BuildOrder* buildOrder = nullptr;
-  if (auto item = bhaalBot->config.findp("preferred-build-order"))
-  {
-    std::string buildOrderName = item->get<std::string>().c_str();
-    auto position = this->buildOrders.find(buildOrderName);
-    if (position == this->buildOrders.end())
-    {
-      buildOrder = this->buildOrders.begin()->second;
-      LOG_WARNING("Didn't find preferred-build-order specified in the config (%s), choosing (%s) instead",
-                  buildOrderName.c_str(),
-                  buildOrder->name.c_str());
-    }
-    else
-    {
-      buildOrder = position->second;
-      LOG_NOTICE("Selected build order (%s) based on the config", buildOrderName.c_str());
-    }
-  }
-  else
-  {
-    buildOrder = this->buildOrders.begin()->second;
-    LOG_NOTICE("Build order not specified in config, selected %s", buildOrder->name.c_str());
-  }
-  
-  this->executor.startBuildOrder(buildOrder);
 }
-
 
 void BuildOrderManager::add(BuildOrder* buildOrder)
 {

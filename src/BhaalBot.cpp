@@ -30,6 +30,7 @@ BhaalBot::BhaalBot()
   , discoveredMemory(this->moduleContainer)
   , buildTasks(this->moduleContainer)
   , dangerZones(this->moduleContainer)
+  , strategyExecutor(this->moduleContainer)
 {
   if (Filesystem::exists(configPath))
     this->config = readIni(configPath);
@@ -88,6 +89,7 @@ void BhaalBot::onStart()
 
 void BhaalBot::onEnd(bool isWinner)
 {
+  this->moduleContainer.onEnd(isWinner);
   if (isWinner)
     BWAPI::Broodwar << "Hooray";
 }

@@ -16,6 +16,7 @@ public:
   Units(ModuleContainer& moduleContainer);
   ~Units();
   void onFrame() override;
+  void onEnd(bool isWinner) override;
 
   Unit* onUnitComplete(BWAPI::Unit unit);
   void onUnitDestroy(BWAPI::Unit unit);

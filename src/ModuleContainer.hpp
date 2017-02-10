@@ -16,6 +16,7 @@ public:
   void onStart();
   void onUnitDestroy(Unit* unit);
   void onUnitIdle(Unit* unit);
+  void onEnd(bool isWinner);
 private:
   std::vector<Module*> modules;
 };

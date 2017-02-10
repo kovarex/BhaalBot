@@ -135,6 +135,12 @@
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\DroneDefenseGroupController.cpp" />
     <ClCompile Include="src\RealOrientation.cpp" />
+    <ClCompile Include="src\Strategy\HatchExpStrategy.cpp" />
+    <ClCompile Include="src\Strategy\LingRushStrategy.cpp" />
+    <ClCompile Include="src\Strategy\Strategies.cpp" />
+    <ClCompile Include="src\Strategy\Strategy.cpp" />
+    <ClCompile Include="src\Strategy\StrategyExecutor.cpp" />
+    <ClCompile Include="src\Strategy\StrategySelector.cpp" />
     <ClCompile Include="src\TargetWithPath.cpp" />
     <ClCompile Include="src\UnitAsAttackTargetEvaulation.cpp" />
     <ClCompile Include="src\UnitSearch.cpp" />
@@ -224,6 +230,12 @@
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />
     <ClInclude Include="src\RealOrientation.hpp" />
+    <ClInclude Include="src\Strategy\HatchExpStrategy.hpp" />
+    <ClInclude Include="src\Strategy\LingRushStrategy.hpp" />
+    <ClInclude Include="src\Strategy\Strategies.hpp" />
+    <ClInclude Include="src\Strategy\Strategy.hpp" />
+    <ClInclude Include="src\Strategy\StrategyExecutor.hpp" />
+    <ClInclude Include="src\Strategy\StrategySelector.hpp" />
     <ClInclude Include="src\TargetWithPath.hpp" />
     <ClInclude Include="src\UnitAsAttackTargetEvaulation.hpp" />
     <ClInclude Include="src\UnitSearch.hpp" />

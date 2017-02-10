@@ -30,13 +30,15 @@ void ModuleContainer::onUnitMorph(Unit* unit, BWAPI::UnitType from)
 
 void ModuleContainer::onFrame()
 {
-  for (Module* module: this->modules)
+  std::vector<Module*> copy(this->modules);
+  for (Module* module: copy)
     module->onFrame();
 }
 
 void ModuleContainer::onStart()
 {
-  for (Module* module: this->modules)
+  std::vector<Module*> copy(this->modules);
+  for (Module* module: copy)
     module->onStart();
 }
 
@@ -44,6 +46,13 @@ void ModuleContainer::onUnitIdle(Unit* unit)
 {
   for (Module* module: this->modules)
     module->onUnitIdle(unit);
+}
+
+void ModuleContainer::onEnd(bool isWinner)
+{
+  std::vector<Module*> copy(this->modules);
+  for (Module* module: copy)
+    module->onEnd(isWinner);
 }
 
 void ModuleContainer::onUnitDestroy(Unit* unit)

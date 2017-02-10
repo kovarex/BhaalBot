@@ -12,6 +12,8 @@ public:
   void onUnitDestroy(Unit* unit);
   void onUnitMorph(Unit* unit, BWAPI::UnitType from);
   void drawDebug(BWAPI::Position position);
+  int getUnitCount(BWAPI::UnitType unitType) const;
+  int getUnitCountWithPlannedCombined(BWAPI::UnitType unitType) const;
   
   std::map<BWAPI::UnitType, int> unitCounts;
   std::map<BWAPI::UnitType, int> overallLosses;

@@ -21,6 +21,9 @@
 #include <Logger.hpp>
 #include <PropertyTree.hpp>
 #include <Players.hpp>
+#include <Strategy/StrategyExecutor.hpp>
+#include <Strategy/StrategySelector.hpp>
+#include <random>
 
 class BhaalBot : public BWAPI::AIModule
 {
@@ -46,6 +49,7 @@ public:
   bool BhaalBot::isUMSMap();
   // Everything below this line is safe to modify.
 
+  std::random_device randomDevice;
   Logger logger;
   PropertyTree config;
   ModuleContainer moduleContainer;
@@ -66,6 +70,8 @@ public:
   ScoutingManager scoutingManager;
   DiscoveredMemory discoveredMemory;
   BuildTasks buildTasks;
+  StrategyExecutor strategyExecutor;
+  StrategySelector strategySelector;
   bool umsMap = false;
 };
 

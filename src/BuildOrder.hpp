@@ -6,6 +6,7 @@ class BuildOrder
 {
 public:
   BuildOrder(const std::string& name) : name(name) {}
+  BuildOrder() {}
   ~BuildOrder();
   void add(BWAPI::UnitType unit, BuildLocationType location = BuildLocationType::Auto);
   void add(uint32_t count, BWAPI::UnitType unit);

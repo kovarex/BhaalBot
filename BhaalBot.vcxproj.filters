@@ -117,6 +117,24 @@
     <ClCompile Include="src\UnitAsAttackTargetEvaulation.cpp" />
     <ClCompile Include="src\UnitSearch.cpp" />
     <ClCompile Include="src\TargetWithPath.cpp" />
+    <ClCompile Include="src\Strategy\LingRushStrategy.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\Strategy.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\Strategies.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\StrategySelector.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\StrategyExecutor.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\HatchExpStrategy.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -253,6 +271,24 @@
     <ClInclude Include="src\UnitAsAttackTargetEvaulation.hpp" />
     <ClInclude Include="src\UnitSearch.hpp" />
     <ClInclude Include="src\TargetWithPath.hpp" />
+    <ClInclude Include="src\Strategy\LingRushStrategy.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategy\Strategy.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategy\Strategies.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategy\StrategySelector.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategy\StrategyExecutor.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategy\HatchExpStrategy.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">
@@ -260,6 +296,9 @@
     </Filter>
     <Filter Include="BWEM\EasyBMP">
       <UniqueIdentifier>{f4dfc80a-e94b-4aad-8b90-8917bf88a194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strategy">
+      <UniqueIdentifier>{021bb3f3-ad1e-4f9e-9647-643e9693111f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

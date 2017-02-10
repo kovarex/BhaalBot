@@ -13,7 +13,7 @@ BuildTasks::~BuildTasks()
 
 void BuildTasks::onFrame()
 {
-   for (uint32_t i = 0; i < this->buildTasksInProgress.size();)
+  for (uint32_t i = 0; i < this->buildTasksInProgress.size();)
   {
     BuildTaskInProgress* buildTaskInProgress = this->buildTasksInProgress[i];
 
@@ -28,4 +28,13 @@ void BuildTasks::onFrame()
       ++i;
     }
   }
+}
+
+int BuildTasks::plannedCount(BWAPI::UnitType unitType)
+{
+  int result = 0;
+  for (BuildTaskInProgress* taskInProgress: this->buildTasksInProgress)
+    if (taskInProgress->getUnitType() == unitType)
+      ++result;
+  return result;
 }

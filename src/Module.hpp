@@ -8,10 +8,13 @@ class Module
 {
 public:
   Module(ModuleContainer& container);
-  ~Module();
+  Module();
+  virtual ~Module();
   Module(const Module& other) = delete;
   Module(const Module&& other) = delete;
   void operator=(const Module& other) = delete;
+  void registerTo(ModuleContainer& container);
+  void unregisterFrom();
 
   virtual void onUnitComplete(Unit*) {}
   virtual void onUnitMorph(Unit*, BWAPI::UnitType from) { (void)(from); }
@@ -19,6 +22,7 @@ public:
   virtual void onStart() {}
   virtual void onUnitDestroy(Unit*) {}
   virtual void onUnitIdle(Unit* unit) {}
+  virtual void onEnd(bool isWinner) { (void)(isWinner); }
 
-  ModuleContainer& owner;
+  ModuleContainer* owner = nullptr;
 };
