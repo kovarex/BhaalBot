@@ -50,6 +50,7 @@ bool BuildTaskInProgress::onFrame()
 
   if (!this->targetBuilding.isZero())
   {
+    this->clear(); // Clears the cost reservation
     if (this->targetBuilding->getRemainingBuildTime() == 0)
     {
       bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);

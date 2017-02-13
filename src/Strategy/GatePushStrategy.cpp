@@ -12,15 +12,17 @@ GatePushStrategy::GatePushStrategy(int firstGate)
 
 bool GatePushStrategy::initInstances()
 {
-  for (int i = 8; i < 10; ++i)
-    new GatePushStrategy(i);
+  //for (int i = 8; i < 10; ++i)
+  //    new GatePushStrategy(i);
+  // Lets do only 9/10 gate for starters
+  new GatePushStrategy(9);
   return true;
 }
 
 void GatePushStrategy::onStart()
 {
   BuildOrder* buildOrder = new BuildOrder();
-  buildOrder->add(firstGate > 8 ? 3 : 2, BWAPI::UnitTypes::Protoss_Probe);
+  buildOrder->add(firstGate > 8 ? 4 : 3, BWAPI::UnitTypes::Protoss_Probe);
   buildOrder->add(BWAPI::UnitTypes::Protoss_Pylon);
   buildOrder->add(firstGate - (firstGate > 8 ? 8 : 7), BWAPI::UnitTypes::Protoss_Probe);
   buildOrder->add(BWAPI::UnitTypes::Protoss_Gateway);

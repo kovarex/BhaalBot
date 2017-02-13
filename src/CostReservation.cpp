@@ -71,6 +71,13 @@ CostReservationItem::CostReservationItem(Cost cost)
 
 CostReservationItem::~CostReservationItem()
 {
-  if (this->owner)
-    this->owner->unregisterItem(this);
+  this->clear();
+}
+
+void CostReservationItem::clear()
+{
+  if (!this->owner)
+    return;
+  this->owner->unregisterItem(this);
+  this->owner = nullptr;
 }

@@ -11,6 +11,7 @@ public:
   CostReservationItem(Cost cost);
   virtual ~CostReservationItem();
   virtual std::string str() const = 0;
+  void clear();
 
   Cost cost;
   CostReservation* owner;
