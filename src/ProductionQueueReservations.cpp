@@ -67,3 +67,11 @@ int ProductionQueueReservations::plannedCount(BWAPI::UnitType unitType)
         ++result;
   return result;
 }
+
+void ProductionQueueReservations::onFrame()
+{
+  for (auto& item: this->ordersInProgress)
+    for (ProductionOrderInProgress* productionInProgress: item.second)
+      if (BWAPI::Broodwar->getFrameCount() - productionInProgress->tickOfLastOrder > BWAPI::Broodwar->getLatencyFrames() + 2)
+        productionInProgress->producer->train(productionInProgress->targetUnit);
+}

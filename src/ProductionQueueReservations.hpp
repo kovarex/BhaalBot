@@ -14,6 +14,7 @@ public:
   bool tryToTrain(Unit* producer, BWAPI::UnitType targetUnit);
   void onUnitCreate(Unit* unit) override;
   int plannedCount(BWAPI::UnitType unitType);
+  void onFrame() override;
 
   class ProductionOrderInProgress : public CostReservationItem
   {
