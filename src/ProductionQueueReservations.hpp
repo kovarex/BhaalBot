@@ -13,6 +13,7 @@ public:
   ~ProductionQueueReservations();
   bool tryToTrain(Unit* producer, BWAPI::UnitType targetUnit);
   void onUnitCreate(Unit* unit) override;
+  int plannedCount(BWAPI::UnitType unitType);
 
   class ProductionOrderInProgress : public CostReservationItem
   {

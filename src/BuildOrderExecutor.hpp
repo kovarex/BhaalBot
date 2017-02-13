@@ -23,5 +23,5 @@ public:
 
   BuildOrder* currentBuildOrder = nullptr;
   uint32_t stepToDo = 0;
-  bool automaticOverlordBuilding = false;
+  bool automaticSupplyBuilding = false;
 };

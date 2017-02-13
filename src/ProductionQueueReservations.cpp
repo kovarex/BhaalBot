@@ -57,3 +57,13 @@ void ProductionQueueReservations::onUnitCreate(Unit* unit)
     }
   }
 }
+
+int ProductionQueueReservations::plannedCount(BWAPI::UnitType unitType)
+{
+  int result = 0;
+  for (auto& item: this->ordersInProgress)
+    for (ProductionOrderInProgress* productionInProgress: item.second)
+      if (productionInProgress->targetUnit == unitType)
+        ++result;
+  return result;
+}

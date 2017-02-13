@@ -24,13 +24,25 @@ void BuildOrderExecutor::update()
                               "%d) %s",
                               i + 1, this->currentBuildOrder->items[i]->str().c_str());
 
-  if (this->automaticOverlordBuilding)
+  if (this->automaticSupplyBuilding)
   {
     int32_t reserve = BWAPI::Broodwar->self()->supplyTotal() - BWAPI::Broodwar->self()->supplyUsed();
     reserve +=  bhaalBot->morphingUnits.getPlannedCount(BWAPI::UnitTypes::Zerg_Overlord) * 16;
-    if (reserve <= int32_t(bhaalBot->produceManager.producers.size()) * 3)
+    reserve += bhaalBot->buildTasks.plannedCount(BWAPI::UnitTypes::Terran_Supply_Depot) * 16;
+    reserve += bhaalBot->buildTasks.plannedCount(BWAPI::UnitTypes::Protoss_Pylon) * 16;
+    if (BWAPI::Broodwar->self()->getRace() == BWAPI::Races::Zerg)
     {
-      this->train(BWAPI::UnitTypes::Zerg_Overlord);
+      if (reserve <= int32_t(bhaalBot->produceManager.producers.size()) * 3)
+      {
+        this->train(BWAPI::UnitTypes::Zerg_Overlord);
+        return;
+      }
+    }
+    else if (reserve <= int32_t(bhaalBot->produceManager.producers.size()) * 4)
+    {
+      bhaalBot->buildTasks.buildTasksInProgress.push_back(new BuildTaskInProgress(BuildLocationType::Auto,
+                                                                                  BWAPI::Broodwar->self()->getRace() == BWAPI::Races::Protoss ?
+                                                                                  BWAPI::UnitTypes::Protoss_Pylon : BWAPI::UnitTypes::Terran_Supply_Depot));
       return;
     }
   }

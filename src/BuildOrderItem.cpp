@@ -45,7 +45,7 @@ bool BuildBuildOrderItem::execute()
 
   if (unitType.isBuilding())
   {
-     bhaalBot->buildTasks.buildTasksInProgress.push_back(new BuildTaskInProgress(this->location, unitType));
+    bhaalBot->buildTasks.buildTasksInProgress.push_back(new BuildTaskInProgress(this->location, unitType));
     return true;
   }
   else
@@ -75,6 +75,6 @@ bool SendScoutBuildOrderItem::execute()
 
 bool SwitchToAutomaticSupplyBuilding::execute()
 {
-  bhaalBot->buildOrderManager.executor.automaticOverlordBuilding = true;
+  bhaalBot->buildOrderManager.executor.automaticSupplyBuilding = true;
   return true;
 }
