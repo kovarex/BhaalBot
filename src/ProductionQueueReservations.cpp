@@ -2,6 +2,7 @@
 #include <ProductionQueueReservations.hpp>
 #include <StringUtil.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
 ProductionQueueReservations::ProductionOrderInProgress::ProductionOrderInProgress(Unit* producer, BWAPI::UnitType targetUnit)
   : CostReservationItem(Cost(targetUnit.mineralPrice(), targetUnit.gasPrice()))
