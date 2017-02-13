@@ -18,7 +18,7 @@ DefendTaskForceController::DefendTaskForceController(TaskForce& owner, Base* bas
 
 void DefendTaskForceController::assignUnit(Unit* unit)
 {
-  if (unit->canGather())
+  if (unit->getType().isWorker())
     this->droneDefenseGroup->add(unit);
   else
     this->theGroup->add(unit);

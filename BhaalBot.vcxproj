@@ -137,6 +137,7 @@
     <ClCompile Include="src\ProducingUnits.cpp" />
     <ClCompile Include="src\ProductionQueueReservations.cpp" />
     <ClCompile Include="src\RealOrientation.cpp" />
+    <ClCompile Include="src\Strategy\EarlyMarinePush.cpp" />
     <ClCompile Include="src\Strategy\GatePushStrategy.cpp" />
     <ClCompile Include="src\Strategy\HatchExpStrategy.cpp" />
     <ClCompile Include="src\Strategy\LingRushStrategy.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="src\ProducingUnits.hpp" />
     <ClInclude Include="src\ProductionQueueReservations.hpp" />
     <ClInclude Include="src\RealOrientation.hpp" />
+    <ClInclude Include="src\Strategy\EarlyMarinePush.hpp" />
     <ClInclude Include="src\Strategy\GatePushStrategy.hpp" />
     <ClInclude Include="src\Strategy\HatchExpStrategy.hpp" />
     <ClInclude Include="src\Strategy\LingRushStrategy.hpp" />

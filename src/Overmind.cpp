@@ -60,7 +60,7 @@ void Overmind::onFrame()
 
 void Overmind::assignUnit(Unit* unit)
 {
-  if (unit->canGather())
+  if (unit->getType().isWorker())
   {
     Base* base = bhaalBot->bases.getClosestBase(unit->getPosition());
     if (!base)

@@ -26,7 +26,8 @@ bool BuildTaskInProgress::onFrame()
     this->targetBuilding = this->target;
 
   if (this->worker &&
-      this->worker->getType() == BWAPI::UnitTypes::Protoss_Probe &&
+      (this->worker->getType() == BWAPI::UnitTypes::Protoss_Probe ||
+       this->worker->getType() == BWAPI::UnitTypes::Terran_SCV) &&
       this->targetBuilding.isZero())
   {
     for (Unit* unit: UnitSearch(this->position,
@@ -35,9 +36,12 @@ bool BuildTaskInProgress::onFrame()
       if (unit->getType() == this->unitType)
       {
         this->targetBuilding = unit;
-        Unit* worker = this->worker;
-        worker->assign(nullptr);
-        bhaalBot->moduleContainer.onUnitIdle(worker);
+        if (this->worker->getType() == BWAPI::UnitTypes::Protoss_Probe)
+        {
+          Unit* worker = this->worker;
+          worker->assign(nullptr);
+          bhaalBot->moduleContainer.onUnitIdle(worker);
+        }
         break;
       }
   }
@@ -54,6 +58,12 @@ bool BuildTaskInProgress::onFrame()
     if (this->targetBuilding->getRemainingBuildTime() == 0)
     {
       bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);
+      if (this->worker)
+      {
+        Unit* worker = this->worker;
+        worker->assign(nullptr);
+        bhaalBot->moduleContainer.onUnitIdle(worker);
+      }
       return true;
     }
     return false;

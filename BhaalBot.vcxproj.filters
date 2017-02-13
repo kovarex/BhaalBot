@@ -143,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="src\ProductionQueueReservations.cpp" />
     <ClCompile Include="src\ProducingUnits.cpp" />
+    <ClCompile Include="src\Strategy\EarlyMarinePush.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="src\ProductionQueueReservations.hpp" />
     <ClInclude Include="src\ProducingUnits.hpp" />
+    <ClInclude Include="src\Strategy\EarlyMarinePush.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

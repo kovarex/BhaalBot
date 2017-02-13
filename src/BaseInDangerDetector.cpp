@@ -29,7 +29,7 @@ void BaseInDangerDetector::onFrame()
              unit->getType().getName().c_str(),
              BWAPI::Broodwar->self()->isEnemy(unit->getPlayer()) ? "true" : "false",
              unit->canAttack() ? "true" : "false");
-    if (unit->canGather())
+    if (unit->getType().isWorker())
       ++dangerLevel;
     else
       dangerLevel += 2;

@@ -4,7 +4,7 @@
 double UnitAsAttackTargetEvaluation::valueWithoutTakingHealthIntoConsideration(Unit* unit)
 {
   double price = unit->getType().mineralPrice() + unit->getType().gasPrice();
-  if (unit->canGather())
+  if (unit->getType().isWorker())
     price *= 2;
   return price;
 }
