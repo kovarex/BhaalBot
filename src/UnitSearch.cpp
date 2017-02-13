@@ -12,7 +12,9 @@ UnitSearch::Iterator::Iterator(BWAPI::TilePosition leftTop, BWAPI::TilePosition 
   , nextTile(leftTop)
   , leftTop(leftTop)
   , rightBottom(rightBottom)
-{}
+{
+  this->searchNextUnit();
+}
 
 void UnitSearch::Iterator::operator++()
 {

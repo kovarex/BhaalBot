@@ -9,9 +9,8 @@ ProducerManager::ProducerManager(ModuleContainer& moduleContainer)
 
 void ProducerManager::onUnitComplete(Unit* unit)
 {
-  if (!this->isProducer(unit))
-    return;
-  if (unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery)
+  if (unit->getPlayer() == bhaalBot->players.self &&
+      this->isProducer(unit))
     this->producers.push_back(unit);
 }
 
@@ -29,33 +28,40 @@ void ProducerManager::onUnitDestroy(Unit* unit)
 
 bool ProducerManager::isProducer(Unit* unit)
 {
-  return unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery ||
-    unit->getType() == BWAPI::UnitTypes::Zerg_Lair ||
-    unit->getType() == BWAPI::UnitTypes::Zerg_Hive;
+  if (unit->getType().getRace() == BWAPI::Races::Zerg)
+    return unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery ||
+      unit->getType() == BWAPI::UnitTypes::Zerg_Lair ||
+      unit->getType() == BWAPI::UnitTypes::Zerg_Hive;
+  return unit->getType().canProduce();
 }
 
-Unit* ProducerManager::getBestProducer()
+Unit* ProducerManager::getBestProducer(BWAPI::UnitType unitType)
 {
   Unit* bestProducer = nullptr;
-  uint32_t bestProducerLarvaCount = 0;
+  int bestFreeQueueSlots = 0; // Or larva count
   for (Unit* currentProducer: this->producers)
-  {
-    uint32_t currentProducerLarvaCount = int(currentProducer->getLarva().size()) -
-             bhaalBot->larvaReservations.reservedLarvas(currentProducer);
-    if (currentProducerLarvaCount <= 0)
-      continue;
-    if (bestProducer == nullptr)
+    if (currentProducer->getType().getRace() == BWAPI::Races::Zerg ||
+        currentProducer->canTrain(unitType))
     {
-      bestProducer = currentProducer;
-      bestProducerLarvaCount = currentProducerLarvaCount;
-      continue;
-    }
-    if (bestProducerLarvaCount != currentProducerLarvaCount)
-    {
-      if (bestProducerLarvaCount > currentProducerLarvaCount)
+      int currentFreeQueueSlots = 0;
+      if (currentProducer->getType().getRace() == BWAPI::Races::Zerg)
+        currentFreeQueueSlots = int(currentProducer->getLarva().size()) -
+                 bhaalBot->larvaReservations.reservedLarvas(currentProducer);
+      else
+        currentFreeQueueSlots = 2 - currentProducer->getBWAPIUnit()->getTrainingQueue().size();
+      if (currentFreeQueueSlots <= 0)
+        continue;
+      if (bestProducer == nullptr)
+      {
         bestProducer = currentProducer;
-      continue;
+        bestFreeQueueSlots = currentFreeQueueSlots;
+        continue;
+      }
+      if (currentFreeQueueSlots > bestFreeQueueSlots)
+      {
+        bestProducer = currentProducer;
+        bestFreeQueueSlots = currentFreeQueueSlots;
+      }
     }
-  }
   return bestProducer;
 }

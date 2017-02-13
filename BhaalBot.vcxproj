@@ -134,9 +134,13 @@
     <ClCompile Include="src\DiscoveredMemory.cpp" />
     <ClCompile Include="src\Dll.cpp" />
     <ClCompile Include="src\DroneDefenseGroupController.cpp" />
+    <ClCompile Include="src\ProducingUnits.cpp" />
+    <ClCompile Include="src\ProductionQueueReservations.cpp" />
     <ClCompile Include="src\RealOrientation.cpp" />
+    <ClCompile Include="src\Strategy\GatePushStrategy.cpp" />
     <ClCompile Include="src\Strategy\HatchExpStrategy.cpp" />
     <ClCompile Include="src\Strategy\LingRushStrategy.cpp" />
+    <ClCompile Include="src\Strategy\MutaPushStrategy.cpp" />
     <ClCompile Include="src\Strategy\Strategies.cpp" />
     <ClCompile Include="src\Strategy\Strategy.cpp" />
     <ClCompile Include="src\Strategy\StrategyExecutor.cpp" />
@@ -229,9 +233,13 @@
     <ClInclude Include="src\Direction.hpp" />
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />
+    <ClInclude Include="src\ProducingUnits.hpp" />
+    <ClInclude Include="src\ProductionQueueReservations.hpp" />
     <ClInclude Include="src\RealOrientation.hpp" />
+    <ClInclude Include="src\Strategy\GatePushStrategy.hpp" />
     <ClInclude Include="src\Strategy\HatchExpStrategy.hpp" />
     <ClInclude Include="src\Strategy\LingRushStrategy.hpp" />
+    <ClInclude Include="src\Strategy\MutaPushStrategy.hpp" />
     <ClInclude Include="src\Strategy\Strategies.hpp" />
     <ClInclude Include="src\Strategy\Strategy.hpp" />
     <ClInclude Include="src\Strategy\StrategyExecutor.hpp" />

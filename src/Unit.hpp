@@ -4,8 +4,7 @@
 class Assignment;
 class Player;
 
-/**< Wrapper of the BWAPI::Unit with our additional info.
- * It is currently used only for our units. */
+/**< Wrapper of the BWAPI::Unit with our additional info. */
 class Unit
 {
 public:

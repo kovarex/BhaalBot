@@ -6,6 +6,7 @@
 #include <ModuleContainer.hpp>
 #include <DeleyedExitChecker.hpp>
 #include <MorphingUnits.hpp>
+#include <ProducingUnits.hpp>
 #include <BuildingPlaceabilityHelper.hpp>
 #include <FightManager.hpp>
 #include <CostReservation.hpp>
@@ -23,6 +24,7 @@
 #include <Players.hpp>
 #include <Strategy/StrategyExecutor.hpp>
 #include <Strategy/StrategySelector.hpp>
+#include <ProductionQueueReservations.hpp>
 #include <random>
 
 class BhaalBot : public BWAPI::AIModule
@@ -61,12 +63,14 @@ public:
   HarvestingManager harvestingManager;
   BuildOrderManager buildOrderManager;
   MorphingUnits morphingUnits;
+  ProducingUnits producingUnits;
   BuildingPlaceabilityHelper buildingPlaceabilityHelper;
   FightManager fightManager;
   DelayedExitChecker deleyedExitChecker;
   CostReservation costReservation;
   ProducerManager produceManager;
   LarvaReservations larvaReservations;
+  ProductionQueueReservations productionQueueReservations;
   ScoutingManager scoutingManager;
   DiscoveredMemory discoveredMemory;
   BuildTasks buildTasks;

@@ -135,6 +135,14 @@
     <ClCompile Include="src\Strategy\HatchExpStrategy.cpp">
       <Filter>Strategy</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strategy\MutaPushStrategy.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\GatePushStrategy.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProductionQueueReservations.cpp" />
+    <ClCompile Include="src\ProducingUnits.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -289,6 +297,14 @@
     <ClInclude Include="src\Strategy\HatchExpStrategy.hpp">
       <Filter>Strategy</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strategy\MutaPushStrategy.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategy\GatePushStrategy.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProductionQueueReservations.hpp" />
+    <ClInclude Include="src\ProducingUnits.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

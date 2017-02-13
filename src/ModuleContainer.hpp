@@ -11,6 +11,7 @@ public:
   void remove(Module* module);
 
   void onUnitComplete(Unit* unit);
+  void onUnitCreate(Unit* unit);
   void onUnitDiscover(Unit* unit);
   void onUnitMorph(Unit* unit, BWAPI::UnitType from);
   void onFrame();

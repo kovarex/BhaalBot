@@ -3,6 +3,7 @@
 #include <BWEM/bwem.h>
 #include <PropertyTreeIni.hpp>
 #include <Unit.hpp>
+#include <Log.hpp>
 
 BhaalBot* bhaalBot = nullptr;
 namespace { auto & theMap = BWEM::Map::Instance(); }
@@ -20,12 +21,14 @@ BhaalBot::BhaalBot()
   , buildOrderManager(this->moduleContainer)
   , harvestingManager(this->moduleContainer)
   , morphingUnits(this->moduleContainer)
+  , producingUnits(this->moduleContainer)
   , buildingPlaceabilityHelper(this->moduleContainer)
   , fightManager(this->moduleContainer)
   , deleyedExitChecker(this->moduleContainer)
   , costReservation(this->moduleContainer)
   , produceManager(this->moduleContainer)
   , larvaReservations(this->moduleContainer)
+  , productionQueueReservations(this->moduleContainer)
   , scoutingManager(this->moduleContainer)
   , discoveredMemory(this->moduleContainer)
   , buildTasks(this->moduleContainer)
@@ -56,12 +59,6 @@ void BhaalBot::onStart()
   // If you wish to deal with multiple enemies then you must use enemies().
   if (BWAPI::Broodwar->enemy()) // First make sure there is an enemy
     BWAPI::Broodwar << "The matchup is " << BWAPI::Broodwar->self()->getRace() << " vs " << BWAPI::Broodwar->enemy()->getRace() << std::endl;
-  if (BWAPI::Broodwar->self()->getRace().getID() != BWAPI::Races::Zerg)
-  {
-    BWAPI::Broodwar << "This bot is only able to play zerg" << std::endl;
-    this->deleyedExitChecker.exitDelayed(120);
-  }
-
   try
   {
     if (!this->isUMSMap())
@@ -144,7 +141,8 @@ void BhaalBot::onNukeDetect(BWAPI::Position target)
 void BhaalBot::onUnitDiscover(BWAPI::Unit unit)
 {
   Unit* ourUnit = this->units.onUnitComplete(unit);
-  this->moduleContainer.onUnitComplete(ourUnit);
+  if (ourUnit->getPlayer() != bhaalBot->players.self)
+    this->moduleContainer.onUnitComplete(ourUnit);
 }
 
 void BhaalBot::onUnitEvade(BWAPI::Unit unit)
@@ -157,7 +155,11 @@ void BhaalBot::onUnitHide(BWAPI::Unit unit)
 {}
 
 void BhaalBot::onUnitCreate(BWAPI::Unit unit)
-{}
+{
+  LOG_INFO("%s", unit->getType().getName().c_str());
+  Unit* ourUnit = this->units.onUnitComplete(unit);
+  this->moduleContainer.onUnitCreate(ourUnit);
+}
 
 void BhaalBot::onUnitDestroy(BWAPI::Unit unit)
 {

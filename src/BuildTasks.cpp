@@ -16,17 +16,13 @@ void BuildTasks::onFrame()
   for (uint32_t i = 0; i < this->buildTasksInProgress.size();)
   {
     BuildTaskInProgress* buildTaskInProgress = this->buildTasksInProgress[i];
-
     if (buildTaskInProgress->onFrame())
     {
       delete buildTaskInProgress;
       this->buildTasksInProgress.erase(this->buildTasksInProgress.begin() + i);
     }
     else
-    {
-     
       ++i;
-    }
   }
 }
 

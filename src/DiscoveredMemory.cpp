@@ -30,7 +30,8 @@ void DiscoveredMemory::onFrame()
 
 void DiscoveredMemory::onAdd(Unit* unit)
 {
-  if (!unit->getPlayer()->isEnemy)
+  if (unit->getPlayer() == nullptr ||
+      !unit->getPlayer()->isEnemy)
     return;
   if (unit->getType().airWeapon().isValid())
     bhaalBot->dangerZones.addDanger(unit->getPosition(),
@@ -40,7 +41,8 @@ void DiscoveredMemory::onAdd(Unit* unit)
 
 void DiscoveredMemory::onRemove(Unit* unit)
 {
-  if (!unit->getPlayer()->isEnemy)
+  if (unit->getPlayer() == nullptr ||
+      !unit->getPlayer()->isEnemy)
     return;
   if (unit->getType().airWeapon().isValid())
     bhaalBot->dangerZones.removeDanger(unit->lastSeenPosition,

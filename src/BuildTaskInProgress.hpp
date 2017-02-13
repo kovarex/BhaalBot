@@ -2,6 +2,7 @@
 #include <CostReservation.hpp>
 #include <BuildLocationType.hpp>
 #include <Assignment.hpp>
+#include <UnitTarget.hpp>
 
 class BuildTaskInProgress : public CostReservationItem
 {
@@ -11,7 +12,7 @@ public:
   ~BuildTaskInProgress();
   std::string str() const override;
   bool onFrame(); /** @return @c true if the task was finished */
-  BWAPI::TilePosition getBuildPosition(BWAPI::Unit* buildingTarget);
+  BWAPI::TilePosition getBuildPosition(Unit** buildingTarget);
   BWAPI::UnitType getUnitType() const { return this->unitType; }
 
 private:
@@ -19,10 +20,11 @@ private:
   void unassign(Unit* unit);
 
   Unit* worker = nullptr;
+  UnitTarget targetBuilding;
   BuildLocationType locationType;
   BWAPI::TilePosition position = BWAPI::TilePositions::None;
   BWAPI::UnitType unitType;
-  BWAPI::Unit target = nullptr; // used when building over geyser
+  Unit* target = nullptr; // used when building over geyser
   uint32_t frameOfLastOrder;
 };
 

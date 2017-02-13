@@ -23,6 +23,6 @@ Strategy* StrategySelector::select()
   }
   std::uniform_int_distribution<int> distribution(0, strategies.size() - 1);
   int index = distribution(bhaalBot->randomDevice);
-  LOG_NOTICE("Selected %s from %d possible strategies for this matchup", strategies[index]->name, strategies.size());
+  LOG_NOTICE("Selected %s from %d possible strategies for this matchup", strategies[index]->name.c_str(), strategies.size());
   return strategies[index];
 }

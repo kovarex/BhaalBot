@@ -23,7 +23,7 @@ void HatchExpStrategy::onStart()
 {
   this->buildOrder = new BuildOrder();
   buildOrder->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Overlord));
-  buildOrder->add(new SwitchToAutomaticOverlordBuilding());
+  buildOrder->add(new SwitchToAutomaticSupplyBuilding());
   bhaalBot->buildOrderManager.executor.startBuildOrder(buildOrder);
 }
 

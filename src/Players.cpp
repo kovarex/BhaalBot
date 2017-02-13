@@ -29,17 +29,20 @@ void Players::onStart()
 
 void Players::onUnitComplete(Unit* unit)
 {
-  unit->getPlayer()->onUnitComplete(unit);
+  if (Player* player = unit->getPlayer())
+    player->onUnitComplete(unit);
 }
 
 void Players::onUnitDestroy(Unit* unit)
 {
-  unit->getPlayer()->onUnitDestroy(unit);
+  if (Player* player = unit->getPlayer())
+    player->onUnitDestroy(unit);
 }
 
 void Players::onUnitMorph(Unit* unit, BWAPI::UnitType from)
 {
-  unit->getPlayer()->onUnitMorph(unit, from);
+  if (Player* player = unit->getPlayer())
+    player->onUnitMorph(unit, from);
 }
 
 void Players::onFrame()

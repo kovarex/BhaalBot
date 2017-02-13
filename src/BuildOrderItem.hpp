@@ -26,7 +26,7 @@ public:
   BWAPI::UnitType unit;
 };
 
-class SwitchToAutomaticOverlordBuilding : public BuildOrderItem
+class SwitchToAutomaticSupplyBuilding : public BuildOrderItem
 {
 public:
   bool execute();

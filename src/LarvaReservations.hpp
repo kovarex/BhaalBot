@@ -4,6 +4,8 @@
 #include <CostReservation.hpp>
 #include <set>
 
+/** Monitors which larvae are reserved to be morphed to something, so I don't morph 2 things into a single larva.
+ * It also (Through the MorphTaskInProgress) reserves the money needed to morph the larva. */
 class LarvaReservations : public Module
 {
 public:
@@ -16,6 +18,9 @@ public:
   int32_t reservedLarvas(Unit* hatch);
   bool isResrved(Unit* larva);
 
+  /** Monitors the stage of morphing from the order to morph being given until the larva becomes an egg and starts morphing.
+   * If the train command fails (which happens sometimes), it will be ordered again after some short period of time.
+   * Once the egg is created, the morphing is monitored by the MorphingUnits class */
   class MorphTaskInProgress : public CostReservationItem
   {
   public:

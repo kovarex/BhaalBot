@@ -11,7 +11,7 @@ public:
   void onUnitComplete(Unit* unit) override;
   void onUnitDestroy(Unit* unit) override;
   bool isProducer(Unit* unit);
-  Unit* getBestProducer();
+  Unit* getBestProducer(BWAPI::UnitType unitType);
 
   std::vector<Unit*> producers;
 };

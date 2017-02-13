@@ -56,7 +56,7 @@ public:
   std::vector<Mineral*> minerals;
   struct Geyser
   {
-    Geyser(BWAPI::Unit geyser) : geyser(geyser) {}
+    Geyser(Unit* geyser) : geyser(geyser) {}
     ~Geyser();
 
     enum class State
@@ -66,7 +66,7 @@ public:
       BuildingFacility,
       Ready
     };
-    BWAPI::Unit geyser;
+    Unit* geyser;
     State state = State::Free;
     std::vector<Unit*> miners;
   };

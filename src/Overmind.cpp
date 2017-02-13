@@ -45,11 +45,14 @@ void Overmind::onFrame()
         if (base->defenseState == Base::DefenseState::Defending)
         {
           base->defenseState = Base::DefenseState::None;
-          while (Unit* drone = base->defendForce->getUnit(BWAPI::UnitTypes::Zerg_Drone))
-            if (base->harvestingController)
-              base->harvestingController->assignMiner(drone);
-            else
-              bhaalBot->harvestingManager.add(drone);
+          for (BWAPI::UnitType unitType: {BWAPI::UnitTypes::Zerg_Drone,
+                                          BWAPI::UnitTypes::Protoss_Probe,
+                                          BWAPI::UnitTypes::Terran_SCV})
+            while (Unit* drone = base->defendForce->getUnit(unitType))
+              if (base->harvestingController)
+                base->harvestingController->assignMiner(drone);
+              else
+                bhaalBot->harvestingManager.add(drone);
           LOG_NOTICE("Switching base to normal mode.");
         }
       }

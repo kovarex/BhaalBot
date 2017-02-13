@@ -16,6 +16,7 @@ public:
     Unit* operator->() { return this->currentUnit; }
     void operator++();
     bool operator==(const Iterator& other) const { return this->currentUnit == other.currentUnit; }
+    bool operator!=(const Iterator& other) const { return this->currentUnit != other.currentUnit; }
 
   private:
     void searchNextUnit();

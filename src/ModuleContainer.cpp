@@ -22,6 +22,12 @@ void ModuleContainer::onUnitComplete(Unit* unit)
     module->onUnitComplete(unit);
 }
 
+void ModuleContainer::onUnitCreate(Unit* unit)
+{
+  for (Module* module: this->modules)
+    module->onUnitCreate(unit);
+}
+
 void ModuleContainer::onUnitDiscover(Unit* unit)
 {
   for (Module* module: this->modules)

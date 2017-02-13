@@ -17,6 +17,7 @@ public:
   void unregisterFrom();
 
   virtual void onUnitComplete(Unit*) {}
+  virtual void onUnitCreate(Unit*) {}
   virtual void onUnitDiscover(Unit*) {}
   virtual void onUnitMorph(Unit*, BWAPI::UnitType from) { (void)(from); }
   virtual void onFrame() {}

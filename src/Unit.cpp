@@ -6,7 +6,7 @@ Unit::Unit(BWAPI::Unit bwapiUnit)
   : bwapiUnit(bwapiUnit)
   , lastSeenUnitType(this->getType())
   , lastSeenPosition(this->bwapiUnit->getPosition())
-  , player(bhaalBot->players.findPlayer(this->getBWAPIPlayer()))
+  , player(bwapiUnit->getType().isNeutral() ? nullptr : bhaalBot->players.findPlayer(this->getBWAPIPlayer()))
 #ifdef DEBUG
   , name(this->getType().getName())
 #endif

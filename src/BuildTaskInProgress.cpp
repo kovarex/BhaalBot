@@ -2,6 +2,7 @@
 #include <BuildTaskInProgress.hpp>
 #include <BhaalBot.hpp>
 #include <Unit.hpp>
+#include <UnitSearch.hpp>
 #include <Log.hpp>
 
 BuildTaskInProgress::BuildTaskInProgress(BuildLocationType locationType,
@@ -20,12 +21,36 @@ BuildTaskInProgress::~BuildTaskInProgress()
 
 bool BuildTaskInProgress::onFrame()
 {
+  // This is special case of geysers, as they become the building instead of the drone in that case
+  if (this->target && this->target->getType() == this->unitType && this->targetBuilding.isZero())
+    this->targetBuilding = this->target;
+
   if (this->worker &&
-      this->worker->getType() == this->unitType ||
-        // This is special case of geysers, as they become the building instead of the drone in that case
-        this->target && this->target->getType() == this->unitType)
+      this->worker->getType() == BWAPI::UnitTypes::Protoss_Probe &&
+      this->targetBuilding.isZero())
   {
-    if (this->worker->getRemainingBuildTime() == 0)
+    for (Unit* unit: UnitSearch(this->position,
+                                BWAPI::TilePosition(this->position.x + this->unitType.tileWidth(),
+                                                    this->position.y + this->unitType.tileHeight())))
+      if (unit->getType() == this->unitType)
+      {
+        this->targetBuilding = unit;
+        Unit* worker = this->worker;
+        worker->assign(nullptr);
+        bhaalBot->moduleContainer.onUnitIdle(worker);
+        break;
+      }
+  }
+
+  if (this->worker &&
+      this->worker->getType() == BWAPI::UnitTypes::Zerg_Drone &&
+      this->worker->getType() == this->unitType &&
+      this->targetBuilding.isZero())
+    this->targetBuilding = this->worker;
+
+  if (!this->targetBuilding.isZero())
+  {
+    if (this->targetBuilding->getRemainingBuildTime() == 0)
     {
       bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);
       return true;
@@ -40,7 +65,8 @@ bool BuildTaskInProgress::onFrame()
       return false;
     bhaalBot->buildingPlaceabilityHelper.registerBuild(unitType, this->position);
   }
-  if (this->worker == nullptr)
+
+  if (this->worker == nullptr && this->targetBuilding.isZero())
   {
     this->worker = bhaalBot->harvestingManager.getClosestWorker(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()));
     this->worker->assign(new BuildTaskAssignment(this));
@@ -87,7 +113,7 @@ bool BuildTaskInProgress::onFrame()
   return false;
 }
 
-BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingTarget)
+BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(Unit** buildingTarget)
 {
   switch (this->locationType)
   {
@@ -99,7 +125,7 @@ BWAPI::TilePosition BuildTaskInProgress::getBuildPosition(BWAPI::Unit* buildingT
           return BWAPI::TilePositions::None;
         freeGeyser->state = BaseHarvestingController::Geyser::State::OrderToBuildOverGiven;
         *buildingTarget = freeGeyser->geyser;
-        return freeGeyser->geyser->getInitialTilePosition();
+        return freeGeyser->geyser->getBWAPIUnit()->getInitialTilePosition();
       }
       if (bhaalBot->harvestingManager.bases.empty())
         return BWAPI::TilePositions::None;

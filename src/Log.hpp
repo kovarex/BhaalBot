@@ -8,7 +8,7 @@
   #define LOG(...) \
   do \
   { \
-    logger->log(__FILE__, __LINE__, __VA_ARGS__); \
+    ::logger->log(__FILE__, __LINE__, __VA_ARGS__); \
   } \
   while (0)
 
@@ -30,7 +30,7 @@
     #define LOG_VERBOSE(...) \
   do \
   { \
-    logger->log(__FILE__, __LINE__, LogLevel::Verbose, __VA_ARGS__); \
+    ::logger->log(__FILE__, __LINE__, LogLevel::Verbose, __VA_ARGS__); \
   } \
   while (0)
     #define LOG_DEBUG_ACTIVE 0
@@ -47,7 +47,7 @@
   #define LOG_STACKTRACE() \
   do \
   { \
-    logger->logStacktrace(nullptr); \
+    ::logger->logStacktrace(nullptr); \
   } \
   while (0)
 

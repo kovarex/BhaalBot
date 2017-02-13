@@ -16,7 +16,7 @@ bool BuildBuildOrderItem::execute()
 
   if (unitType == BWAPI::UnitTypes::Zerg_Lair)
   {
-    if ( bhaalBot->harvestingManager.bases.empty())
+    if (bhaalBot->harvestingManager.bases.empty())
       return false;
     Unit* target =  bhaalBot->harvestingManager.bases[0]->baseUnit;
     return target->morph(unitType);
@@ -73,7 +73,7 @@ bool SendScoutBuildOrderItem::execute()
 }
 
 
-bool SwitchToAutomaticOverlordBuilding::execute()
+bool SwitchToAutomaticSupplyBuilding::execute()
 {
   bhaalBot->buildOrderManager.executor.automaticOverlordBuilding = true;
   return true;

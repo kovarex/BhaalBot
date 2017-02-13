@@ -27,7 +27,7 @@ void BuildOrderManager::onStart()
     pool4->add(BWAPI::UnitTypes::Zerg_Spawning_Pool);
     pool4->add(1, BWAPI::UnitTypes::Zerg_Drone);
     pool4->add(5, BWAPI::UnitTypes::Zerg_Zergling);
-    pool4->add(new SwitchToAutomaticOverlordBuilding());
+    pool4->add(new SwitchToAutomaticSupplyBuilding());
     pool4->add(6, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool4);
   }
@@ -40,7 +40,7 @@ void BuildOrderManager::onStart()
     pool5->add(1, BWAPI::UnitTypes::Zerg_Drone);
     pool5->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Drone));
     pool5->add(4, BWAPI::UnitTypes::Zerg_Zergling);
-    pool5->add(new SwitchToAutomaticOverlordBuilding());
+    pool5->add(new SwitchToAutomaticSupplyBuilding());
     this->add(pool5);
   }
   {
@@ -53,7 +53,7 @@ void BuildOrderManager::onStart()
     pool9->add(BWAPI::UnitTypes::Zerg_Overlord);
     pool9->add(BWAPI::UnitTypes::Zerg_Drone);
     pool9->add(6, BWAPI::UnitTypes::Zerg_Zergling);
-    pool9->add(new SwitchToAutomaticOverlordBuilding());
+    pool9->add(new SwitchToAutomaticSupplyBuilding());
     pool9->add(150, BWAPI::UnitTypes::Zerg_Zergling);
     this->add(pool9);
   }
@@ -74,7 +74,7 @@ void BuildOrderManager::onStart()
     pool11Exp->add(6, BWAPI::UnitTypes::Zerg_Drone);
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Extractor);
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Overlord);
-    pool11Exp->add(new SwitchToAutomaticOverlordBuilding());
+    pool11Exp->add(new SwitchToAutomaticSupplyBuilding());
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Creep_Colony, BuildLocationType::NearFirstExpansion);
     pool11Exp->add(2, BWAPI::UnitTypes::Zerg_Drone);
     pool11Exp->add(BWAPI::UnitTypes::Zerg_Creep_Colony, BuildLocationType::NearFirstExpansion);

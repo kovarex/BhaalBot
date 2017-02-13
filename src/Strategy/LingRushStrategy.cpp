@@ -16,7 +16,7 @@ bool LingRushStrategy::initInstances()
 {
   for (uint32_t i = 4; i <= 6; ++i)
     new LingRushStrategy(i);
-  return false;
+  return true;
 }
 
 void LingRushStrategy::onStart()
@@ -28,7 +28,7 @@ void LingRushStrategy::onStart()
   buildOrder->add(1, BWAPI::UnitTypes::Zerg_Drone);
   buildOrder->add(new SendScoutBuildOrderItem(BWAPI::UnitTypes::Zerg_Drone));
   buildOrder->add(3, BWAPI::UnitTypes::Zerg_Zergling);
-  buildOrder->add(new SwitchToAutomaticOverlordBuilding());
+  buildOrder->add(new SwitchToAutomaticSupplyBuilding());
   buildOrder->add(5, BWAPI::UnitTypes::Zerg_Zergling);
 
   bhaalBot->buildOrderManager.executor.startBuildOrder(buildOrder);

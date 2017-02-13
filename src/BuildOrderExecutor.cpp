@@ -16,6 +16,8 @@ void BuildOrderExecutor::startBuildOrder(BuildOrder* buildOrder)
 
 void BuildOrderExecutor::update()
 {
+  if (this->currentBuildOrder == nullptr)
+    return;
   for (uint32_t i = this->stepToDo; i < stepToDo + 5 && i < this->currentBuildOrder->items.size(); ++i)
     BWAPI::Broodwar->drawText(BWAPI::CoordinateType::Screen,
                               0, (i - this->stepToDo) * 20,
@@ -32,8 +34,6 @@ void BuildOrderExecutor::update()
       return;
     }
   }
-  if (this->currentBuildOrder == nullptr)
-    return;
   if (this->currentBuildOrder->items.size() <= this->stepToDo)
     return;
   if (this->currentBuildOrder->items[this->stepToDo]->execute())
@@ -42,9 +42,12 @@ void BuildOrderExecutor::update()
 
 bool BuildOrderExecutor::train(BWAPI::UnitType unitType)
 {
-  Unit* producer =  bhaalBot->produceManager.getBestProducer();
-  if (producer && producer->canTrain(unitType))
-    return  bhaalBot->larvaReservations.tryToTrain(producer, unitType);
+  Unit* producer =  bhaalBot->produceManager.getBestProducer(unitType);
+  if (producer)
+    if (producer->getType().getRace() == BWAPI::Races::Zerg)
+      return bhaalBot->larvaReservations.tryToTrain(producer, unitType);
+    else
+      return bhaalBot->productionQueueReservations.tryToTrain(producer, unitType);
   return false;
 }
 

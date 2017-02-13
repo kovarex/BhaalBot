@@ -20,7 +20,8 @@ FightManager::~FightManager()
 
 void FightManager::onUnitComplete(Unit* unit)
 {
-  if (!unit->getPlayer()->myself)
+  if (unit->getPlayer() == nullptr ||
+      !unit->getPlayer()->myself)
     return;
   if (unit->getType() == BWAPI::UnitTypes::Zerg_Mutalisk)
     this->attack->addUnit(unit);

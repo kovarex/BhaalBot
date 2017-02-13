@@ -1,5 +1,6 @@
 #include <Base.hpp>
 #include <BaseHarvestingController.hpp>
+#include <BhaalBot.hpp>
 #include <Unit.hpp>
 #include <Log.hpp>
 
@@ -13,7 +14,7 @@ BaseHarvestingController::BaseHarvestingController(Unit* baseUnit, Base* base)
   for (BWEM::Mineral* mineral: this->base->getBWEMBase()->Minerals())
     this->minerals.push_back(new Mineral(mineral->Unit()));
   for (BWEM::Geyser* geyser: this->base->getBWEMBase()->Geysers())
-    this->geysers.push_back(new Geyser(geyser->Unit()));
+    this->geysers.push_back(new Geyser(bhaalBot->units.findOrThrow(geyser->Unit())));
 }
 
 BaseHarvestingController::~BaseHarvestingController()
@@ -66,8 +67,8 @@ void BaseHarvestingController::update()
     {
       if (miner->isIdle() ||
           !miner->isGatheringGas() ||
-          (miner->getTarget() != geyser->geyser && !this->baseUnit->equals(miner->getTarget())))
-        miner->gather(geyser->geyser);
+          (miner->getTarget() != geyser->geyser->getBWAPIUnit() && !this->baseUnit->equals(miner->getTarget())))
+        miner->gather(geyser->geyser->getBWAPIUnit());
     }
 }
 
@@ -101,7 +102,7 @@ void BaseHarvestingController::onUnitDestroy(Unit* unit)
 {
    if (unit->getType() == BWAPI::UnitTypes::Zerg_Extractor)
     for (Geyser* geyser: this->geysers)
-      if (geyser->geyser == unit->getBWAPIUnit())
+      if (geyser->geyser == unit)
       {
         geyser->state = Geyser::State::Free;
         return;

@@ -32,7 +32,7 @@ Unit* Units::onUnitComplete(BWAPI::Unit unit)
   if (position != this->units.end())
   {
     // I assume that our unit just morphed into different unit here
-    if (position->second->player->bwapiPlayer == unit->getPlayer() ||
+    if (position->second->player && position->second->player->bwapiPlayer == unit->getPlayer() ||
         position->second->lastSeenUnitType == BWAPI::UnitTypes::Resource_Vespene_Geyser)
       return position->second;
     delete this->units[unit];
@@ -87,6 +87,11 @@ void Units::initMap()
   this->map.resize(width);
   for (int32_t x = 0; x < width; ++x)
     this->map[x].resize(height);
+
+  // I have to make sure that minerals and geysers are initialized first, so I can properly
+  // assign the mineral/geyser units when creating base data structures
+  for (BWAPI::Unit unit: BWAPI::Broodwar->getStaticNeutralUnits())
+    this->onUnitComplete(unit);
 }
 
 Unit* Units::findOrThrow(BWAPI::Unit unit)
