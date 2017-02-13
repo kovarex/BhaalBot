@@ -99,17 +99,24 @@ bool BuildTaskInProgress::onFrame()
       else
         distance = this->worker->getDistance(center);
       if (distance > 30)
+      {
         this->worker->move(center);
+        this->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
+      }
       else
       {
-        if (!this->worker->build(this->unitType, this->position))
+        if (BWAPI::Broodwar->self()->minerals() >= this->unitType.mineralPrice() &&
+            BWAPI::Broodwar->self()->gas() >= this->unitType.gasPrice())
         {
-          bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);
-          this->position = this->getBuildPosition(&this->target);
-          bhaalBot->buildingPlaceabilityHelper.registerBuild(unitType, this->position);
+          if (!this->worker->build(this->unitType, this->position))
+          {
+            bhaalBot->buildingPlaceabilityHelper.unRegisterBuild(unitType, this->position);
+            this->position = this->getBuildPosition(&this->target);
+            bhaalBot->buildingPlaceabilityHelper.registerBuild(unitType, this->position);
+          }
+          this->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
         }
       }
-      this->frameOfLastOrder = BWAPI::Broodwar->getFrameCount();
     }
     BWAPI::Broodwar->drawCircleMap(this->worker->getPosition(), 10, BWAPI::Colors::Red);
     BWAPI::Broodwar->drawLineMap(this->worker->getPosition(),

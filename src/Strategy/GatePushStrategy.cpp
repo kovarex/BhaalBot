@@ -12,10 +12,8 @@ GatePushStrategy::GatePushStrategy(int firstGate)
 
 bool GatePushStrategy::initInstances()
 {
-  //for (int i = 8; i < 10; ++i)
-  //    new GatePushStrategy(i);
-  // Lets do only 9/10 gate for starters
-  new GatePushStrategy(9);
+  for (int i = 8; i < 10; ++i)
+    new GatePushStrategy(i);
   return true;
 }
 

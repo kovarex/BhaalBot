@@ -32,7 +32,15 @@ Unit* ProducingUnits::deduceProducer(Unit* unit)
 {
   for (Unit* producer: bhaalBot->produceManager.producers)
     if (producer->getType().buildsWhat().contains(unit->getType()) &&
-        unit->getPosition() == unit->getPosition())
+        unit->getPosition() == producer->getPosition())
       return producer;
+  return nullptr;
+}
+
+Unit* ProducingUnits::getProducingUnit(Unit* producer)
+{
+  for (auto& item: this->unitsBeingProduced)
+    if (item.second.producer == producer)
+      return item.first;
   return nullptr;
 }

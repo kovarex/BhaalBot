@@ -55,6 +55,7 @@ void ProductionQueueReservations::onUnitCreate(Unit* unit)
         return;
       }
     }
+    LOG_WARNING("Didn't find producer of %s at [%d,%d]", unit->getType().getName().c_str(), unit->getPosition().x, unit->getPosition().y);
   }
 }
 
@@ -72,6 +73,9 @@ void ProductionQueueReservations::onFrame()
 {
   for (auto& item: this->ordersInProgress)
     for (ProductionOrderInProgress* productionInProgress: item.second)
-      if (BWAPI::Broodwar->getFrameCount() - productionInProgress->tickOfLastOrder > BWAPI::Broodwar->getLatencyFrames() + 2)
+      if (BWAPI::Broodwar->getFrameCount() - productionInProgress->tickOfLastOrder > BWAPI::Broodwar->getLatencyFrames() + 4)
+      {
         productionInProgress->producer->train(productionInProgress->targetUnit);
+        productionInProgress->tickOfLastOrder = BWAPI::Broodwar->getFrameCount();
+      }
 }

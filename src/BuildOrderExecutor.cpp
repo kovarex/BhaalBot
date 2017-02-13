@@ -24,7 +24,8 @@ void BuildOrderExecutor::update()
                               "%d) %s",
                               i + 1, this->currentBuildOrder->items[i]->str().c_str());
 
-  if (this->automaticSupplyBuilding)
+  if (this->automaticSupplyBuilding &&
+      bhaalBot->costReservation.canAfford(Cost(100, 0)))
   {
     int32_t reserve = BWAPI::Broodwar->self()->supplyTotal() - BWAPI::Broodwar->self()->supplyUsed();
     reserve +=  bhaalBot->morphingUnits.getPlannedCount(BWAPI::UnitTypes::Zerg_Overlord) * 16;

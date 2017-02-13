@@ -13,6 +13,7 @@ public:
   void onUnitComplete(Unit* unit);
   void onUnitDestroy(Unit* unit);
   Unit* deduceProducer(Unit* unit);
+  Unit* getProducingUnit(Unit* producer);
 
   class UnitToBeProducedData
   {

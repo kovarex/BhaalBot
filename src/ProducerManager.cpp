@@ -37,31 +37,50 @@ bool ProducerManager::isProducer(Unit* unit)
 
 Unit* ProducerManager::getBestProducer(BWAPI::UnitType unitType)
 {
+  if (unitType.getRace() == BWAPI::Races::Zerg)
+    return this->getBestZergProducer();
+
+  for (Unit* currentProducer: this->producers)
+    if (currentProducer->canTrain(unitType))
+    {
+      int currentQueueSize = int(currentProducer->getBWAPIUnit()->getTrainingQueue().size());
+      int reservedProductions =  int(bhaalBot->productionQueueReservations.ordersInProgress[currentProducer].size());
+      if (currentQueueSize + reservedProductions > 1 ||
+          reservedProductions != 0)
+        continue;
+      if (currentQueueSize == 1)
+      {
+        Unit* producingUnit = bhaalBot->producingUnits.getProducingUnit(currentProducer);
+        if (producingUnit == nullptr ||
+            producingUnit->getRemainingBuildTime() > BWAPI::Broodwar->getLatencyFrames())
+          continue;
+      }
+      return currentProducer;
+    }
+  return nullptr;
+}
+
+Unit* ProducerManager::getBestZergProducer()
+{
   Unit* bestProducer = nullptr;
   int bestFreeQueueSlots = 0; // Or larva count
   for (Unit* currentProducer: this->producers)
-    if (currentProducer->getType().getRace() == BWAPI::Races::Zerg ||
-        currentProducer->canTrain(unitType))
+  {
+    int currentFreeLarva = int(currentProducer->getLarva().size()) -
+                bhaalBot->larvaReservations.reservedLarvas(currentProducer);
+    if (currentFreeLarva <= 0)
+      continue;
+    if (bestProducer == nullptr)
     {
-      int currentFreeQueueSlots = 0;
-      if (currentProducer->getType().getRace() == BWAPI::Races::Zerg)
-        currentFreeQueueSlots = int(currentProducer->getLarva().size()) -
-                 bhaalBot->larvaReservations.reservedLarvas(currentProducer);
-      else
-        currentFreeQueueSlots = 2 - currentProducer->getBWAPIUnit()->getTrainingQueue().size();
-      if (currentFreeQueueSlots <= 0)
-        continue;
-      if (bestProducer == nullptr)
-      {
-        bestProducer = currentProducer;
-        bestFreeQueueSlots = currentFreeQueueSlots;
-        continue;
-      }
-      if (currentFreeQueueSlots > bestFreeQueueSlots)
-      {
-        bestProducer = currentProducer;
-        bestFreeQueueSlots = currentFreeQueueSlots;
-      }
+      bestProducer = currentProducer;
+      bestFreeQueueSlots = currentFreeLarva;
+      continue;
     }
+    if (currentFreeLarva > bestFreeQueueSlots)
+    {
+      bestProducer = currentProducer;
+      bestFreeQueueSlots = currentFreeLarva;
+    }
+  }
   return bestProducer;
 }
