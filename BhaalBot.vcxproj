@@ -139,6 +139,7 @@
     <ClCompile Include="src\RealOrientation.cpp" />
     <ClCompile Include="src\Strategy\EarlyMarinePush.cpp" />
     <ClCompile Include="src\Strategy\GatePushStrategy.cpp" />
+    <ClCompile Include="src\Strategy\GenericZvPStrategy.cpp" />
     <ClCompile Include="src\Strategy\HatchExpStrategy.cpp" />
     <ClCompile Include="src\Strategy\LingRushStrategy.cpp" />
     <ClCompile Include="src\Strategy\MutaPushStrategy.cpp" />
@@ -148,6 +149,8 @@
     <ClCompile Include="src\Strategy\StrategySelector.cpp" />
     <ClCompile Include="src\TargetWithPath.cpp" />
     <ClCompile Include="src\UnitAsAttackTargetEvaulation.cpp" />
+    <ClCompile Include="src\UnitCompositionSelector\UnitCompositionSelector.cpp" />
+    <ClCompile Include="src\UnitCompositionSelector\ZvPUnitCompositionSelector.cpp" />
     <ClCompile Include="src\UnitSearch.cpp" />
     <ClCompile Include="src\UnitTarget.cpp" />
     <ClCompile Include="src\FightManager.cpp" />
@@ -239,6 +242,7 @@
     <ClInclude Include="src\RealOrientation.hpp" />
     <ClInclude Include="src\Strategy\EarlyMarinePush.hpp" />
     <ClInclude Include="src\Strategy\GatePushStrategy.hpp" />
+    <ClInclude Include="src\Strategy\GenericZvPStrategy.hpp" />
     <ClInclude Include="src\Strategy\HatchExpStrategy.hpp" />
     <ClInclude Include="src\Strategy\LingRushStrategy.hpp" />
     <ClInclude Include="src\Strategy\MutaPushStrategy.hpp" />
@@ -248,6 +252,8 @@
     <ClInclude Include="src\Strategy\StrategySelector.hpp" />
     <ClInclude Include="src\TargetWithPath.hpp" />
     <ClInclude Include="src\UnitAsAttackTargetEvaulation.hpp" />
+    <ClInclude Include="src\UnitCompositionSelector\UnitCompositionSelector.hpp" />
+    <ClInclude Include="src\UnitCompositionSelector\ZvPUnitCompositionSelector.hpp" />
     <ClInclude Include="src\UnitSearch.hpp" />
     <ClInclude Include="src\UnitTarget.hpp" />
     <ClInclude Include="src\FightManager.hpp" />
@@ -288,6 +294,7 @@
     <ClInclude Include="src\TaskForceController.hpp" />
     <ClInclude Include="src\Unit.hpp" />
     <ClInclude Include="src\Units.hpp" />
+    <ClInclude Include="src\Util.hpp" />
     <ClInclude Include="src\Vector.hpp" />
     <ClInclude Include="src\Version.hpp" />
     <ClInclude Include="src\WriteStream.hpp" />

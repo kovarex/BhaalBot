@@ -7,6 +7,7 @@
 #include <BuildTaskInProgress.hpp>
 #include <Unit.hpp>
 #include <Log.hpp>
+#include <UnitCompositionSelector/UnitCompositionSelector.hpp>
 
 bool BuildBuildOrderItem::execute()
 {
@@ -76,5 +77,16 @@ bool SendScoutBuildOrderItem::execute()
 bool SwitchToAutomaticSupplyBuilding::execute()
 {
   bhaalBot->buildOrderManager.executor.automaticSupplyBuilding = true;
+  return true;
+}
+
+SetUnitComposition::~SetUnitComposition()
+{
+  delete this->unitCompositionSelector;
+}
+
+bool SetUnitComposition::execute()
+{
+  bhaalBot->buildOrderManager.executor.unitCompositionSelector = this->unitCompositionSelector->clone();
   return true;
 }

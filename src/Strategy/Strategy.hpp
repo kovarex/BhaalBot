@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include <Module.hpp>
 #include <string>
 class BuildOrder;

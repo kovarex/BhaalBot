@@ -2,6 +2,7 @@
 #include <BuildOrder.hpp>
 #include <BuildOrderManager.hpp>
 #include <Strategy/HatchExpStrategy.hpp>
+#include <Strategy/GenericZvPStrategy.hpp>
 #include <StringUtil.hpp>
 #include <Player.hpp>
 
@@ -31,7 +32,11 @@ void HatchExpStrategy::onFrame()
 {
   int hatchCount = bhaalBot->players.self->getUnitCountWithPlannedAndBuildOrderCombined(BWAPI::UnitTypes::Zerg_Hatchery);
   if (hatchCount >= this->hatchCount)
+  {
+    if (bhaalBot->players.enemies[0]->bwapiPlayer->getRace() == BWAPI::Races::Zerg)
+      this->switchOrder = new GenericZvPStrategy();
     return;
+  }
   int availableMinerals = BWAPI::Broodwar->self()->minerals() -
                           bhaalBot->costReservation.getReseved().minerals -
                           bhaalBot->buildOrderManager.executor.getPlannedCost().minerals;

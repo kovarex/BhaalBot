@@ -4,6 +4,7 @@
 #include <StringUtil.hpp>
 #include <BuildTaskInProgress.hpp>
 #include <Unit.hpp>
+#include <UnitCompositionSelector/UnitCompositionSelector.hpp>
 
 BuildOrderExecutor::~BuildOrderExecutor()
 {}
@@ -12,6 +13,8 @@ void BuildOrderExecutor::startBuildOrder(BuildOrder* buildOrder)
 {
   this->currentBuildOrder = buildOrder;
   this->stepToDo = 0;
+  delete this->unitCompositionSelector;
+  this->unitCompositionSelector = nullptr;
 }
 
 void BuildOrderExecutor::update()

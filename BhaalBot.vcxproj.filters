@@ -146,6 +146,15 @@
     <ClCompile Include="src\Strategy\EarlyMarinePush.cpp">
       <Filter>Strategy</Filter>
     </ClCompile>
+    <ClCompile Include="src\UnitCompositionSelector\UnitCompositionSelector.cpp">
+      <Filter>UnitCompositionSelector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UnitCompositionSelector\ZvPUnitCompositionSelector.cpp">
+      <Filter>UnitCompositionSelector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strategy\GenericZvPStrategy.cpp">
+      <Filter>Strategy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -311,6 +320,16 @@
     <ClInclude Include="src\Strategy\EarlyMarinePush.hpp">
       <Filter>Strategy</Filter>
     </ClInclude>
+    <ClInclude Include="src\UnitCompositionSelector\UnitCompositionSelector.hpp">
+      <Filter>UnitCompositionSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UnitCompositionSelector\ZvPUnitCompositionSelector.hpp">
+      <Filter>UnitCompositionSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Util.hpp" />
+    <ClInclude Include="src\Strategy\GenericZvPStrategy.hpp">
+      <Filter>Strategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">
@@ -321,6 +340,9 @@
     </Filter>
     <Filter Include="Strategy">
       <UniqueIdentifier>{021bb3f3-ad1e-4f9e-9647-643e9693111f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UnitCompositionSelector">
+      <UniqueIdentifier>{7fa8748b-54c6-49b8-9b9a-bc622e2240d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

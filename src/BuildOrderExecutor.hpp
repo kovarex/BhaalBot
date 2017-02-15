@@ -6,6 +6,7 @@
 class BuildTaskInProgress;
 class BhaalBot;
 class BuildOrder;
+class UnitCompositionSelector;
 
 class BuildOrderExecutor
 {
@@ -24,4 +25,5 @@ public:
   BuildOrder* currentBuildOrder = nullptr;
   uint32_t stepToDo = 0;
   bool automaticSupplyBuilding = false;
+  UnitCompositionSelector* unitCompositionSelector = nullptr;
 };
