@@ -22,7 +22,7 @@ BaseHarvestingController::~BaseHarvestingController()
   if (base->harvestingController != this)
     LOG_AND_ABORT("base->harvestingController != this");
   this->base->harvestingController = nullptr;
-  while (!this->minerals.empty())
+  while (!this->minerals.empty()) // TODO Dom: proc ne proste .clear()?
   {
     Mineral* mineral = this->minerals.back();
     delete mineral;
@@ -42,7 +42,7 @@ void BaseHarvestingController::assignMiner(Unit* unit)
   Mineral* bestMineral = this->getBestMineral();
   if (bestMineral != nullptr)
   {
-    unit->assign(nullptr);
+    unit->assign(nullptr); // TODO change to clearAssignment, or delete the assignment automatically on a new one
     bestMineral->miners.push_back(unit);
     unit->assign(new MineralHarvestingAssignment(this));
   }

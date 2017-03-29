@@ -11,7 +11,7 @@ public:
   virtual ~BuildOrderItem() {}
   virtual bool execute() = 0;
   virtual std::string str() const = 0;
-  virtual int getPlannedType(BWAPI::UnitType unitType) const { return 0; }
+  virtual int getPlannedType(BWAPI::UnitType unitType) const { return 0; } // TODO change function name into something understandable
   virtual Cost getCost() const { return Cost(); }
 };
 

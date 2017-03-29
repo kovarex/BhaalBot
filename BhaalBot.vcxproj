@@ -129,7 +129,7 @@
     <ClCompile Include="src\CostReservation.cpp" />
     <ClCompile Include="src\DangerZones.cpp" />
     <ClCompile Include="src\DefendTaskForceController.cpp" />
-    <ClCompile Include="src\DeleyedExitChecker.cpp" />
+    <ClCompile Include="src\DelayedExitChecker.cpp" />
     <ClCompile Include="src\Direction.cpp" />
     <ClCompile Include="src\DiscoveredMemory.cpp" />
     <ClCompile Include="src\Dll.cpp" />
@@ -233,7 +233,7 @@
     <ClInclude Include="src\CStringReadStream.hpp" />
     <ClInclude Include="src\DangerZones.hpp" />
     <ClInclude Include="src\DefendTaskForceController.hpp" />
-    <ClInclude Include="src\DeleyedExitChecker.hpp" />
+    <ClInclude Include="src\DelayedExitChecker.hpp" />
     <ClInclude Include="src\Direction.hpp" />
     <ClInclude Include="src\DiscoveredMemory.hpp" />
     <ClInclude Include="src\DroneDefenseGroupController.hpp" />

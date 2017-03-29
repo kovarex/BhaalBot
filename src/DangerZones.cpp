@@ -65,7 +65,7 @@ TargetWithPath DangerZones::findBestTarget(BWAPI::Position startingPosition)
 {
   static const double dangerValue = -1;
   static const double unitValue = 1000;
-
+  // TODO plz comment what is the algo
   std::vector<WaveNode> wave;
   BWAPI::TilePosition startingPositionTiled = BWAPI::TilePosition(startingPosition);
   Node& startingNode = this->data[startingPositionTiled.x][startingPositionTiled.y];

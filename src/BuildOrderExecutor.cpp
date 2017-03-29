@@ -84,7 +84,7 @@ Cost BuildOrderExecutor::getPlannedCost()
 {
   Cost result;
   for (uint32_t i = this->stepToDo; i < this->currentBuildOrder->items.size(); ++i)
-    result += this->currentBuildOrder->items[i]->getCost();
+    result += this->currentBuildOrder->items[i]->getCost(); // TODO tohle je cena za jeden, chybi nasobeni poctem
   return result;
 }
 

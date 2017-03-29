@@ -4,7 +4,7 @@
 #include <BuildOrderManager.hpp>
 #include <Module.hpp>
 #include <ModuleContainer.hpp>
-#include <DeleyedExitChecker.hpp>
+#include <DelayedExitChecker.hpp>
 #include <MorphingUnits.hpp>
 #include <ProducingUnits.hpp>
 #include <BuildingPlaceabilityHelper.hpp>

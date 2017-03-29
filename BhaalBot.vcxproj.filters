@@ -58,7 +58,6 @@
       <Filter>BWEM</Filter>
     </ClCompile>
     <ClCompile Include="src\ModuleContainer.cpp" />
-    <ClCompile Include="src\DeleyedExitChecker.cpp" />
     <ClCompile Include="src\MorphingUnits.cpp" />
     <ClCompile Include="src\BuildingPlaceabilityHelper.cpp" />
     <ClCompile Include="src\StringUtil.cpp" />
@@ -155,6 +154,7 @@
     <ClCompile Include="src\Strategy\GenericZvPStrategy.cpp">
       <Filter>Strategy</Filter>
     </ClCompile>
+    <ClCompile Include="src\DelayedExitChecker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -225,7 +225,6 @@
       <Filter>BWEM</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleContainer.hpp" />
-    <ClInclude Include="src\DeleyedExitChecker.hpp" />
     <ClInclude Include="src\MorphingUnits.hpp" />
     <ClInclude Include="src\BuildingPlaceabilityHelper.hpp" />
     <ClInclude Include="src\StringUtil.hpp" />
@@ -330,6 +329,7 @@
     <ClInclude Include="src\Strategy\GenericZvPStrategy.hpp">
       <Filter>Strategy</Filter>
     </ClInclude>
+    <ClInclude Include="src\DelayedExitChecker.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">
