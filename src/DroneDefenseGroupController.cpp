@@ -21,7 +21,7 @@ void DroneDefenseGroupController::onAdded(Unit* unit)
 
 void DroneDefenseGroupController::onRemoved(Unit* unit)
 {
-  this->stacked.erase(unit);
+  this->stacked.erase(unit); // TODO if this has a return value, use it to save work.
   this->goingToMineral.erase(unit);
 }
 

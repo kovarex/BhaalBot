@@ -23,6 +23,11 @@ void Group::remove(Unit* unit)
   this->units.erase(unit);
   if (this->controller)
     this->controller->onRemoved(unit);
+  if (unit->getAssignment() && unit->getAssignment()->str() == "SimpleGroup")
+  {
+    delete unit->getAssignment();
+    unit->assign(nullptr);
+  }
 }
 
 void Group::onFrame()

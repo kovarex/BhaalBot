@@ -20,7 +20,7 @@ void HarvestingManager::onFrame()
 {
   for (BaseHarvestingController* base: this->bases)
     base->update();
-  this->balanceGasMining();
+  this->balanceGasMining();// TODO this looks like a lot of work to do each frame. How about balancing on drone and mineral count changes?
   this->balanceWorkersAssignmentBetweenBases();
 }
 
@@ -44,7 +44,7 @@ Unit* HarvestingManager::getClosestWorker(BWAPI::Position position)
 {
   Unit* closestUnit = nullptr;
 
-  for (BaseHarvestingController* base: this->bases)
+  for (BaseHarvestingController* base: this->bases) // TODO is this really the easiest way to access drones?
     for (BaseHarvestingController::Mineral* mineral: base->minerals)
       for (uint32_t i = 0; i < mineral->miners.size(); ++i)
       {
@@ -102,7 +102,7 @@ void HarvestingManager::balanceGasMining()
       {
         if (geyser->state != BaseHarvestingController::Geyser::State::Ready)
           continue;
-        if (geyser->miners.size() >= 3)
+        if (geyser->miners.size() >= 3) // TODO why not use these extra drones?
           continue;
         if (bestGeyser == nullptr)
         {
@@ -118,7 +118,7 @@ void HarvestingManager::balanceGasMining()
       }
     if (bestGeyser == nullptr)
       return;
-    Unit* worker = this->getClosestWorker(bestGeyser->geyser->getPosition());
+    Unit* worker = this->getClosestWorker(bestGeyser->geyser->getPosition()); // TODO doesn't this get a drone already mining the gas?
     if (worker == nullptr)
       return;
     worker->assign(nullptr);
@@ -129,6 +129,9 @@ void HarvestingManager::balanceGasMining()
 
 void HarvestingManager::balanceWorkersAssignmentBetweenBases()
 {
+  // TODO this algo now only moves from max base to min. It should count avg saturation for each base 
+  // and move between all accordingly, but only if the difference crosses some threshold, so that 
+  // drones do not run between bases all the time.
   if (this->bases.size() < 2)
     return;
   uint32_t smallestBaseSaturation = uint32_t(-1);

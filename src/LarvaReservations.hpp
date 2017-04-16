@@ -11,7 +11,7 @@ class LarvaReservations : public Module
 public:
   LarvaReservations(ModuleContainer& moduleContainer);
   ~LarvaReservations();
-  bool tryToTrain(Unit* hatchery, BWAPI::UnitType targetUnit);
+  bool tryToTrain(Unit* hatchery, BWAPI::UnitType targetUnit); // TODO would be nice to have this not only with a hatch, but with a base and global.
   void registerTask(Unit* larva, BWAPI::UnitType targetUnit);
   void onUnitDestroy(Unit* unit);
   void onFrame() override;
