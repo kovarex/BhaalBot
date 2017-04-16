@@ -27,7 +27,7 @@ void Overmind::onUnitDestroy(Unit* unit)
 
 void Overmind::onFrame()
 {
-  for (Base* base: bhaalBot->bases.bases)
+  for (Base* base: bhaalBot->bases.bases) // TODO nemel by tohle delat ten base defense manager? Neco jako base.updateDefendingState
     if (base->baseInDangerDetector)
       if (base->baseInDangerDetector->dangerLevel > 1)
       {

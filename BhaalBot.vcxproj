@@ -189,6 +189,8 @@
     <ClCompile Include="src\Units.cpp" />
     <ClCompile Include="src\Vector.cpp" />
     <ClCompile Include="src\Version.cpp" />
+    <ClCompile Include="UnitControllerReactive.cpp" />
+    <ClCompile Include="ZerglingNnController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ApplicationVersion.hpp" />
@@ -298,6 +300,8 @@
     <ClInclude Include="src\Vector.hpp" />
     <ClInclude Include="src\Version.hpp" />
     <ClInclude Include="src\WriteStream.hpp" />
+    <ClInclude Include="UnitControllerReactive.hpp" />
+    <ClInclude Include="ZerglingNnController.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

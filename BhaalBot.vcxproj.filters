@@ -155,6 +155,8 @@
       <Filter>Strategy</Filter>
     </ClCompile>
     <ClCompile Include="src\DelayedExitChecker.cpp" />
+    <ClCompile Include="UnitControllerReactive.cpp" />
+    <ClCompile Include="ZerglingNnController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\HarvestingManager.hpp" />
@@ -330,6 +332,8 @@
       <Filter>Strategy</Filter>
     </ClInclude>
     <ClInclude Include="src\DelayedExitChecker.hpp" />
+    <ClInclude Include="UnitControllerReactive.hpp" />
+    <ClInclude Include="ZerglingNnController.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BWEM">

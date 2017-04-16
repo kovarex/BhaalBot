@@ -56,7 +56,7 @@ void Units::onUnitDestroy(BWAPI::Unit unit)
   auto position = this->units.find(unit);
   if (position == this->units.end())
     return;
-  this->unitSet.erase(position->second);
+  this->unitSet.erase(position->second); // TODO should not need 2x find
   delete position->second;
   this->units.erase(position);
 }

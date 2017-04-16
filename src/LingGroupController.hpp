@@ -32,7 +32,7 @@ class LingGroupController : public GroupController
 {
 private:
   BestTarget chooseLingTarget(Unit* ling); //!< finds best available target of a ling
-  //!> returns first found target in radius that match the criteria and has < naxAttackers already on him.
+  //!> returns first found target in radius that match the criteria and has < maxAttackers already on him.
   BWAPI::Unit chooseTargetByDistance(Unit* ling, int radius, int maxAttackers, const BWAPI::UnitFilter &pred = nullptr);
   void flee(Unit* ling, int radiusToConsider, double howFar);
 

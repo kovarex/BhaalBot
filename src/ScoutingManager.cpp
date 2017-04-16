@@ -10,7 +10,7 @@ ScoutingManager::ScoutingManager(ModuleContainer& moduleContainer)\
 
 ScoutingManager::~ScoutingManager()
 {
-  while (!this->unassignedGroundScouters.empty())
+  while (!this->unassignedGroundScouters.empty()) // TODO neni tohle nekonecny? To je z toho vectoru nevyndava
     this->unassignedGroundScouters.front()->assign(nullptr);
   while (!this->scoutTasks.empty())
     this->scoutTasks.front().scout->assign(nullptr);
@@ -40,7 +40,7 @@ void ScoutingManager::onFrame()
   for (auto it = this->ordersToScout.begin(); it != this->ordersToScout.end();)
     if (Unit* unit = this->getScoutCandidate(it->first))
     {
-      unit->assign(nullptr);
+      unit->assign(nullptr); // TODO change to unit->clearAssignment()
       bhaalBot->scoutingManager.assignGroundScout(unit);
       it->second--;
       if (it->second == 0)
@@ -146,7 +146,7 @@ void ScoutingManager::unassignScout(Unit* unit)
       return;
     }
 
-  for (uint32_t i = 0; i < this->scoutTasks.size(); ++i)
+  for (uint32_t i = 0; i < this->scoutTasks.size(); ++i) // TODO rict dominikovy, proc treba tady nepouzivas iterator
     if (this->scoutTasks[i].scout == unit)
     {
       this->scoutTasks.erase(this->scoutTasks.begin() + i);
@@ -169,7 +169,7 @@ void ScoutingManager::orderToScout(BWAPI::UnitType unitType)
 
 void ScoutingManager::DiscoverScoutingLocationsScoutTask::onFrame()
 {
-  if (this->scout->getTargetPosition() != this->target->getCenter())
+  if (this->scout->getTargetPosition() != this->target->getCenter()) // to se spis ani nestane, ne? Neni to lepsi dat jako else ty dalsi podminky?
     this->scout->move(this->target->getCenter());
   if (this->scout->getPosition().getDistance(this->target->getCenter()) < 200)
   {

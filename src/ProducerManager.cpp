@@ -43,7 +43,7 @@ Unit* ProducerManager::getBestProducer(BWAPI::UnitType unitType)
   for (Unit* currentProducer: this->producers)
     if (currentProducer->canTrain(unitType))
     {
-      int currentQueueSize = int(currentProducer->getBWAPIUnit()->getTrainingQueue().size());
+      int currentQueueSize = int(currentProducer->getBWAPIUnit()->getTrainingQueue().size()); // TODO we do not have any reason to queue units
       int reservedProductions =  int(bhaalBot->productionQueueReservations.ordersInProgress[currentProducer].size());
       if (currentQueueSize + reservedProductions > 1 ||
           reservedProductions != 0)
